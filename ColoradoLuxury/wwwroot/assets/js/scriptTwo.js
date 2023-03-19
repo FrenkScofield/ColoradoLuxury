@@ -56,3 +56,40 @@ $("#hourly").click(function(){
 
    }
  });
+
+//$('#hourly').click(function () {
+//    $(this).slideUp();
+//});
+
+//debugger
+//var $popupStatus = false;
+//$('#step - template').on('click', '#hourly', function () {
+//    $popupStatus = !($popupStatus);
+//    alert($popupStatus);
+//});
+
+
+//var hor = false;
+
+//$('#hourly').on('click', function () {
+//    hor = true;
+//    alert(hor);
+//})
+//$('#distance').on('click', function () {
+//    hor = false;
+//    alert(hor);
+//})
+//alert(hor)
+$(document).on("click", "#distance", function () {
+    Clear();
+})
+$(document).on("click", "#hourly", function () {
+    Clear();
+})
+
+function Clear() {
+    $('#pickupDate').val('')
+    $('#time').val('')
+    $('#pickuplocation').val('')
+    $('#dropOffLocation').val('')
+}

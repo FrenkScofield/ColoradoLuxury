@@ -423,3 +423,13 @@ width: 30px;
 iframe{
   border-radius: 10px
 }
+.error {
+    color: #e14d4d;
+    font-size: 13px;
+    display:none
+}
+.good {
+    color: green;
+    font-size: 13px;
+    display: none
+}
