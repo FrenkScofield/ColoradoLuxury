@@ -1,4 +1,4 @@
-var hor = false;
+var hor = true;
 
 Vue.component("step-navigation-step", {
     template: "#step-navigation-step-template",
@@ -48,30 +48,16 @@ Vue.component("step", {
     },
 
     methods: {
-        horli() {
-            debugger
 
-            $('#hourly').on('click', function () {
-                hor = false;
-               
-            })
-            $('#distance').on('click', function () {
-                hor = true;
-            })
-            return hor;
-        },
-        nextStep() {
-          
-            console.log("kamran  tofiq");
-            console.log($('#pickupDate').val());
-            console.log($('#time').val());
-            console.log($('#pickuplocation').val());
-            console.log($('#dropOffLocation').val());
+        nextStep() { 
 
-
+            let x = true;
+            x = ($('#dropOffLocation').val() === '' && hor == false) ||
+                ($('#pickuplocation').val() === '' && hor == false) ||
+                ($('#dropOffLocation').val() != '' && hor == true) ? false : true;
 
             //Ride Details page validation section  START
-            if ($('#pickupDate').val() === '' || $('#time').val() === '' || $('#pickuplocation').val() === '' || $('#dropOffLocation').val() === '') {
+            if ($('#pickupDate').val() === '' || $('#time').val() === '' || $('#pickuplocation').val() === '' || x) {
 
                 $('#dateError').css("display", "block")
                 $('#timeError').css("display", "block")
@@ -108,9 +94,8 @@ Vue.component("step", {
                     $('#pickupGood').css("display", "none")
                     $('#pickupError').css("display", "block")
                 }
-                debugger
 
-                if (this.horli() == false) { //distance
+                if (hor == true) { 
                     //Drop-off location
                     if ($('#dropOffLocation').val() != '') {
                         $('#dropGood').css("display", "block")
@@ -122,14 +107,7 @@ Vue.component("step", {
                         $('#dropGood').css("display", "none")
                         $('#dropError').css("display", "block")
                     }
-                } else {
-                    if (this.currentstep == 1) {
-                        this.$emit("step-change", this.currentstep + 1);
-                        $('.error').css("display", "none")
-                    }
                 }
-
-
             }
             else {
                 if (this.currentstep == 1) {
@@ -198,14 +176,6 @@ const accordionItemHeaders = document.querySelectorAll(".accordion-item-header")
 accordionItemHeaders.forEach(accordionItemHeader => {
     accordionItemHeader.addEventListener("click", event => {
 
-        // Uncomment in case you only want to allow for the display of only one collapsed item at a time!
-
-        // const currentlyActiveAccordionItemHeader = document.querySelector(".accordion-item-header.active");
-        // if(currentlyActiveAccordionItemHeader && currentlyActiveAccordionItemHeader!==accordionItemHeader) {
-        //   currentlyActiveAccordionItemHeader.classList.toggle("active");
-        //   currentlyActiveAccordionItemHeader.nextElementSibling.style.maxHeight = 0;
-        // }
-
         accordionItemHeader.classList.toggle("active");
         const accordionItemBody = accordionItemHeader.nextElementSibling;
         if (accordionItemHeader.classList.contains("active")) {
@@ -218,4 +188,11 @@ accordionItemHeaders.forEach(accordionItemHeader => {
     });
 });
 
+//When this documend is ready, it will run
+$('#hourly').on('click', function () {
+    hor = false;
 
+})
+$('#distance').on('click', function () {
+    hor = true;
+})
