@@ -62,7 +62,7 @@ Vue.component("step", {
         },
         nextStep() {
           
-            
+            console.log("kamran  tofiq");
             console.log($('#pickupDate').val());
             console.log($('#time').val());
             console.log($('#pickuplocation').val());
