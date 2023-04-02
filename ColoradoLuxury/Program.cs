@@ -1,7 +1,27 @@
+using ColoradoLuxury.Models.BLL;
+using ColoradoLuxury.Models.DAL;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ColoradoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddIdentity<User, IdentityRole>(option =>
+{
+    option.Password.RequiredLength = 8;
+    option.Password.RequireUppercase = true;
+    option.Password.RequireLowercase = true;
+    option.Password.RequireNonAlphanumeric = true;
+
+    option.SignIn.RequireConfirmedEmail = true;
+})
+                .AddEntityFrameworkStores<ColoradoContext>()
+                .AddDefaultTokenProviders();
 
 var app = builder.Build();
 

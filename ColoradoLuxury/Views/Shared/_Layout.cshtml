@@ -21,6 +21,7 @@
     <script src="https://kendo.cdn.telerik.com/2023.1.117/js/kendo.all.min.js"></script>
 
     <link rel="stylesheet" href="~/assets/css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <title>Colorado Luxury</title>
 
 </head>
@@ -62,7 +63,8 @@
 
             <script src="~/assets/js/script.js"></script>
             <script src="~/assets/js/scriptTwo.js"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+            defer></script>
     @RenderSection("scripts", required: false)
 </body>
 
