@@ -1,8 +1,9 @@
-
 $("#distance").click(function(){
     $("#DropLocation").css({"display": "block"});
     $("#TransferType").css({"display": "block"});
+    $("#extraTime").css({ "display": "block" });
     $("#durationInHours").css({"display": "none"});
+    $("#forHourlyDropLocation").css({ "display": "none" });
     $("#distance").css({"background-color": "#C1A926"});
     $("#distance").css({"color": "#fff"});
     $("#hourly").css({"background-color": "#4F4F4F"});
@@ -11,8 +12,10 @@ $("#distance").click(function(){
 
 $("#hourly").click(function(){
    $("#DropLocation").css({"display": "none"});
-   $("#TransferType").css({"display": "none"});
-   $("#durationInHours").css({"display": "block"});
+   $("#TransferType").css({ "display": "none" });
+   $("#extraTime").css({ "display": "none" });
+   $("#forHourlyDropLocation").css({ "display": "block" });
+   $("#durationInHours").css({ "display": "block" });
    $("#hourly").css({"background-color": "#C1A926"});
    $("#hourly").css({"color": "#fff"});
    $("#distance").css({"background-color": "#4F4F4F"});

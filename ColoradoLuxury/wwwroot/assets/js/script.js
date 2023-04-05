@@ -1,3 +1,5 @@
+
+
 var hor = true;
 
 Vue.component("step-navigation-step", {
@@ -48,17 +50,19 @@ Vue.component("step", {
     },
 
     methods: {
-
         nextStep() { 
-
+            
             let x = true;
             x = ($('#dropOffLocation').val() === '' && hor == false) ||
+                //($('#durationInHoursSelected').val() === '' && hor == false) ||
                 ($('#pickuplocation').val() === '' && hor == false) ||
                 ($('#dropOffLocation').val() != '' && hor == true) ? false : true;
 
-            //Ride Details page validation section  START
-            if ($('#pickupDate').val() === '' || $('#time').val() === '' || $('#pickuplocation').val() === '' || x) {
+            console.log($('#durationInHoursSelected').val())
 
+            debugger
+            if ($('#pickupDate').val() === '' || $('#time').val() === '' || $('#pickuplocation').val() === '' || ($('#durationInHoursSelected').val() === '' && hor == false) || ($('#transferType').val() === '' && hor == true) || x) {
+               
                 $('#dateError').css("display", "block")
                 $('#timeError').css("display", "block")
                 $('#pickupError').css("display", "block")
@@ -94,8 +98,8 @@ Vue.component("step", {
                     $('#pickupGood').css("display", "none")
                     $('#pickupError').css("display", "block")
                 }
-
-                if (hor == true) { 
+                debugger
+                if (hor == true) {
                     //Drop-off location
                     if ($('#dropOffLocation').val() != '') {
                         $('#dropGood').css("display", "block")
@@ -106,6 +110,31 @@ Vue.component("step", {
                     } else {
                         $('#dropGood').css("display", "none")
                         $('#dropError').css("display", "block")
+                    }
+
+                    //Transfer Type
+                    if ($('#transferType').val() != '') {
+                        $('#transferTypeGood').css("display", "block")
+                        setTimeout(function () {
+                            $('#transferTypeGood').css("display", "none")
+                        }, 1000);
+                        $('#transferTypeError').css("display", "none")
+                    } else {
+                        $('#transferTypeGood').css("display", "none")
+                        $('#transferTypeError').css("display", "block")
+                    }
+
+                } else {
+                    //DURATION (IN HOURS)
+                    if ($('#durationInHoursSelected').val() != '') {
+                        $('#durationHoursGood').css("display", "block")
+                        setTimeout(function () {
+                            $('#durationHoursGood').css("display", "none")
+                        }, 1000);
+                        $('#durationHoursError').css("display", "none")
+                    } else {
+                        $('#durationHoursGood').css("display", "none")
+                        $('#durationHoursError').css("display", "block")
                     }
                 }
             }

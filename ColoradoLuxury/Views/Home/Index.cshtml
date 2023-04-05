@@ -75,23 +75,49 @@
                                                     <div class="form-group transferType" style="margin-bottom: 0px;">
                                                         <div id="TransferType" class="form-group ">
                                                             <label> Transfer Type </label>
-                                                            <select class="form-select form-control"
+                                                            <select id="transferType" class="form-select form-control"
                                                                     aria-label="Default select example">
-                                                                <option selected>Open this select menu</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
+                                                                <option value="" selected>Open this select menu</option>
+                                                                <option value="1">One Way</option>
+                                                                <option value="2">Return</option>
+                                                                <option value="3">Return (New ride)</option>
                                                             </select>
+                                                        <span class="error" id="transferTypeError">Cannot be left blank </span>
+                                                        <span class="good" id="transferTypeGood">Good look </span>
                                                         </div>
                                                         <div id="durationInHours" class="form-group">
                                                             <label> DURATION (IN HOURS) </label>
-                                                            <select class="form-select form-control"
+                                                        <select id="durationInHoursSelected" class="form-select form-control"
                                                                     aria-label="Default select example">
-                                                                <option selected>Open this select menu</option>
-                                                                <option value="1">1</option>
-                                                                <option value="2">2</option>
-                                                                <option value="3">3</option>
+                                                            <option value="" selected>Open this select menu</option>
+                                                            <option value="1">1 hour(s)</option>
+                                                            <option value="2">2 hour(s)</option>
+                                                            <option value="3">3 hour(s)</option>
+                                                            <option value="4">4 hour(s)</option>
+                                                            <option value="5">5 hour(s)</option>
+                                                            <option value="6">6 hour(s)</option>
+                                                            <option value="7">7 hour(s)</option>
+                                                            <option value="8">8 hour(s)</option>
+                                                            <option value="9">9 hour(s)</option>
+                                                            <option value="10">10 hour(s)</option>
+                                                            <option value="11">11 hour(s)</option>
+                                                            <option value="12">12 hour(s)</option>
+                                                            <option value="13">13 hour(s)</option>
+                                                            <option value="14">14 hour(s)</option>
+                                                            <option value="15">15 hour(s)</option>
+                                                            <option value="16">16 hour(s)</option>
+                                                            <option value="17">17 hour(s)</option>
+                                                            <option value="18">18 hour(s)</option>
+                                                            <option value="19">19 hour(s)</option>
+                                                            <option value="20">20 hour(s)</option>
+                                                            <option value="21">21 hour(s)</option>
+                                                            <option value="22">22 hour(s)</option>
+                                                            <option value="23">23 hour(s)</option>
+                                                            <option value="24">24 hour(s)</option>
                                                             </select>
+
+                                                        <span class="error" id="durationHoursError">Cannot be left blank </span>
+                                                        <span class="good" id="durationHoursGood">Good look </span>
                                                         </div>
                                                         <!-- <div class="row">
                                                             <div class="col-lg-6 date">
@@ -113,16 +139,29 @@
                                                     </div>
                                                     <hr>
                                                     <label>EXTRA OPTIONS</label>
-                                                    <div class="form-group">
+                                                    <div class="form-group" id="extraTime">
                                                         <label> Extra Time </label>
                                                         <select class="form-select form-control"
                                                                 aria-label="Default select example">
-                                                            <option selected>Open this select menu</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
+                                                        <option selected>Open this select menu</option>
+                                                        <option value="1">1 hour(s)</option>
+                                                        <option value="2">2 hour(s)</option>
+                                                        <option value="3">3 hour(s)</option>
+                                                        <option value="4">4 hour(s)</option>
+                                                        <option value="5">5 hour(s)</option>
+                                                        <option value="6">6 hour(s)</option>
+                                                        <option value="7">7 hour(s)</option>
+                                                        <option value="8">8 hour(s)</option>
+                                                        <option value="9">9 hour(s)</option>
+                                                        <option value="10">10 hour(s)</option>
+                                                        <option value="11">11 hour(s)</option>
+                                                        <option value="12">12 hour(s)</option>
                                                         </select>
                                                     </div>
+                                                <div id="forHourlyDropLocation" class="form-group forHourlyDropLocation">
+                                                    <label> Drop-off location </label>
+                                                    <input type="text" class="form-control" id="forHourlydropOffLocation" placeholder="Write Location" />
+                                                </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-7 ">
