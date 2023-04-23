@@ -51,16 +51,13 @@ Vue.component("step", {
 
     methods: {
         nextStep() { 
-            
+
+            //Ride Details page validation section END
             let x = true;
             x = ($('#dropOffLocation').val() === '' && hor == false) ||
-                //($('#durationInHoursSelected').val() === '' && hor == false) ||
                 ($('#pickuplocation').val() === '' && hor == false) ||
                 ($('#dropOffLocation').val() != '' && hor == true) ? false : true;
 
-            console.log($('#durationInHoursSelected').val())
-
-            debugger
             if ($('#pickupDate').val() === '' || $('#time').val() === '' || $('#pickuplocation').val() === '' || ($('#durationInHoursSelected').val() === '' && hor == false) || ($('#transferType').val() === '' && hor == true) || x) {
                
                 $('#dateError').css("display", "block")
@@ -98,7 +95,7 @@ Vue.component("step", {
                     $('#pickupGood').css("display", "none")
                     $('#pickupError').css("display", "block")
                 }
-                debugger
+
                 if (hor == true) {
                     //Drop-off location
                     if ($('#dropOffLocation').val() != '') {
@@ -144,16 +141,101 @@ Vue.component("step", {
                     $('.error').css("display", "none")
                 }
             }
-            //Ride Details page validation section END
+            // END
+
+            //Choose a Vehicle page validation section Start
             if (this.currentstep == 2) {
-                this.$emit("step-change", this.currentstep + 1);
-                alert("Doru 2")
+                if ($('#passengersSelect').val() === '') {
+
+
+                    //Passenger
+                    if ($('#passengersSelect').val() != '') {
+                        $('#passengersGood').css("display", "block")
+                        setTimeout(function () {
+                            $('#passengersGood').css("display", "none")
+                        }, 1000);
+                        $('#passengersError').css("display", "none")
+                       
+                    } else {
+                        $('#passengersGood').css("display", "none")
+                        $('#passengersError').css("display", "block")
+                    }
+
+                }
+                else {
+                    $('#passengersError').css("display", "none")
+
+                        this.$emit("step-change", this.currentstep + 1);
+                  
+                    
+                }
             }
+            //END
+
+            //Enter Contact Details page validation section Start
             if (this.currentstep == 3) {
-                this.$emit("step-change", this.currentstep + 1);
-                alert("Doru 3")
+                if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '') {
+
+                    //FirstName
+                    if ($('#firstName').val() != '') {
+                        $('#firstNameGood').css("display", "block")
+                        setTimeout(function () {
+                            $('#firstNameGood').css("display", "none")
+                        }, 1000);
+                        $('#firstNameError').css("display", "none")
+                    } else {
+                        $('#firstNameGood').css("display", "none")
+                        $('#firstNameError').css("display", "block")
+                    }
+
+                    //LastName
+                    if ($('#lastName').val() != '') {
+                        $('#lastNameGood').css("display", "block")
+                        setTimeout(function () {
+                            $('#lastNameGood').css("display", "none")
+                        }, 1000);
+                        $('#lastNameError').css("display", "none")
+                    } else {
+                        $('#lastNameGood').css("display", "none")
+                        $('#lastNameError').css("display", "block")
+                    }
+
+                    //Email
+                    if ($('#emailAddress').val() != '') {
+                        $('#emailAddressGood').css("display", "block")
+                        setTimeout(function () {
+                            $('#emailAddressGood').css("display", "none")
+                        }, 1000);
+                        $('#emailAddressError').css("display", "none")
+                    } else {
+                        $('#emailAddressGood').css("display", "none")
+                        $('#emailAddressError').css("display", "block")
+                    }
+
+                    //Phone
+                    if ($('#phoneNumber').val() != '') {
+                        $('#phoneNumberGood').css("display", "block")
+                        setTimeout(function () {
+                            $('#phoneNumberGood').css("display", "none")
+                        }, 1000);
+                        $('#phoneNumberError').css("display", "none")
+                    } else {
+                        $('#phoneNumberGood').css("display", "none")
+                        $('#phoneNumberError').css("display", "block")
+                    }
+
+                }
+                else {
+                    $('#firstNameError').css("display", "none")
+                    $('#lastNameError').css("display", "none")
+                    $('#emailAddressError').css("display", "none")
+                    $('#phoneNumberError').css("display", "none")
+
+                   this.$emit("step-change", this.currentstep + 1);
+                    
+                }
             }
-            // this.$emit("step-change", this.currentstep + 1);
+            //END
         },
 
         lastStep() {

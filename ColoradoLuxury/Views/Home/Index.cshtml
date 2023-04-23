@@ -190,8 +190,9 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="select">PASSENGERS </label>
-                                                <select class="form-control" name="select">
-                                                    <option value="0">Choose</option>
+                                            <select id="passengersSelect" class="form-select form-control"
+                                                    aria-label="Default select example">
+                                                <option value="" selected>Choose</option>
                                                     <option value="1">1</option>
                                                     <option value="2">2</option>
                                                     <option value="3">3</option>
@@ -199,6 +200,9 @@
                                                     <option value="5">5</option>
                                                     <option value="6">6</option>
                                                 </select>
+
+                                            <span class="error" id="passengersError">Cannot be left blank </span>
+                                            <span class="good" id="passengersGood">Good look </span>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
@@ -332,20 +336,22 @@
                                     <div class="col-lg-1"></div>
                                     <div class="col-lg-10">
                                         <div class="col-lg-12 backroundAndBorderTema">
-                                            <form>
                                                 <div class="row">
                                                     <div class="col-md-6 mb-4">
                                                         <div class="form-outline">
                                                             <label class="form-label" for="firstName">First Name</label>
                                                             <input type="text" id="firstName" class="form-control " />
+                                                    <span class="error" id="firstNameError">Cannot be left blank </span>
+                                                    <span class="good" id="firstNameGood">Good look </span>
                                                         </div>
-
                                                     </div>
                                                     <div class="col-md-6 mb-4">
 
                                                         <div class="form-outline">
                                                             <label class="form-label" for="lastName">Last Name</label>
                                                             <input type="text" id="lastName" class="form-control " />
+                                                    <span class="error" id="lastNameError">Cannot be left blank </span>
+                                                    <span class="good" id="lastNameGood">Good look </span>
                                                         </div>
 
                                                     </div>
@@ -357,6 +363,8 @@
                                                         <div class="form-outline">
                                                             <label class="form-label" for="emailAddress">Email</label>
                                                             <input type="email" id="emailAddress" class="form-control " />
+                                                    <span class="error" id="emailAddressError">Cannot be left blank </span>
+                                                    <span class="good" id="emailAddressGood">Good look </span>
                                                         </div>
 
                                                     </div>
@@ -365,6 +373,8 @@
                                                         <div class="form-outline">
                                                             <label class="form-label" for="phoneNumber">Phone Number</label>
                                                             <input type="tel" id="phoneNumber" class="form-control " />
+                                                    <span class="error" id="phoneNumberError">Cannot be left blank </span>
+                                                    <span class="good" id="phoneNumberGood">Good look </span>
                                                         </div>
 
                                                     </div>
@@ -373,7 +383,6 @@
                                                     <label for="textarea">Example textarea</label>
                                                     <textarea class="form-control" name="textarea" rows="3" cols="2"></textarea>
                                                 </div>
-                                            </form>
                                         </div>
                                         <div class="col-lg-12 backroundAndBorderTema  ">
                                             <div class=" accordion">
