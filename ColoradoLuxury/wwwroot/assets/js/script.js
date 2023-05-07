@@ -1,5 +1,4 @@
 
-
 var hor = true;
 
 Vue.component("step-navigation-step", {
@@ -50,7 +49,7 @@ Vue.component("step", {
     },
 
     methods: {
-        nextStep() { 
+        nextStep() {
 
             //Ride Details page validation section END
             let x = true;
@@ -59,7 +58,7 @@ Vue.component("step", {
                 ($('#dropOffLocation').val() != '' && hor == true) ? false : true;
 
             if ($('#pickupDate').val() === '' || $('#time').val() === '' || $('#pickuplocation').val() === '' || ($('#durationInHoursSelected').val() === '' && hor == false) || ($('#transferType').val() === '' && hor == true) || x) {
-               
+
                 $('#dateError').css("display", "block")
                 $('#timeError').css("display", "block")
                 $('#pickupError').css("display", "block")
@@ -155,7 +154,7 @@ Vue.component("step", {
                             $('#passengersGood').css("display", "none")
                         }, 1000);
                         $('#passengersError').css("display", "none")
-                       
+
                     } else {
                         $('#passengersGood').css("display", "none")
                         $('#passengersError').css("display", "block")
@@ -165,16 +164,21 @@ Vue.component("step", {
                 else {
                     $('#passengersError').css("display", "none")
 
-                        this.$emit("step-change", this.currentstep + 1);
-                  
-                    
+                    this.$emit("step-change", this.currentstep + 1);
+
+
                 }
             }
             //END
 
             //Enter Contact Details page validation section Start
             if (this.currentstep == 3) {
-                if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '') {
+
+                var bill = document.getElementById('billingAddress');
+                var airlineInfo = document.getElementById('airlineInfo')
+                debugger
+
+                if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '' || bill.checked == true || airlineInfo.checked == true) {
 
                     //FirstName
                     if ($('#firstName').val() != '') {
@@ -224,6 +228,103 @@ Vue.component("step", {
                         $('#phoneNumberError').css("display", "block")
                     }
 
+                    //BILLING ADDRESS Check section
+                    if (bill.checked == true || airlineInfo.checked == true) {
+                        if ($('#street').val() === '' || $('#city').val() === '' || ($('#state').val() === '' || $('#postalCode').val() === '' || $('#country').val() === '') || airlineInfo.checked == true) {
+                            if ($('#street').val() != '') {
+                                $('#streetGood').css("display", "block")
+                                setTimeout(function () {
+                                    $('#streetGood').css("display", "none")
+                                }, 1000);
+                                $('#streetError').css("display", "none")
+                            } else {
+                                $('#streetGood').css("display", "none")
+                                $('#streetError').css("display", "block")
+                            }
+
+                            if ($('#city').val() != '') {
+                                $('#cityGood').css("display", "block")
+                                setTimeout(function () {
+                                    $('#cityGood').css("display", "none")
+                                }, 1000);
+                                $('#cityError').css("display", "none")
+                            } else {
+                                $('#cityGood').css("display", "none")
+                                $('#cityError').css("display", "block")
+                            }
+
+                            if ($('#state').val() != '') {
+                                $('#stateGood').css("display", "block")
+                                setTimeout(function () {
+                                    $('#stateGood').css("display", "none")
+                                }, 1000);
+                                $('#stateError').css("display", "none")
+                            } else {
+                                $('#stateGood').css("display", "none")
+                                $('#stateError').css("display", "block")
+                            }
+
+                            if ($('#postalCode').val() != '') {
+                                $('#postalCodeGood').css("display", "block")
+                                setTimeout(function () {
+                                    $('#postalCodeGood').css("display", "none")
+                                }, 1000);
+                                $('#postalCodeError').css("display", "none")
+                            } else {
+                                $('#postalCodeGood').css("display", "none")
+                                $('#postalCodeError').css("display", "block")
+                            }
+
+                            if ($('#country').val() != '') {
+                                $('#countryGood').css("display", "block")
+                                setTimeout(function () {
+                                    $('#countryGood').css("display", "none")
+                                }, 1000);
+                                $('#countryError').css("display", "none")
+                            } else {
+                                $('#countryGood').css("display", "none")
+                                $('#countryError').css("display", "block")
+                            }
+
+
+                            //ARRIVAL AIRLINE INFO Check section
+                            if (airlineInfo.checked == true) {
+                                if ($('#airline').val() === '' || $('#filingNumber').val() === '') {
+                                    if ($('#airline').val() != '') {
+                                        $('#airlineGood').css("display", "block")
+                                        setTimeout(function () {
+                                            $('#airlineGood').css("display", "none")
+                                        }, 1000);
+                                        $('#airlineError').css("display", "none")
+                                    } else {
+                                        $('#airlineGood').css("display", "none")
+                                        $('#airlineError').css("display", "block")
+                                    }
+
+                                    if ($('#filingNumber').val() != '') {
+                                        $('#filingNumberGood').css("display", "block")
+                                        setTimeout(function () {
+                                            $('#filingNumberGood').css("display", "none")
+                                        }, 1000);
+                                        $('#filingNumberError').css("display", "none")
+                                    } else {
+                                        $('#filingNumberGood').css("display", "none")
+                                        $('#filingNumberError').css("display", "block")
+                                    }
+                                }
+                                else {
+
+                                    this.$emit("step-change", this.currentstep + 1);
+                                }
+
+                            }
+                          } else {
+                            this.$emit("step-change", this.currentstep + 1);
+
+                        }
+
+
+                    }
                 }
                 else {
                     $('#firstNameError').css("display", "none")
@@ -231,8 +332,8 @@ Vue.component("step", {
                     $('#emailAddressError').css("display", "none")
                     $('#phoneNumberError').css("display", "none")
 
-                   this.$emit("step-change", this.currentstep + 1);
-                    
+                    this.$emit("step-change", this.currentstep + 1);
+
                 }
             }
             //END

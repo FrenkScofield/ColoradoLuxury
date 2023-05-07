@@ -40,8 +40,17 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapAreaControllerRoute(
+     name: "areas", "WebCms",
+     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+   
+    endpoints.MapControllerRoute(
+      name: "default",
+      pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
+
 
 app.Run();
