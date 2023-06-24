@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "Coupon";
+    Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12 my-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-4">
+               Random Coupons
+            </div>
+            <div class="card-body">
+                <div class="row">
+
+                <div class="input-group  col-5">
+                    
+                    <div class="input-group-prepend">
+
+                            <button class="btn btn-outline-secondary" style="height: 49px;" onclick="onClick();" id="generateUUID" type="button">
+                                Create
+                            </button>
+                    </div>
+                    <input style="font-size: 23px;" type="text" class="form-control" id="uuid" placeholder="Click Create" aria-label="" aria-describedby="basic-addon1">
+                        <button style="    height: 49px;" class="btn btn-outline-success" type="button">
+                            Save
+                        </button>
+                </div>
+                <div class="input-group  col-7">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>fat</td>
+                            </tr>
+                         
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+          
+        </div>
+    </div>
+</div>
+<script>
+    function generateUUID() { // Public Domain/MIT
+        var d = new Date().getTime();//Timestamp
+        var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+        return 'xxxxyxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16;//random number between 0 and 16
+            if (d > 0) {//Use timestamp until depleted
+                r = (d + r) % 16 | 0;
+                d = Math.floor(d / 16);
+            } else {//Use microseconds since page-load if supported
+                r = (d2 + r) % 16 | 0;
+                d2 = Math.floor(d2 / 16);
+            }
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    }
+
+    var onClick = function () {
+        document.getElementById('uuid').value = generateUUID();
+    }
+    onClick();
+</script>

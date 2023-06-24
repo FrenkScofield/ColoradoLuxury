@@ -13,3 +13,5 @@ function previewFile() {
         reader.readAsDataURL(file);
     }
 }
+
+

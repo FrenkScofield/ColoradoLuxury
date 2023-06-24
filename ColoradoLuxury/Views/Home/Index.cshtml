@@ -222,7 +222,7 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label for="select">TYPE </label>
-                                                <select class="form-control" name="select">
+                                            <select id="carType" class="form-control" name="select">
                                                     <option value="1"> All vehicles</option>
                                                     <option value="2">Luxury Sedan</option>
                                                     <option value="3">Luxury SUV</option>
@@ -640,3 +640,11 @@
         </div>
     </section>
 
+<script>
+    if (localStorage.getItem('btnValueKey') == 'activ') {
+        $('#hourly').css("display", "block")
+    } else if (localStorage.getItem('btnValueKey') == 'deactiv') {
+        $('#hourly').css("display", "none")
+
+    }
+</script>

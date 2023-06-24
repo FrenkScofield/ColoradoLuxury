@@ -50,7 +50,7 @@ Vue.component("step", {
 
     methods: {
         nextStep() {
-
+            var type = document.getElementById('carType');
             //Ride Details page validation section END
             let x = true;
             x = ($('#dropOffLocation').val() === '' && hor == false) ||
@@ -145,8 +145,7 @@ Vue.component("step", {
             //Choose a Vehicle page validation section Start
             if (this.currentstep == 2) {
                 if ($('#passengersSelect').val() === '') {
-
-
+                    debugger
                     //Passenger
                     if ($('#passengersSelect').val() != '') {
                         $('#passengersGood').css("display", "block")
@@ -159,6 +158,10 @@ Vue.component("step", {
                         $('#passengersGood').css("display", "none")
                         $('#passengersError').css("display", "block")
                     }
+
+                } else if ($('#passengersSelect').val() >= 5) {
+
+                    type.disabled = true;
 
                 }
                 else {
@@ -318,7 +321,7 @@ Vue.component("step", {
                                 }
 
                             }
-                          } else {
+                        } else {
                             this.$emit("step-change", this.currentstep + 1);
 
                         }
@@ -408,3 +411,4 @@ $('#hourly').on('click', function () {
 $('#distance').on('click', function () {
     hor = true;
 })
+

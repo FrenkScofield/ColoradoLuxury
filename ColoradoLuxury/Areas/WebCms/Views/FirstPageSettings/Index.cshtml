@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12 my-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-4">
+                Enter Ride Details Pages Settings
+            </div>
+            <div class="card-body">
+                
+                <label>Hourly Button</label>
+                    <select class="form-select btnHourly" id="btnHourly">
+                        <option value="activ">Show</option>
+                        <option value="deactiv">Not Show</option>
+                    </select>
+            
+            </div>
+            <hr />
+            <div class="card-header py-4">
+                Choose a Vehicle
+            </div>
+            <div class="card-body">
+
+                <label>VEHICLES</label>
+               
+                <div class="row">
+                    <div class="col-8">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">First</th>
+                                    <th scope="col">Last</th>
+                                    <th scope="col">Handle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>mdo1</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>fat1</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Larry</td>
+                                    <td>the Bird</td>
+                                    <td>twitter1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4" > 
+                        <a href="AddVehicle" class="btn btn-outline-secondary" style="float:right;">Add Vehicle</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const timeZoneList = document.getElementById('btnHourly');
+
+    timeZoneList.addEventListener('change', (event) => {
+        let currentArea = event.target.value;
+        localStorage.setItem('btnValueKey', currentArea);
+    });
+
+    if (localStorage.getItem('btnValueKey')) {
+        timeZoneList.value = localStorage.getItem('btnValueKey');
+    }
+</script>
