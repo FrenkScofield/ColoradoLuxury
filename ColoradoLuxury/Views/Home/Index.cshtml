@@ -220,9 +220,9 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
-                                            <div class="form-group">
+                                        <div class="form-group" id="carType">
                                                 <label for="select">TYPE </label>
-                                            <select id="carType" class="form-control" name="select">
+                                            <select  class="form-control" name="select">
                                                     <option value="1"> All vehicles</option>
                                                     <option value="2">Luxury Sedan</option>
                                                     <option value="3">Luxury SUV</option>
@@ -577,6 +577,21 @@
                                                     $0.00
                                                 </span>
                                             </div>
+                                        <hr style="margin-top:52px;">
+                                        <div class="mainBetDriver" id="betting">
+                                            <div>
+                                            <h4 style="margin-bottom:16px;">Bet On The Driver</h4>
+                                            <button type="button" class="btn btn-outline-warning betDriver" >10$</button>
+                                            <button type="button" class="btn btn-outline-warning" >20$</button>
+                                            <button type="button" class="btn btn-outline-warning" >30$</button>
+                                            <button type="button" class="btn btn-outline-warning">40$</button>
+                                            <button type="button" class="btn btn-outline-warning" >50$</button>
+                                            </div>
+                                            <div>
+                                            <label class="form-label" >Custom Price</label>
+                                            <input type="number" class="form-control " />
+                                            </div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -645,6 +660,20 @@
         $('#hourly').css("display", "block")
     } else if (localStorage.getItem('btnValueKey') == 'deactiv') {
         $('#hourly').css("display", "none")
+
+    }
+
+    if (localStorage.getItem('btnCarTypeValueKey') == 'activ') {
+        $('#carType').css("display", "block")
+    } else if (localStorage.getItem('btnCarTypeValueKey') == 'deactiv') {
+        $('#carType').css("display", "none")
+
+    }
+
+    if (localStorage.getItem('btnBettingValueKey') == 'activ') {
+        $('#betting ').css("display", "block")
+    } else if (localStorage.getItem('btnBettingValueKey') == 'deactiv') {
+        $('#betting').css("display", "none")
 
     }
 </script>

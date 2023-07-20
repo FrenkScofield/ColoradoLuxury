@@ -1,8 +1,50 @@
-﻿.col-md-12 .card .card-body .btnHourly {
+﻿.col-md-12 .card .card-body .btnShowOrNotshow {
     width: 15%;
     font-size: 20px;
     border-color: #bfbfbf;
     border-radius: 6px;
     padding: 2px 2px;
     color: #747474;
+    padding-left: 10px;
+}
+.col-md-12 .card .card-body .ShowOrNotshowLabelText {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.card-body .col-12 .specialSpace{
+    margin-bottom:25px;
+}
+
+.card-body .col-5 .btn-primary {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    width: 72%;
+}
+.card-body .col-5 .form-outline {
+    margin-top: 20px;
+}
+.card-body .col-5 label {
+    font-size:20px;
+    margin-left:10px;
+}
+.card-body .col-5 .couponCode{
+    margin-top:14px;
+}
+
+.card-body .col-5 .btn-outline-secondary {
+    height: 42px;
+    width: 72%;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.card-body .col-5 input{
+    width: 72%;
+    
+}
+
+.BookingSummary .col-lg-4 .mainBetDriver{
+    margin-top:30px;
 }

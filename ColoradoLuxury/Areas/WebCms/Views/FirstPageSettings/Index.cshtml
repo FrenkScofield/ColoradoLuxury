@@ -8,12 +8,12 @@
     <div class="col-md-12 my-4">
         <div class="card shadow mb-4">
             <div class="card-header py-4">
-                Enter Ride Details Pages Settings
+                ENTER RIDE DETAILS PAGES SETTINGS
             </div>
             <div class="card-body">
                 
-                <label>Hourly Button</label>
-                    <select class="form-select btnHourly" id="btnHourly">
+                <label class="ShowOrNotshowLabelText">Hourly Button</label>
+                <select class="form-select btnShowOrNotshow" id="btnHourly">
                         <option value="activ">Show</option>
                         <option value="deactiv">Not Show</option>
                     </select>
@@ -21,14 +21,26 @@
             </div>
             <hr />
             <div class="card-header py-4">
-                Choose a Vehicle
+                CHOOSE A VEHICLE
             </div>
             <div class="card-body">
 
-                <label>VEHICLES</label>
+                <div class="col-12">
+                    <label class="ShowOrNotshowLabelText">Car Type Show or Not Show</label>
+                    <select class="form-select btnShowOrNotshow" id="btnCarType">
+                        <option value="activ">Show</option>
+                        <option value="deactiv">Not Show</option>
+                    </select>
+
+                </div>
+                <hr/>
+                <label>Nwe Vehicles Add</label>
                
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-12">
+                        <a href="AddVehicle" class="btn btn-outline-secondary" style="float:right;margin-bottom: 15px;">Add Vehicle</a>
+                    </div>
+                    <div class="col-12">
                         <table class="table">
                             <thead class="thead-dark">
                                 <tr>
@@ -60,8 +72,35 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-4" > 
-                        <a href="AddVehicle" class="btn btn-outline-secondary" style="float:right;">Add Vehicle</a>
+                    
+                </div>
+            </div>
+            <hr />
+            <div class="card-header py-4">
+                MINUMUM AND MAXSIMOM
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group specialSpace col-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Distance</span>
+                            </div>
+                            <input type="number" class="form-control" aria-label="MinumumDistance" aria-describedby="inputGroup-sizing-default" placeholder="0 Km">
+                        </div>
+                        <div class="input-group specialSpace col-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Duration</span>
+                            </div>
+                            <input type="number" class="form-control" aria-label="MinumumDuration" aria-describedby="inputGroup-sizing-default" placeholder="0 Minute">
+                        </div>
+                        <div class="input-group specialSpace col-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Booking Value</span>
+                            </div>
+                            <input type="number" class="form-control" aria-label="MinumumBookingValue" aria-describedby="inputGroup-sizing-default" placeholder="0 $">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -69,14 +108,29 @@
     </div>
 </div>
 <script>
-    const timeZoneList = document.getElementById('btnHourly');
+    //=============Hourly Show or Notshow============
+
+    //const timeZoneList = document.getElementById('btnHourly');
+
+    //timeZoneList.addEventListener('change', (event) => {
+    //    let currentArea = event.target.value;
+    //    localStorage.setItem('btnValueKey', currentArea);
+    //});
+
+    //if (localStorage.getItem('btnValueKey')) {
+    //    timeZoneList.value = localStorage.getItem('btnValueKey');
+    //}
+
+    //=============Car Type Show or Notshow============
+
+    const timeZoneList = document.getElementById('btnCarType');
 
     timeZoneList.addEventListener('change', (event) => {
         let currentArea = event.target.value;
-        localStorage.setItem('btnValueKey', currentArea);
+        localStorage.setItem('btnCarTypeValueKey', currentArea);
     });
 
-    if (localStorage.getItem('btnValueKey')) {
-        timeZoneList.value = localStorage.getItem('btnValueKey');
+    if (localStorage.getItem('btnCarTypeValueKey')) {
+        timeZoneList.value = localStorage.getItem('btnCarTypeValueKey');
     }
 </script>
