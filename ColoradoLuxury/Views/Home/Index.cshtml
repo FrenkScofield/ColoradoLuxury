@@ -1,7 +1,35 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    .BookingSummary .col-lg-4 .mainBetDriver {
+        margin-bottom: 15px;
+    }
 
+    .bettingMonyBtn {
+        height: 45px;
+        width: 45px;
+        font-size: 23px;
+        font-weight: bold;
+        border-radius: 37px;
+        background-color: transparent;
+        border: 2px solid #c1a926;
+        color: #c1a926;
+        margin-right: 9px;
+        margin-bottom: 13px;
+    }
+    .active1 {
+      
+        height: 45px;
+        width: 45px;
+        font-size: 23px;
+        font-weight: bold;
+        border-radius: 37px;
+        background-color: #c1a926;
+        border: 2px solid #ffffff;
+        color: #ffffff;
+    }
+</style>
     <section class="mainImg">
         <div><img src="~/assets/image/slide_3_v4.jpg" width="100%" alt=""></div>
     </section>
@@ -43,7 +71,7 @@
                                                             <label for="dateTime"> Pickup date </label>
                                                             <input type="date" name="dateTime"
                                                                    style="padding-right: 5px;" class="form-control"
-                                                               placeholder="EX:01/01/2023" id="pickupDate">
+                                                               id="pickupDate">
                                                         <span class="error" id="dateError">Cannot be left blank </span>
                                                         <span class="good" id="dateGood">Good look </span>
                                                         </div>
@@ -577,19 +605,38 @@
                                                     $0.00
                                                 </span>
                                             </div>
-                                        <hr style="margin-top:52px;">
+                                        <hr>
+                                        <h4 id="bettingTitleH4">For Driver Betting</h4>
                                         <div class="mainBetDriver" id="betting">
-                                            <div>
-                                            <h4 style="margin-bottom:16px;">Bet On The Driver</h4>
-                                            <button type="button" class="btn btn-outline-warning betDriver" >10$</button>
-                                            <button type="button" class="btn btn-outline-warning" >20$</button>
-                                            <button type="button" class="btn btn-outline-warning" >30$</button>
-                                            <button type="button" class="btn btn-outline-warning">40$</button>
-                                            <button type="button" class="btn btn-outline-warning" >50$</button>
-                                            </div>
-                                            <div>
+                                   <div id="bettButtons">
+                                                <input type="button" id="btn0" :class="[{'active1': selected === 'f'},'bettingMonyBtn']" @@click="selected = 'f'"
+                                                       value="0" /> 
+                                            <input type="button" id="btn10" :class="[{'active1': selected === 'a'},'bettingMonyBtn']" @@click="selected = 'a'"
+                                                   value="10"  />
+                                            <input type="button" id="btn20" :class="[{'active1': selected === 'b'},'bettingMonyBtn']" @@click="selected = 'b'"
+                                                   value="20" />
+                                            <input type="button" id="btn30" :class="[{'active1': selected === 'c'},'bettingMonyBtn']" @@click="selected = 'c'"
+                                                   value="30" />
+                                            <input type="button" id="btn40" :class="[{'active1': selected === 'd'},'bettingMonyBtn']" @@click="selected = 'd'"
+                                                   value="40" />
+                                            <input type="button" id="btn50" :class="[{'active1': selected === 'e'},'bettingMonyBtn']" @@click="selected = 'e'"
+                                                   value="50" />
+                                   </div>
+                                               <div>
+                                                <p style="font-size: 15px; margin-bottom: 0px;  margin-top: 16px;">If you want to write a special price, please tick here.</p>
+                                                <input type="checkbox" id="customPriceActive" style="width:23px; height:23px;
+    float: right;
+    margin-bottom:25px;" />
+                                               </div>
+                                            <div id="customPrice" style="margin-top:42px; opacity:0.1;">
                                             <label class="form-label" >Custom Price</label>
-                                            <input type="number" class="form-control " />
+                                            <input type="number" id="forDriveBett" class="form-control" disabled/>
+
+                                                <button id="customBettAddBtn" type="button" style=" float: right;
+    margin-top:12px;" class="btn btn-outline-warning">
+                                                    Add
+                                                </button>
+                                                <span id="addSuccessfullAlert" style="font-size: 14px;color: #03cb03; margin-bottom: 0px;  margin-top: 16px; display:none;">The bet you want has been successfully added</span>
                                             </div>
                                         </div>
                                         </div>
@@ -610,7 +657,7 @@
                                             <p>$ 324.00</p>
                                             <p>$ 60.00</p>
                                             <hr>
-                                            <p>$ 384.00</p>
+                                            <p id="totalPrice">384</p>
                                         </div>
                                     </div>
                                 </div>
@@ -672,8 +719,11 @@
 
     if (localStorage.getItem('btnBettingValueKey') == 'activ') {
         $('#betting ').css("display", "block")
+        $('#bettingTitleH4 ').css("display", "block")
     } else if (localStorage.getItem('btnBettingValueKey') == 'deactiv') {
         $('#betting').css("display", "none")
+        $('#bettingTitleH4').css("display", "none")
 
     }
 </script>
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@

@@ -1,5 +1,7 @@
 
+
 var hor = true;
+
 
 Vue.component("step-navigation-step", {
     template: "#step-navigation-step-template",
@@ -352,7 +354,9 @@ new Vue({
     el: "#app",
 
     data: {
+
         currentstep: 1,
+        selected: '',
 
         steps: [
             {
@@ -410,5 +414,99 @@ $('#hourly').on('click', function () {
 })
 $('#distance').on('click', function () {
     hor = true;
+});
+
+//when checkbox checked, then custom drive betting input enable will be
+$('#customPriceActive').on('click', function () {
+
+    $('#forDriveBett')[0].disabled = true;
+    $('#btn0')[0].disabled = false;
+    $('#btn10')[0].disabled = false;
+    $('#btn20')[0].disabled = false;
+    $('#btn30')[0].disabled = false;
+    $('#btn40')[0].disabled = false;
+    $('#btn50')[0].disabled = false;
+    $('#bettButtons').css("opacity", "1");
+    $('#customPrice').css("opacity", "0.1"); 
+
+    if ($('#customPriceActive').is(':checked') == true) {
+
+        $('#forDriveBett')[0].disabled = false;
+        $('#btn0')[0].disabled = true;
+        $('#btn10')[0].disabled = true;
+        $('#btn20')[0].disabled = true;
+        $('#btn30')[0].disabled = true;
+        $('#btn40')[0].disabled = true;
+        $('#btn50')[0].disabled = true;
+        $('#customPrice').css("opacity", "1"); 
+        $('#bettButtons').css("opacity", "0.1");
+
+    }
 })
+
+//const button = document.querySelector('#customBettAddBtn');
+
+//const disableButton = () => {
+//   button.disabled = true;
+//};
+//button.addEventListener('click', disableButton);
+debugger
+$('#customBettAddBtn').on('click', function () {
+    $('#customBettAddBtn').css("display", "none");
+    $('#addSuccessfullAlert').css("display", "block");
+    $('#forDriveBett')[0].disabled = true;
+
+})
+
+$('#customBettAddBtn').on('click', function () {
+
+    var asm = parseInt($('#forDriveBett').val());
+    var sma = parseInt(document.getElementById('totalPrice').innerText);
+    var sum = asm + sma
+    document.getElementById('totalPrice').innerText = sum;
+})
+
+
+let bonusPrices = document.getElementsByClassName("bettingMonyBtn")
+
+console.log(bonusPrices);
+
+let bonusPriceArray = [];
+
+for (var price of bonusPrices) {
+    //When the bet button is clicked, the total price will be calculated
+    price.addEventListener('click', function (event) {
+        console.log(event);
+
+        let addedBonusPrice = event.target.defaultValue;
+
+        if (bonusPriceArray.length != 0) {
+            var totalPrice = document.getElementById("totalPrice");
+
+            let returnDefaultTotalPrice = parseInt(totalPrice.innerText) - parseInt(bonusPriceArray[0]);
+
+            bonusPriceArray.pop(bonusPriceArray[0]);
+
+            console.log("pop bonus array ");
+            console.log(bonusPriceArray);
+
+            Append(returnDefaultTotalPrice + parseInt(addedBonusPrice));
+            bonusPriceArray.push(addedBonusPrice);
+        }
+        else {
+            var totalPrice = document.getElementById("totalPrice");
+
+            Append(parseInt(totalPrice.innerText) + parseInt(addedBonusPrice));
+            bonusPriceArray.push(addedBonusPrice);
+
+            console.log("push bonus array ");
+            console.log(bonusPriceArray);
+
+        }
+        function Append(text) {
+            totalPrice.innerText = text
+
+        }
+    }, false);
+}
 
