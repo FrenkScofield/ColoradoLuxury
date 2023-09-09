@@ -1,11 +1,9 @@
-﻿using ColoradoLuxury.Abstract;
-using System.ComponentModel.DataAnnotations;
-
-namespace ColoradoLuxury.Models.BLL
+﻿namespace ColoradoLuxury.Models.BLL
 {
-    public class ExtraTime:CoreEntity
+    public class ExtraTime:AbstractEntity
     {
-        [Required, StringLength(20)]
-        public string Hours { get; set; }
+        public string? Time { get; set; }
+        public ICollection<RideDetail> RideDetails { get; set; }
+
     }
 }
