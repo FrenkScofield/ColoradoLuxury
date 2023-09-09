@@ -630,13 +630,31 @@
                                                </div>
                                             <div id="customPrice" style="margin-top:42px; opacity:0.1;">
                                             <label class="form-label" >Custom Price</label>
-                                            <input type="number" id="forDriveBett" class="form-control" disabled/>
+                                            <div style="display:flex">
+                                                    <input type="number" id="forDriveBett" style="margin-right: 10px" class="form-control" disabled />
 
-                                                <button id="customBettAddBtn" type="button" style=" float: right;
-    margin-top:12px;" class="btn btn-outline-warning">
+                                                <button id="customBettAddBtn" type="button" style=" float: right; display:none" class="btn btn-outline-warning">
                                                     Add
                                                 </button>
-                                                <span id="addSuccessfullAlert" style="font-size: 14px;color: #03cb03; margin-bottom: 0px;  margin-top: 16px; display:none;">The bet you want has been successfully added</span>
+                                            </div>
+                                                <span id="customBettSuccessfullAlert" style="font-size: 14px;color: #03cb03; margin-bottom: 0px;  margin-top: 16px; display:none;">The bet you want has been successfully added</span>
+                                                <span id="customBettErrorAlert" style="font-size: 14px;color: red; margin-bottom: 0px;  margin-top: 16px; display:none;">You can't leave it blank </span>
+                                            </div>
+                                            <div  style="margin-top:42px;">
+                                                <label class="form-label">Discount Cuppon</label>
+                                                <p style="    font-size: 14px;
+    color: white;
+    margin-bottom: 8px;
+    margin-left: 1px;">If you have a discount coupon, write it here.</p>
+                                                <div class="discountInputAndBtn" style="display:flex">
+                                                    <input type="text" class="form-control" style="height: 38px;
+    margin-right: 10px;font-size: 20px; font-weight: bold;" />
+
+                                                    <button  type="button" style="float: right;     margin-right: 10px;" class="btn btn-outline-warning">
+                                                    Add
+                                                </button>
+                                                </div>
+                                                   
                                             </div>
                                         </div>
                                         </div>

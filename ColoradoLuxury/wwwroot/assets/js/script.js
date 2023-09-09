@@ -428,6 +428,7 @@ $('#customPriceActive').on('click', function () {
     $('#btn50')[0].disabled = false;
     $('#bettButtons').css("opacity", "1");
     $('#customPrice').css("opacity", "0.1"); 
+    $('#customBettAddBtn').css("display", "none")
 
     if ($('#customPriceActive').is(':checked') == true) {
 
@@ -440,6 +441,7 @@ $('#customPriceActive').on('click', function () {
         $('#btn50')[0].disabled = true;
         $('#customPrice').css("opacity", "1"); 
         $('#bettButtons').css("opacity", "0.1");
+        $('#customBettAddBtn').css("display", "block")
 
     }
 })
@@ -450,22 +452,38 @@ $('#customPriceActive').on('click', function () {
 //   button.disabled = true;
 //};
 //button.addEventListener('click', disableButton);
-debugger
-$('#customBettAddBtn').on('click', function () {
-    $('#customBettAddBtn').css("display", "none");
-    $('#addSuccessfullAlert').css("display", "block");
-    $('#forDriveBett')[0].disabled = true;
 
-})
 
 $('#customBettAddBtn').on('click', function () {
 
-    var asm = parseInt($('#forDriveBett').val());
-    var sma = parseInt(document.getElementById('totalPrice').innerText);
-    var sum = asm + sma
-    document.getElementById('totalPrice').innerText = sum;
-})
+    var CustomForDriveBetingPrice = $('#forDriveBett').val();
 
+    if (CustomForDriveBetingPrice != "") {
+        $('#customBettAddBtn').css("display", "none");
+        $('#customBettSuccessfullAlert').css("display", "block");
+        $('#forDriveBett')[0].disabled = true;
+
+        setTimeout(AlertsucssesMessage, 3000);
+
+        var asm = parseInt($('#forDriveBett').val());
+        var sma = parseInt(document.getElementById('totalPrice').innerText);
+        var sum = asm + sma
+        document.getElementById('totalPrice').innerText = sum;
+
+        $('#customPriceActive').css("display", "none")
+
+    } else {
+        $('#customBettErrorAlert').css("display", "block")
+        setTimeout(AlertErrorMessage, 3000);
+    }
+});
+
+function AlertsucssesMessage() {
+    $('#customBettSuccessfullAlert').css("display", "none");
+}
+function AlertErrorMessage() {
+    $('#customBettErrorAlert').css("display", "none");
+}
 
 let bonusPrices = document.getElementsByClassName("bettingMonyBtn")
 
