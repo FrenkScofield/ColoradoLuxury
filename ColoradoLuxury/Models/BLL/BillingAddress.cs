@@ -1,33 +1,17 @@
-﻿using ColoradoLuxury.Abstract;
-using System.ComponentModel.DataAnnotations;
-
-namespace ColoradoLuxury.Models.BLL
+﻿namespace ColoradoLuxury.Models.BLL
 {
-    public class BillingAddress : CoreEntity
+    public class BillingAddress : AbstractEntity
     {
-        [StringLength(150)]
-        public string CompanyRegisteredName { get; set; }
+        public string? Company { get; set; }
+        public int Tax { get; set; }
+        public int Street { get; set; }
+        public int City { get; set; }
+        public int State { get; set; }
+        public int Postal { get; set; }
+        public int CountryId { get; set; }
 
-        [StringLength(50)]
-        public string TaxNumber { get; set; }
+        public Country Country { get; set; }
 
-        [Required, StringLength(100)]
-        public string Street { get; set; }
-
-        [StringLength(100)]
-        public string StreetNumber { get; set; }
-
-        [Required, StringLength(50)]
-        public string City { get; set; }
-
-        [Required, StringLength(50)]
-        public string State { get; set; }
-
-        [Required, StringLength(50)]
-        public string PostalCode { get; set; }
-
-        [Required, StringLength(50)]
-        public string Country { get; set; }
 
     }
 }

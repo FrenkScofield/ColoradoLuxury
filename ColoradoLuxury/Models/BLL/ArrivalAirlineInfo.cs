@@ -1,17 +1,11 @@
-﻿using ColoradoLuxury.Abstract;
-using System.ComponentModel.DataAnnotations;
-
-namespace ColoradoLuxury.Models.BLL
+﻿namespace ColoradoLuxury.Models.BLL
 {
-    public class ArrivalAirlineInfo : CoreEntity
+    public class ArrivalAirlineInfo:AbstractEntity
     {
-        [Required, StringLength(50)]
-        public string FlightNumber { get; set; }
-
-
-        //Foreign keys
-        public int AirLineId { get; set; }
+        public string? Flight { get; set; }
+        public int AirlineId { get; set; }
 
         public AirLine AirLine { get; set; }
+
     }
 }

@@ -1,11 +1,8 @@
-﻿using ColoradoLuxury.Abstract;
-using System.ComponentModel.DataAnnotations;
-
-namespace ColoradoLuxury.Models.BLL
+﻿namespace ColoradoLuxury.Models.BLL
 {
-    public class VehicleType : CoreEntity
+    public class VehicleType:AbstractEntity
     {
-        [Required, StringLength(50)]
-        public string Type { get; set; }
+        public string? TypeName { get; set; }
+        public ICollection<Vehicle> Vehicles { get; set; }
     }
 }

@@ -7,16 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Enums\**" />
-    <Content Remove="Enums\**" />
-    <EmbeddedResource Remove="Enums\**" />
-    <None Remove="Enums\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Areas\WebCms\Data\" />
     <Folder Include="Areas\WebCms\Models\" />
     <Folder Include="Models\VM\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 
   <ItemGroup>

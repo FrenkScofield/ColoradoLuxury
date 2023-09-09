@@ -11,18 +11,6 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ColoradoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<User, IdentityRole>(option =>
-{
-    option.Password.RequiredLength = 8;
-    option.Password.RequireUppercase = true;
-    option.Password.RequireLowercase = true;
-    option.Password.RequireNonAlphanumeric = true;
-
-    option.SignIn.RequireConfirmedEmail = true;
-})
-                .AddEntityFrameworkStores<ColoradoContext>()
-                .AddDefaultTokenProviders();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
