@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ColoradoLuxury.Models.DAL
 {
-    public class ColoradoContext : IdentityDbContext<User>
+    public class ColoradoContext : DbContext
     {
         public ColoradoContext(DbContextOptions<ColoradoContext> options) : base(options) { }
 
@@ -12,14 +12,18 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<AirLine> AirLines { get; set; }
         public DbSet<ArrivalAirlineInfo> ArrivalAirlineInfos { get; set; }
         public DbSet<BillingAddress> BillingAddress { get; set; }
-        public DbSet<ChooseVehicle> ChooseVehicle { get; set; }
-        public DbSet<ContractDetail> ContractDetail { get; set; }
-        public DbSet<DurationInHour> DurationInHour { get; set; }
-        public DbSet<ExtraTime> ExtraTime { get; set; }
-        public DbSet<ErrorLog> ErrorLog { get; set; }
-        public DbSet<RediDetails> RediDetails { get; set; }
-        public DbSet<ServiceTab> ServiceTab { get; set; }
-        public DbSet<TransferType> TransferType { get; set; }
-        public DbSet<VehicleType> VehicleType { get; set; }
+        public DbSet<ChildSeat> ChildSeats { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<CustomerTravelType> CustomerTravelTypes { get; set; }
+        public DbSet<Duration> Durations { get; set; }
+        public DbSet<ExtraTime> ExtraTimes { get; set; }
+        public DbSet<ForDriverBetting> ForDriverBettings { get; set; }
+        public DbSet<RideDetail> RideDetails { get; set; }
+        public DbSet<RoofTopCargoBox> RoofTopCargoBoxs { get; set; }
+        public DbSet<TransferType> TransferTypes { get; set; }
+        public DbSet<UserInfo> UserInfos { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<VehicleType> VehicleTypes { get; set; }
+
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace ColoradoLuxury.Models.BLL
 {
-    public class TransferType:AbstractEntity
+    public class Duration:AbstractEntity
     {
-        public string? Name { get; set; }
+        public string? Time { get; set; }
         public ICollection<RideDetail> RideDetails { get; set; }
 
     }
