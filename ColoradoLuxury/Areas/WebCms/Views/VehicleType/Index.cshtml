@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .dataTables_length {
+        display: none;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .btn-outline-secondary{
+        margin-bottom: 10px
+    }
+</style>
+
+<div class="col-md-5 my-4">
+    <div class="card shadow mb-4">
+        <div class="card-header py-4">
+            Nwe Vehicles Type Add
+        </div>
+        <div class="card-body">
+            <a href="AddVehicleType" class="btn btn-outline-secondary">Add Vehicle Type</a>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-shorting" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">VEHICLE TYPE NAME</th>
+                            <th scope="col">EDIT - DELETE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Test</td>
+                            <td>
+                                <div style="display:flex">
+
+                                    <a asp-controller="VehicleType" asp-action="EditVehicleType" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="1"></a>
+                                    <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="1" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
+
+                                </div>
+                            </td>
+                        </tr>
+                        @* @if (TempData["Orgs"] != null)
+                        {
+                        @foreach (var item in Model.OgrenciVeliBilgis)
+                        {
+                        <tr>
+                        <th scope="row">@item.ID</th>
+                        <td>@item.AD</td>
+                        <td>
+                        <div style="display:flex">
+
+                        <a asp-controller="VeliBilgi" asp-action="EditOgrenciVeliBilgi" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="@item.ID"></a>
+                        <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="@item.ID" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
+
+                        </div>
+                        </td>
+                        </tr>
+                        }
+                        }*@
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

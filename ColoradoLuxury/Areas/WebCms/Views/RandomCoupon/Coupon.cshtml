@@ -4,6 +4,17 @@
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .dataTables_length{
+        display:none;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+
+</style>
 
 <div class="row">
     <div class="col-md-12 my-4">
@@ -14,13 +25,13 @@
             <div class="card-body">
                 <div class="row">
 
-                <div class="input-group  col-5">
+                    <div class="input-group  col-md-4">
                         <form>
                             <!-- Coupons input -->
                             <button class="btn btn-outline-secondary" style="height: 49px;" onclick="onClick();" id="generateCoupon" type="button">
                                 CREATE NEW COUPON
                             </button>
-                            <label class="form-label" >New Coupon</label>
+                            <label class="form-label" >New Coupons</label>
                             <input disabled style="font-size: 23px;  text-transform: uppercase;" type="text" class="form-control" id="newCoupon" placeholder="Click Create" aria-label="" aria-describedby="basic-addon1">
 
                             <!-- Interest input -->
@@ -40,41 +51,55 @@
                             <label class="form-label couponCode"> Coupon Code</label>
                             <input disabled style="font-size: 23px;  text-transform: uppercase;" type="text" class="form-control" id="couponCode" aria-describedby="basic-addon1">
                             <!-- Submit button -->
-                            <button type="submit" class="btn btn-primary btn-block ">SAVE</button>
+                            <button type="submit" class="btn btn-success btn-block ">Add</button>
                         </form>
 
 
                 </div>
-                <div class="input-group  col-7">
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">#</th>
-                                    <th scope="col">Coupon</th>
-                                    <th scope="col">Interest % </th>
-                                    <th scope="col">Number $</th>
-                                    <th scope="col">Code</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                    <td>mdo</td>
-                                    <td>mdo1</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                    <td>fat</td>
-                                    <td>fat1</td>
-                            </tr>
-                         
-                        </tbody>
-                    </table>
-                </div>
+                    <div class="col-md-8 my-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-4">
+                                Nwe Cupon
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-shorting" id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">COUPON</th>
+                                                <th scope="col">% INTEREST</th>
+                                                <th scope="col"> $ DISCOUNT</th>
+                                                <th scope="col">COUPON CODE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @* @if (TempData["Orgs"] != null)
+                                            {
+                                            @foreach (var item in Model.OgrenciVeliBilgis)
+                                            {
+                                            <tr>
+                                            <th scope="row">@item.ID</th>
+                                            <td>@item.AD</td>
+                                            <td>@item.SOYAD</td>
+                                            <td>@item.TC_KIMLIK</td>
+                                            <td>@item.ILISKI_DURUMU</td>
+                                            <td>
+                                            <div style="display:flex">
+
+                                            <a asp-controller="VeliBilgi" asp-action="EditOgrenciVeliBilgi" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="@item.ID"></a>
+                                            <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="@item.ID" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
+
+                                            </div>
+                                            </td>
+                                            </tr>
+                                            }
+                                            }*@
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
           
         </div>
