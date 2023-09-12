@@ -7,13 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\admin\css\cupon.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\WebCms\Data\" />
     <Folder Include="Areas\WebCms\Models\" />
-    <Folder Include="Models\VM\" />
     <Folder Include="Enums\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1">

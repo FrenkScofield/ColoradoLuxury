@@ -436,3 +436,8 @@ iframe{
 .forHourlyDropLocation{
     display:none;
 }
+
+div#map {
+    width: 444px;
+    height: 440px;
+}

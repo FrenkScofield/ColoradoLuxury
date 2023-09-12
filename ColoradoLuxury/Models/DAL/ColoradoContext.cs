@@ -24,6 +24,8 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<UserInfo> UserInfos { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
+        public DbSet<Cupon> Cupons { get; set; }
+
 
     }
 }
