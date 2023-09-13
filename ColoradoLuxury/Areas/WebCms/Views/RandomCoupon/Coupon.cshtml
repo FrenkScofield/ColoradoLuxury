@@ -1,26 +1,22 @@
-﻿
+﻿@using ColoradoLuxury.Models.VM;
+@model List<CuponVM>
 @{
     ViewData["Title"] = "Coupon";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .dataTables_length{
-        display:none;
-    }
-
-    .dataTables_filter {
-        display: none;
-    }
+<head>
+    <link href="/admin/css/cupon.css" rel="stylesheet" />
+</head>
 
 
-</style>
+
 
 <div class="row">
     <div class="col-md-12 my-4">
         <div class="card shadow mb-4">
             <div class="card-header py-4">
-               Random Coupons
+                Random Coupons
             </div>
             <div class="card-body">
                 <div class="row">
@@ -31,19 +27,19 @@
                             <button class="btn btn-outline-secondary" style="height: 49px;" onclick="onClick();" id="generateCoupon" type="button">
                                 CREATE NEW COUPON
                             </button>
-                            <label class="form-label" >New Coupons</label>
+                            <label class="form-label">New Coupons</label>
                             <input disabled style="font-size: 23px;  text-transform: uppercase;" type="text" class="form-control" id="newCoupon" placeholder="Click Create" aria-label="" aria-describedby="basic-addon1">
 
                             <!-- Interest input -->
                             <div class="form-outline ">
-                                <label class="form-label" >How Much Interest Discount</label>
-                                <input type="number"  class="form-control" placeholder="%"/>
+                                <label class="form-label">How Much Interest Discount</label>
+                                <input type="number" class="form-control" placeholder="%" id="percentage" />
                             </div>
 
                             <!-- Discount input -->
                             <div class="form-outline ">
                                 <label class="form-label">How Much Discount</label>
-                                <input type="number"  class="form-control" placeholder="$" />
+                                <input type="number" class="form-control" placeholder="$" id="amount" />
                             </div>
 
                             <!-- Coupons Code input -->
@@ -51,11 +47,16 @@
                             <label class="form-label couponCode"> Coupon Code</label>
                             <input disabled style="font-size: 23px;  text-transform: uppercase;" type="text" class="form-control" id="couponCode" aria-describedby="basic-addon1">
                             <!-- Submit button -->
-                            <button type="submit" class="btn btn-success btn-block ">Add</button>
+                            <button type="button" class="btn btn-success btn-block" onclick="CreateCupon()">Add</button>
                         </form>
 
 
-                </div>
+                        <output>
+                            <ul>
+                            </ul>
+                        </output>
+
+                    </div>
                     <div class="col-md-8 my-4">
                         <div class="card shadow mb-4">
                             <div class="card-header py-4">
@@ -73,27 +74,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @* @if (TempData["Orgs"] != null)
-                                            {
-                                            @foreach (var item in Model.OgrenciVeliBilgis)
-                                            {
-                                            <tr>
-                                            <th scope="row">@item.ID</th>
-                                            <td>@item.AD</td>
-                                            <td>@item.SOYAD</td>
-                                            <td>@item.TC_KIMLIK</td>
-                                            <td>@item.ILISKI_DURUMU</td>
-                                            <td>
-                                            <div style="display:flex">
 
-                                            <a asp-controller="VeliBilgi" asp-action="EditOgrenciVeliBilgi" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="@item.ID"></a>
-                                            <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="@item.ID" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
-
-                                            </div>
-                                            </td>
-                                            </tr>
+                                            @foreach (var item in Model.OrderByDescending(c => c.Id))
+                                            {
+                                                <tr>
+                                                    <td>@item.NewCupon</td>
+                                                    <td>@item.Percentage</td>
+                                                    <td>@item.Amount</td>
+                                                    <td>@item.CuponCode</td>
+                                                </tr>
                                             }
-                                            }*@
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -101,13 +92,14 @@
                         </div>
                     </div>
                 </div>
-          
+
+            </div>
         </div>
     </div>
 </div>
-</div>
 
 <script>
+
     function generateCoupon() { // Public Domain/MIT
         var d = new Date().getTime();//Timestamp
         var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
@@ -143,9 +135,14 @@
     }
     //=====================
 
-    var onClick = function () {
+    function onClick() {
         document.getElementById('newCoupon').value = generateCoupon();
         document.getElementById('couponCode').value = generateCouponCode();
     }
     onClick();
+
 </script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/sweetalert/sweetalert2-11.7.27.js"></script>
+<script src="~/lib/ajax/ajax-library.js"></script>
+<script src="~/admin/js/cupon/cupon.js"></script>
