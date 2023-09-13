@@ -82,11 +82,9 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
         .then((response) => {
             directionsRenderer.setDirections(response);
             console.log("Directions response " + directionsService);
-            alert("true")
         })
         .catch((e) => {
             console.log("Directions request failed due to " + e)
-            alert("false")
         });
 }
 
@@ -113,34 +111,19 @@ function callback(response, status) {
         $('#result').html(err);
     } else {
         var origin = response.originAddresses[0];
-        console.log(origin)
         var destination = response.destinationAddresses[0];
-        console.log(destination)
-
         if (response.rows[0].elements[0].status === "ZERO_RESULTS") {
             $('#result').html("Better get on a plane. There are no roads between " + origin + " and " + destination);
         } else {
             var distance = response.rows[0].elements[0].distance;
             var duration = response.rows[0].elements[0].duration;
-            console.log("response.rows[0].elements[0]")
-            console.log(response.rows[0].elements)
-
-            console.log(response.rows[0].elements[0])
-            console.log(response.rows[0].elements[0].distance);
             var distance_in_kilo = distance.value / 1000; // the kilom
             var distance_in_mile = distance.value / 1609.34; // the mile
-
             let calculateHours = duration.value / 3600;
             let hours = Math.floor(calculateHours);
             let reduseDigit = calculateHours - Math.floor(calculateHours);
             let calculateMinutes = Math.ceil(reduseDigit * 60);
             let generalTime = `${hours}h ${calculateMinutes}m`
-            console.log(calculateHours);
-            console.log(hours);
-            console.log(reduseDigit);
-
-
-
 
             var duration_text = duration.text;
             var duration_value = duration.value;
