@@ -1,4 +1,7 @@
-﻿function initMap() {
+﻿let coloradoBounds;
+let searchBox1;
+let searchBox2;
+function initMap() {
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
     const map = new google.maps.Map(document.getElementById("map"), {
@@ -6,29 +9,62 @@
         center: { lat: 39.6484146, lng: -104.9683308 },
     });
 
+    // Define bounds for Colorado, USA
+    coloradoBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(36.9931, -109.0452), // Southwest corner
+        new google.maps.LatLng(41.0034, -102.0419)  // Northeast corner
+    );
+
     let toLocation = document.getElementById("dropOffLocation");
     let fromLocation = document.getElementById("pickuplocation");
-    let searchBox1 = new google.maps.places.SearchBox(fromLocation);
-    let searchBox2 = new google.maps.places.SearchBox(toLocation);
+
+    // Create SearchBox instances
+    searchBox1 = new google.maps.places.SearchBox(fromLocation);
+    searchBox2 = new google.maps.places.SearchBox(toLocation);
 
     directionsRenderer.setMap(map);
 
     const onChangeHandler = function () {
-        calculateAndDisplayRoute(directionsService, directionsRenderer);
+        let status = calculateAndDisplayRoute(directionsService, directionsRenderer);
+        console.log(status);
     };
 
     const oncalculateDistance = function () {
         calculateDistance();
     }
 
-    searchBox1.addListener("places_changed", onChangeHandler);
+    // Add listener to searchBox1
+    searchBox1.addListener("places_changed", function () {
+        const places = searchBox1.getPlaces();
+        if (places.length === 0) {
+            return;
+        }
+
+        const place = places[0];
+        if (!coloradoBounds.contains(place.geometry.location)) {
+            alert("Please select a location within Colorado, USA.");
+        } else {
+            onChangeHandler();
+            oncalculateDistance();
+        }
+    });
 
     searchBox2.addListener("places_changed", function () {
-        onChangeHandler();
-        oncalculateDistance();
+        const places = searchBox2.getPlaces();
+        if (places.length === 0) {
+            return;
+        }
 
+        const place = places[0];
+
+        console.log(place.geometry.location);
+        if (!coloradoBounds.contains(place.geometry.location)) {
+            alert("Please select a location within Colorado, USA.");
+        } else {
+            onChangeHandler();
+            oncalculateDistance();
+        }
     });
-    // searchBox2.addListener("places_changed", oncalculateDistance);
 
 }
 
@@ -45,9 +81,13 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
         })
         .then((response) => {
             directionsRenderer.setDirections(response);
-            console.log("Directions response " + directionsService)
+            console.log("Directions response " + directionsService);
+            alert("true")
         })
-        .catch((e) => console.log("Directions request failed due to " + status));
+        .catch((e) => {
+            console.log("Directions request failed due to " + e)
+            alert("false")
+        });
 }
 
 
