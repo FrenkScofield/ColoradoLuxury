@@ -4,10 +4,9 @@
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .dataTables_length{
-        display:none;
-    }
+<head>
+    <link href="/admin/css/cupon.css" rel="stylesheet" />
+</head>
 
     .dataTables_filter {
         display: none;
@@ -25,15 +24,15 @@
             <div class="card-body">
                 <div class="row">
 
-                    <div class="input-group  col-md-4">
+                    <div class="input-group  col-md-3">
                         <form>
                             <!-- Coupons input -->
                             <button class="btn btn-outline-secondary" style="height: 49px;" onclick="onClick();" id="generateCoupon" type="button">
                                 CREATE NEW COUPON
                             </button>
-                            <label class="form-label" >New Coupons</label>
-                            <input disabled style="font-size: 23px;  text-transform: uppercase;" type="text" class="form-control" id="newCoupon" placeholder="Click Create" aria-label="" aria-describedby="basic-addon1">
-
+                            <label class="form-label">New Coupons</label>
+                            <input disabled style="font-size: 20px;  text-transform: uppercase;" type="text" class="form-control" id="newCoupon" placeholder="Click Create" aria-label="" aria-describedby="basic-addon1">
+                            </div>
                             <!-- Interest input -->
                             <div class="form-outline ">
                                 <label class="form-label" >How Much Interest Discount</label>
@@ -47,16 +46,22 @@
                             </div>
 
                             <!-- Coupons Code input -->
-
-                            <label class="form-label couponCode"> Coupon Code</label>
-                            <input disabled style="font-size: 23px;  text-transform: uppercase;" type="text" class="form-control" id="couponCode" aria-describedby="basic-addon1">
+                            <div class="form-outline">
+                            <label class="form-label "> Coupon Code</label>
+                            <input disabled style="font-size: 20px;  text-transform: uppercase;" type="text" class="form-control" id="couponCode" aria-describedby="basic-addon1">
+                                </div>
                             <!-- Submit button -->
-                            <button type="submit" class="btn btn-success btn-block ">Add</button>
+                            <div class="form-outline">
+                             <label class="form-label">Coupon Deatline</label>
+                                <input type="date" id="inputdate" class="form-control" >
+                            </div>
+                            <div class="form-outline">
+                            <button type="button" class="btn btn-success btn-block" onclick="CreateCupon()">Add</button>
+                            </div>
+
                         </form>
-
-
-                </div>
-                    <div class="col-md-8 my-4">
+                    </div>
+                       <div class="col-md-9 my-4">
                         <div class="card shadow mb-4">
                             <div class="card-header py-4">
                                 Nwe Cupon
@@ -70,6 +75,7 @@
                                                 <th scope="col">% INTEREST</th>
                                                 <th scope="col"> $ DISCOUNT</th>
                                                 <th scope="col">COUPON CODE</th>
+                                                <th scope="col">DETAIL SHOW</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -77,21 +83,17 @@
                                             {
                                             @foreach (var item in Model.OgrenciVeliBilgis)
                                             {
-                                            <tr>
-                                            <th scope="row">@item.ID</th>
-                                            <td>@item.AD</td>
-                                            <td>@item.SOYAD</td>
-                                            <td>@item.TC_KIMLIK</td>
-                                            <td>@item.ILISKI_DURUMU</td>
-                                            <td>
-                                            <div style="display:flex">
-
-                                            <a asp-controller="VeliBilgi" asp-action="EditOgrenciVeliBilgi" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="@item.ID"></a>
-                                            <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="@item.ID" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
-
-                                            </div>
-                                            </td>
-                                            </tr>
+                                                <tr>
+                                                    <td>@item.NewCupon</td>
+                                                    <td>@item.Percentage</td>
+                                                    <td>@item.Amount</td>
+                                                    <td>@item.CuponCode</td>
+                                                    <td>
+                                                        <a asp-route-id="@item.Id" asp-action="DetailShow" asp-controller="RandomCoupon" class="btn text-primary">
+                                                            <i class="fas fa-regular fa-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
                                             }
                                             }*@
                                         </tbody>
@@ -148,4 +150,23 @@
         document.getElementById('couponCode').value = generateCouponCode();
     }
     onClick();
+
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#inputdate').attr('min', maxDate);
+    });
+
 </script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/sweetalert/sweetalert2-11.7.27.js"></script>
+<script src="~/lib/ajax/ajax-library.js"></script>
+<script src="~/admin/js/cupon/cupon.js"></script>
