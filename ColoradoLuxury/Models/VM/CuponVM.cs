@@ -8,9 +8,8 @@
         public decimal Amount { get; set; }
 
         public string? CuponCode { get; set; }
+
         public DateTime? CouponDeatline { get; set; }
-
-
         public bool Status { get; set; }
 
     }

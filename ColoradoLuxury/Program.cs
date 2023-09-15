@@ -1,15 +1,28 @@
 using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+//public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+//        WebHost.CreateDefaultBuilder(args)
+//            .UseUrls("https://*:5566")
+//            .UseContentRoot(Directory.GetCurrentDirectory())
+//            .UseIISIntegration()
+//            .UseStartup<Startup>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ColoradoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.WebHost
+                            .UseUrls("https://*:5000")
+                            .UseContentRoot(Directory.GetCurrentDirectory())
+                            .UseIISIntegration();
 
 var app = builder.Build();
 
@@ -33,7 +46,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapAreaControllerRoute(
      name: "areas", "WebCms",
      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-   
+
     endpoints.MapControllerRoute(
       name: "default",
       pattern: "{controller=Home}/{action=Index}/{id?}");
