@@ -16,32 +16,24 @@
     margin-bottom:25px;
 }
 
-.card-body .col-md-4 .btn-success {
-    margin-top: 20px;
-    font-size: 20px;
-    font-weight: bold;
-    width: 72%;
+
+.card-body .col-md-3 .form-outline {
+    margin-top: 18px;
+    margin-bottom1:18px;
 }
-.card-body .col-md-4 .form-outline {
-    margin-top: 20px;
-}
-.card-body .col-md-4 label {
-    font-size:20px;
+.card-body .col-md-3 label {
+    font-size:18px;
     margin-left:10px;
 }
-.card-body .col-md-4 .couponCode{
+.card-body .col-md-3 .couponCode{
     margin-top:14px;
 }
 
-.card-body .col-md-4 .btn-outline-secondary {
+.card-body .col-md-3 .btn-outline-secondary {
     height: 42px;
-    width: 72%;
-    margin-bottom: 20px;
-    font-size: 20px;
+    width: 100%;
+    font-size: 18px;
     font-weight: bold;
 }
-.card-body .col-md-4 input{
-    width: 72%;
-    
-}
+
 

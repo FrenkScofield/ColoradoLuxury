@@ -8,6 +8,8 @@
 
         public string? CuponCode { get; set; }
 
+        public DateTime? CouponDeatline { get; set; }
+
 
         private bool status;
 

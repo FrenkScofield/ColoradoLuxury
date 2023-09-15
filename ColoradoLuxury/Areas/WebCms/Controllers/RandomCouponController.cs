@@ -23,7 +23,10 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 CuponCode = c.CuponCode,
                 Percentage= c.Percentage,
                 Amount= c.Amount,
-                Status= c.Status
+
+                Status= c.Status,
+                CouponDeatline = c.CouponDeatline
+
             }).ToList();
             return View(cupon);
         }
@@ -55,7 +58,9 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 Percentage = model.Percentage,
                 NewCupon = model.NewCupon.ToUpper(),
                 CuponCode = model.CuponCode.ToUpper(),
-                Status = model.Status
+
+                Status = model.Status,
+                CouponDeatline = model.CouponDeatline
             };
 
             _context.Cupons.Add(cupon);
@@ -66,6 +71,23 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 success = true,
 
             });
+        }
+
+
+        public async Task<IActionResult> DetailShow(int Id)
+        {
+            if (Id == null)
+            {
+                return NotFound();
+            }
+
+            var cupon = await _context.Cupons.FindAsync(Id);
+
+            if (cupon == null)
+            {
+                return NotFound();
+            }
+            return View(cupon);
         }
     }
 }

@@ -6,6 +6,8 @@ function CreateCupon() {
     let amount = $("#amount").val();
     let cuponcode = $("#couponCode").val();
 
+    let cuponDeatline = $("#inputdate").val();
+
     if (amount == '')
         amount = 0;
     if (percentage == '')
@@ -17,6 +19,8 @@ function CreateCupon() {
         Percentage: percentage,
         Amount: amount,
         CuponCode: cuponcode,
+        CuponDeatline: cuponDeatline,
+
         Status: true
     }
 
@@ -41,7 +45,9 @@ function CreateCupon() {
                 text: 'Data was successfully added',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    location.href = "/webcms"
+
+                    location.href = "/webcms/RandomCoupon/Coupon"
+
                 }
             });
         }

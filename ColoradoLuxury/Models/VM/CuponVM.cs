@@ -9,6 +9,7 @@
 
         public string? CuponCode { get; set; }
 
+        public DateTime? CouponDeatline { get; set; }
         public bool Status { get; set; }
 
     }
