@@ -128,8 +128,8 @@ function callback(response, status) {
             var duration_text = duration.text;
             var duration_value = duration.value;
             $('.test1Z11').text(distance_in_mile.toFixed(1));
-            $('.map-distance').text(distance_in_kilo.toFixed(2));
-            $('.map-time').text(generalTime);
+            $('.map-distance-value').text(distance_in_kilo.toFixed(2));
+            $('.map-time-value').text(generalTime);
             $('.tes12X').text(duration_value);
             $('#from').text(origin);
             $('#to').text(destination);
