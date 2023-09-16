@@ -191,6 +191,9 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("CouponDeatline")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CuponCode")
                         .HasColumnType("nvarchar(max)");
 

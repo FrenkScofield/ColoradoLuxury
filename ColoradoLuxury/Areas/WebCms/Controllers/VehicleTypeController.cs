@@ -47,9 +47,33 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult EditVehicleType()
+ 
+        public async Task<IActionResult> EditVehicleType(int? Id)
         {
-            return View();
+            if (Id == null) return NotFound();
+
+            VehicleType vehicleType = await _context.VehicleTypes.FindAsync(Id);
+
+            if (vehicleType == null) return NotFound();
+
+            return View(vehicleType);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditVehicleType( VehicleType vehicleType )
+        {
+            if (vehicleType == null) return NotFound();
+
+            VehicleType vehicleT = await _context.VehicleTypes.FindAsync(vehicleType.Id);
+
+            if (vehicleT == null) return NotFound();
+
+            vehicleT.TypeName = vehicleType.TypeName;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }

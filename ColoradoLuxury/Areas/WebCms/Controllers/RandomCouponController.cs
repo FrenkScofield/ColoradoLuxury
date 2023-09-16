@@ -74,7 +74,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         }
 
 
-        public async Task<IActionResult> DetailShow(int Id)
+        public async Task<IActionResult> DetailShow(int? Id)
         {
             if (Id == null)
             {

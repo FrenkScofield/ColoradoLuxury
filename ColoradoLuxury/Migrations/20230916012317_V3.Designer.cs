@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    [Migration("20230912203501_AddStatusCupon")]
-    partial class AddStatusCupon
+    [Migration("20230916012317_V3")]
+    partial class V3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -192,6 +192,9 @@ namespace ColoradoLuxury.Migrations
 
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CouponDeatline")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CuponCode")
                         .HasColumnType("nvarchar(max)");

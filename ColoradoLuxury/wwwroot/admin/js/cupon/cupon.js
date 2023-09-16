@@ -19,7 +19,7 @@ function CreateCupon() {
         Percentage: percentage,
         Amount: amount,
         CuponCode: cuponcode,
-        CuponDeatline: cuponDeatline,
+        CouponDeatline: cuponDeatline,
 
         Status: true
     }
