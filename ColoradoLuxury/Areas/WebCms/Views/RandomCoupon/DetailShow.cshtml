@@ -1,0 +1,84 @@
+﻿@model ColoradoLuxury.Models.BLL.Cupon
+
+@{
+    ViewData["Title"] = "DetailShow";
+    Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-5 col-md-offset-5">
+        <form class="form-horizontal" role="form">
+            <fieldset>
+
+                <!-- Form Name -->
+                <legend>Detail Show</legend>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="textinput">Coupon</label>
+                    <div class="col-sm-10">
+                        <input type="text" value="@Model.NewCupon" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="textinput">Interest %</label>
+                    <div class="col-sm-10">
+                        <input type="text" value="@Model.Percentage" class="form-control" disabled>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="textinput">Money Discount $</label>
+                    <div class="col-sm-10">
+                        <input type="text" value="@Model.Amount" class="form-control" disabled>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="textinput">Coupon Code</label>
+                    <div class="col-sm-10">
+                        <input type="text" value="@Model.CuponCode"  class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="textinput">Status</label>
+                    <div class="col-sm-10">
+                        @if(Model.Status == true)
+                        {
+                            <input type="text" value="Active" class="form-control" disabled>
+                        }
+                        else
+                        {
+                            <input type="text" value="Deactive" class="form-control" disabled>
+                        }
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="textinput">Create Date</label>
+                    <div class="col-sm-10">
+                        <input type="text" value="@Model.RegDate" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label" for="textinput">Finish Date</label>
+                    <div class="col-sm-10">
+                        <input type="text" value="@Model.CouponDeatline"  class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="pull-right" style="float:right;">
+                            <a href="Coupon" class="btn btn-outline-secondary">Back To Index</a>
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+    </div><!-- /.col-lg-12 -->
+</div><!-- /.row -->
+

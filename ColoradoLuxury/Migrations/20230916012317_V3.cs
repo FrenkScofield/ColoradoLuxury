@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ColoradoLuxury.Migrations
 {
-    public partial class initial : Migration
+    public partial class V3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,6 +56,27 @@ namespace ColoradoLuxury.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cupons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1000, 1"),
+                    NewCupon = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Percentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CuponCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CouponDeatline = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cupons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,6 +167,7 @@ namespace ColoradoLuxury.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -162,6 +184,7 @@ namespace ColoradoLuxury.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -391,6 +414,9 @@ namespace ColoradoLuxury.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ChildSeats");
+
+            migrationBuilder.DropTable(
+                name: "Cupons");
 
             migrationBuilder.DropTable(
                 name: "RideDetails");
