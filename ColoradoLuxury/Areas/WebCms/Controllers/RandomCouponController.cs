@@ -20,7 +20,6 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             {
                 Id= c.Id,
                 NewCupon = c.NewCupon,
-                CuponCode = c.CuponCode,
                 Percentage= c.Percentage,
                 Amount= c.Amount,
 
@@ -52,12 +51,20 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 });
             }
 
+            if (model.Percentage > 0 && model.Amount > 0)
+            {
+                return Json(new
+                {
+                    unexpectedDiscount = true,
+
+                });
+            }
+
             Cupon cupon = new Cupon()
             {
                 Amount = model.Amount,
                 Percentage = model.Percentage,
                 NewCupon = model.NewCupon.ToUpper(),
-                CuponCode = model.CuponCode.ToUpper(),
 
                 Status = model.Status,
                 CouponDeatline = model.CouponDeatline

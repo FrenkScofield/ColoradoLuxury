@@ -201,7 +201,7 @@
 
                                             <div class="map-info">
                                                 <div class="map-distance">
-                                                    <span>Km: </span>
+                                                    <span>Mile: </span>
                                                     <span class="map-distance-value">0</span>
                                                 </div>
                                                 <div class="map-time">
@@ -715,9 +715,14 @@
                                 <button type="button" class="btn btn-primary" @@click="nextStep" :disabled="laststep">
                                     Next
                                 </button>
-                                <button type="submit" class="btn btn-primary" v-if="laststep">
+
+                                
+
+                                     <a href="/Payment/Create" class="btn btn-primary" v-if="laststep">
                                     Submit
-                                </button>
+                                </a>
+                         
+                               
                             </div>
                         </script>
                     </div>

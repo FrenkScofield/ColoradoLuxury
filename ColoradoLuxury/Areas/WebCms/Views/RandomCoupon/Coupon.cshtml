@@ -30,7 +30,7 @@
                             <label class="form-label">Coupons Code</label>
 
                             <input disabled style="font-size: 20px;  text-transform: uppercase;" type="text" class="form-control" id="newCoupon" placeholder="Click Create" aria-label="" aria-describedby="basic-addon1">
-                         
+
 
                             <!-- Interest input -->
                             <div class="form-outline ">
@@ -45,24 +45,29 @@
                             </div>
 
                             <!-- Coupons Code input -->
-                            <div class="form-outline">
-                            <label class="form-label "> Coupon ID</label>
-                            <input disabled style="font-size: 20px;  text-transform: uppercase;" type="text" class="form-control" id="couponCode" aria-describedby="basic-addon1">
-                                </div>
+                            @*<div class="form-outline">
+                                <label class="form-label "> Coupon ID</label>
+                                <input disabled style="font-size: 20px;  text-transform: uppercase;" type="text" class="form-control" id="couponCode" aria-describedby="basic-addon1">
+                            </div>*@
                             <!-- Submit button -->
 
                             <div class="form-outline">
-                             <label class="form-label">Coupon Deatline</label>
-                                <input type="date" id="inputdate" class="form-control" >
+                                <label class="form-label">Coupon Deatline</label>
+                                <input type="date" id="inputdate" class="form-control">
                             </div>
                             <div class="form-outline">
-                            <button type="button" class="btn btn-success btn-block" onclick="CreateCupon()">Add</button>
+                                <button type="button" class="btn btn-success btn-block" onclick="CreateCupon()">Add</button>
                             </div>
 
-                        </form>
 
+                            
+                        </form>
+                        <output>
+                            <ul>
+                            </ul>
+                        </output>
                     </div>
-                       <div class="col-md-9 my-4">
+                    <div class="col-md-9 my-4">
 
                         <div class="card shadow mb-4">
                             <div class="card-header py-4">
@@ -150,7 +155,7 @@
 
     function onClick() {
         document.getElementById('newCoupon').value = generateCoupon();
-        document.getElementById('couponCode').value = generateCouponCode();
+        //document.getElementById('couponCode').value = generateCouponCode();
     }
     onClick();
 
