@@ -127,8 +127,8 @@ function callback(response, status) {
 
             var duration_text = duration.text;
             var duration_value = duration.value;
-            $('.test1Z11').text(distance_in_mile.toFixed(1));
-            $('.map-distance-value').text(distance_in_kilo.toFixed(2));
+            $('.map-distance-value').text(distance_in_mile.toFixed(1));
+            $('.tes34566').text(distance_in_kilo.toFixed(2));
             $('.map-time-value').text(generalTime);
             $('.tes12X').text(duration_value);
             $('#from').text(origin);

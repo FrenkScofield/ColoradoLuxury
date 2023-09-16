@@ -4,9 +4,12 @@ function CreateCupon() {
     let newcupon = $("#newCoupon").val();
     let percentage = $("#percentage").val();
     let amount = $("#amount").val();
-    let cuponcode = $("#couponCode").val();
 
     let cuponDeatline = $("#inputdate").val();
+
+    if (cuponDeatline == '') {
+        cuponDeatline = '0001-01-01'
+    }
 
     if (amount == '')
         amount = 0;
@@ -18,7 +21,6 @@ function CreateCupon() {
         NewCupon: newcupon,
         Percentage: percentage,
         Amount: amount,
-        CuponCode: cuponcode,
         CouponDeatline: cuponDeatline,
 
         Status: true
@@ -32,12 +34,20 @@ function CreateCupon() {
 
         if (response.hasOwnProperty('modelIsEmpty') || response.hasOwnProperty('discount')) {
             let li = $("<li>");
-            li.text("Data can't be empty!");
+            li.text("Data can't be empty both percentage and amount!!");
             output.append(li);
 
             return;
         }
 
+        if (response.hasOwnProperty('unexpectedDiscount')) {
+            let li = $("<li>");
+            li.text("Data can not fill both percentage and amount!");
+            output.append(li);
+
+            return;
+        }
+        
         if (response.hasOwnProperty('success')) {
             Swal.fire({
                 icon: 'success',

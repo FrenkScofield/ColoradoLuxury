@@ -19,10 +19,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ColoradoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//builder.WebHost
-//                            .UseUrls("https://*:5000")
-//                            .UseContentRoot(Directory.GetCurrentDirectory())
-//                            .UseIISIntegration();
+builder.WebHost
+                            .UseUrls("https://*:5000")
+                            .UseContentRoot(Directory.GetCurrentDirectory())
+                            .UseIISIntegration();
 
 var app = builder.Build();
 
