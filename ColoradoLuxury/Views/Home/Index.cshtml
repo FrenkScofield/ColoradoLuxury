@@ -29,6 +29,8 @@
         border: 2px solid #ffffff;
         color: #ffffff;
     }
+
+
 </style>
 <section class="mainImg">
     <div><img src="~/assets/image/slide_3_v4.jpg" width="100%" alt=""></div>
@@ -166,7 +168,7 @@
                                                         </div>
                                                     </div> -->
                                                 </div>
-                                                <hr>
+                                           @*     <hr>
                                                 <label>EXTRA OPTIONS</label>
                                                 <div class="form-group" id="extraTime">
                                                     <label> Extra Time </label>
@@ -186,7 +188,7 @@
                                                         <option value="11">11 hour(s)</option>
                                                         <option value="12">12 hour(s)</option>
                                                     </select>
-                                                </div>
+                                                </div>*@
                                                 <div id="forHourlyDropLocation" class="form-group forHourlyDropLocation">
                                                     <label> Drop-off location </label>
                                                     <input type="text" class="form-control" id="forHourlydropOffLocation" placeholder="Write Location" />
@@ -200,14 +202,28 @@
                                             </div>
 
                                             <div class="map-info">
-                                                <div class="map-distance">
-                                                    <span>Mile: </span>
-                                                    <span class="map-distance-value">0</span>
+                                                <div class="row">
+                                                    <div class="col-lg-6" style=" height: 70px; border-right: 2px solid #767575;">
+                                                        <div class="map-distance">
+                                                            <img width="50" height="50" src="https://img.icons8.com/external-glyph-mangsaabguru-/64/4B4A4A/external-location-location-and-map-glyph-glyph-mangsaabguru--12.png" alt="external-location-location-and-map-glyph-glyph-mangsaabguru--12" />
+                                                            <div class="mapDistanceInfo">
+                                                                <p class="mileTitle">TOTAL DISTANCE</p>
+                                                                <p class="mileTitle map-distance-value">0 mi</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="map-time">
+                                                            <img width="50" height="50" src="https://img.icons8.com/external-xnimrodx-lineal-xnimrodx/64/4B4A4A/external-watch-ecommerce-xnimrodx-lineal-xnimrodx.png" alt="external-watch-ecommerce-xnimrodx-lineal-xnimrodx" />
+                                                            <div class="mapTimeInfo">
+                                                                <p class="timeTitle">TOTAL TIME</p>
+                                                                <p class="timeTitle map-time-value">0 h 0 m</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="map-time">
-                                                    <span>Time: </span>
-                                                    <span class="map-time-value">0</span>
-                                                </div>
+                                                
+                                               
 
                                             </div>
                                             <!-- END Google-Map -->

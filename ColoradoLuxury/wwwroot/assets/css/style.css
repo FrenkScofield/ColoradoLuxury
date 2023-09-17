@@ -437,24 +437,64 @@ iframe{
     display:none;
 }
 
-div#map {
+div #map {
     width: 444px;
     height: 440px;
+    border-radius: 7px;
 }
 
-div.map-info {
+div .map-info {
     width: 100%;
-    height: 60px;
+    height: 70px;
     background: white;
-    margin-top: 4px;
+    margin-top: 6px;
+    margin-bottom: 10px;
     border-radius: 4px;
-    display: flex;
-    justify-content: center;
+ /*   display: flex;
+    justify-content: center;*/
     line-height: 3;
 }
-div.map-time {
-    margin-left: 20px;
-}
+
+    div .map-info .map-distance {
+        margin-top: 10px;
+        margin-left: 10px;
+        display: flex;
+    }
+
+        div .map-info .map-distance .mapDistanceInfo .mileTitle {
+            color: #5c5c5c;
+            font-size: 13px;
+            font-weight: 500;
+            margin: 0;
+            margin-top: -13px;
+            padding-left: 15px;
+        }
+        div .map-info .map-distance .mapDistanceInfo .map-distance-value {
+           
+            font-size: 21px;
+            margin-top: -23px;
+            text-align: center;
+        }
+
+    div .map-info .map-time {
+        margin-top: 10px;
+        margin-left: 10px;
+        display: flex;
+    }
+
+    div .map-info .mapTimeInfo .timeTitle {
+        color: #5c5c5c;
+        font-size: 13px;
+        font-weight: 500;
+        margin: 0;
+        margin-top: -13px;
+        padding-left: 15px;
+    }
+    div .map-info .mapTimeInfo .map-time-value {
+        font-size: 21px;
+        margin-top: -23px;
+        text-align: center;
+    } 
 
 div.map-info span{
     font-weight: bold;
