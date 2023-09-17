@@ -36,6 +36,9 @@ namespace ColoradoLuxury.Controllers
                 if (mile != null)
                 {
                     distanceAmount = (Convert.ToDecimal(mile) * 3.50m).ToString("F2");
+                    if (Convert.ToDecimal(distanceAmount) <= 10)
+                        distanceAmount= "10";
+
                     gratuity = (Convert.ToDecimal(distanceAmount) * 0.15m).ToString("F2");
                     totalAmount = (Convert.ToDecimal(distanceAmount) + Convert.ToDecimal(gratuity)).ToString("F2");
 
@@ -47,6 +50,8 @@ namespace ColoradoLuxury.Controllers
             else
             {
                 distanceAmount = (durationValue * 50).ToString("F2");
+                if (Convert.ToDecimal(distanceAmount) <= 10)
+                    distanceAmount = "10";
 
                 gratuity = (Convert.ToDecimal(distanceAmount) * 0.15m).ToString("F2");
                 totalAmount = (Convert.ToDecimal(distanceAmount) + Convert.ToDecimal(gratuity)).ToString("F2");
@@ -83,6 +88,13 @@ namespace ColoradoLuxury.Controllers
                 }); ;
 
             }
+
+            if (model.Mile <= 10)
+                model.Mile = 10;
+
+            if(model.Hours <= 2)
+                model.Hours = 2;
+
             string mile = model.Mile.ToString();
             HttpContext.Session.SetString("mile", mile);
             HttpContext.Session.SetInt32("hours", model.Hours);
