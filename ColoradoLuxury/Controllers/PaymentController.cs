@@ -11,7 +11,12 @@ namespace ColoradoLuxury.Controllers
 {
     public class PaymentController : Controller
     {
-        public string SessionId { get; set; }
+        public string? SessionId { get; set; }
+        private readonly IConfiguration _configuration;
+        public PaymentController(IConfiguration configuration)
+        {
+            _configuration= configuration;
+        }
         
         public IActionResult Index()
         {
@@ -31,10 +36,10 @@ namespace ColoradoLuxury.Controllers
         public ActionResult Create()
         {
             var currency = "usd";
-            var successUrl = "https://192.168.0.106:5000/Payment/Success";
-            var cancelUrl = "https://192.168.0.106:5000/Payment/Cancel";
-
-            StripeConfiguration.ApiKey = "sk_test_51DxVxFCfsgGnUgqjqZkYUOm9ZCixkzcRloQSlTYsEE3zRAbb18JJFRRPC99g1MY5qxW5dgvkrLIYxfI056zutLX000ft9sfaQV";
+            var successUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Payment/Success";
+            var cancelUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Payment/Cancel";
+            
+            StripeConfiguration.ApiKey = _configuration.GetValue<string>("StripeSettings:Secretkey");
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string>
@@ -47,7 +52,7 @@ namespace ColoradoLuxury.Controllers
                         PriceData = new SessionLineItemPriceDataOptions
                         {
                             Currency= currency,
-                            UnitAmount = Convert.ToInt32("50") * 100,
+                            UnitAmountDecimal = Convert.ToDecimal(HttpContext?.Session?.GetString("totalAmount")) * 100,
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
                                 Name = "Travel",
