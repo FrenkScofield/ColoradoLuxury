@@ -373,10 +373,10 @@
                                         <hr>
                                     </div>
                                     <div class="col-lg-2">
-                                        <p>$ 324.00</p>
-                                        <p>$ 60.00</p>
+                                        <p class="distanceAmount">$ <span></span></p>
+                                        <p class="gratuity">$ <span></span></p>
                                         <hr>
-                                        <p>$ 384.00</p>
+                                        <p class="totalAmount">$ <span></span></p>
                                     </div>
                                 </div>
                             </div>
@@ -694,10 +694,10 @@
                                         <hr>
                                     </div>
                                     <div class="col-lg-2">
-                                        <p>$ 324.00</p>
-                                        <p>$ 60.00</p>
+                                        <p class="distanceAmount">$ <span></span></p>
+                                        <p class="gratuity">$ <span></span></p>
                                         <hr>
-                                        <p id="totalPrice">384</p>
+                                        <p class="totalAmount">$ <span></span></p>
                                     </div>
                                 </div>
                             </div>
@@ -728,7 +728,7 @@
                                 <button type="button" class="btn btn-primary" @@click="lastStep" :disabled="firststep">
                                     Back
                                 </button>
-                                <button type="button" class="btn btn-primary" @@click="nextStep" :disabled="laststep">
+                                <button type="button" class="btn btn-primary" id="nextTab" @@click="nextStep" :disabled="laststep">
                                     Next
                                 </button>
 
@@ -753,11 +753,10 @@
 
 <script src="~/lib/jquery/jquery3.6.4/jquery3.6.4.js"></script>
 
-
+<script src="~/lib/ajax/ajax-library.js"></script>
 <script src="~/assets/js/gstatic_map.js"></script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDj9EMFJrr3wAF4E4OKoZqJ0ldA0_pvFms&callback=initMap&libraries=places&v=weekly" defer></script>
-
 
 <script>
     if (localStorage.getItem('btnValueKey') == 'activ') {
