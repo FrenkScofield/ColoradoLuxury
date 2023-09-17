@@ -26,7 +26,6 @@ function initMap() {
 
     const onChangeHandler = function () {
         let status = calculateAndDisplayRoute(directionsService, directionsRenderer);
-        console.log(status);
     };
 
     const oncalculateDistance = function () {
@@ -57,7 +56,6 @@ function initMap() {
 
         const place = places[0];
 
-        console.log(place.geometry.location);
         if (!coloradoBounds.contains(place.geometry.location)) {
             alert("Please select a location within Colorado, USA.");
         } else {
@@ -123,18 +121,40 @@ function callback(response, status) {
             let hours = Math.floor(calculateHours);
             let reduseDigit = calculateHours - Math.floor(calculateHours);
             let calculateMinutes = Math.ceil(reduseDigit * 60);
-            let generalTime = `${hours}h ${calculateMinutes}m`
+            let generalTime = `${hours}h ${calculateMinutes}m`;
 
-            var duration_text = duration.text;
-            var duration_value = duration.value;
-            $('.map-distance-value').text(distance_in_mile.toFixed(1));
-            $('.tes34566').text(distance_in_kilo.toFixed(2));
-            $('.map-time-value').text(generalTime);
-            $('.tes12X').text(duration_value);
-            $('#from').text(origin);
-            $('#to').text(destination);
+            let data = {
+                Mile: distance_in_mile.toFixed(1),
+                Hours: hours,
+                Minutes: calculateMinutes
+            }
+
+            AjaxPost("/Home/GetDistanceAndTime", JSON.stringify(data), true, true, "json", "application/json; charset=utf-8", (response) => {
+                console.log(response);
+
+                if (response.hasOwnProperty('wrongSomething')) {
+
+                    alert(response.wrongSomething);
+
+                    $("#pickuplocation").val('');
+                    $("#dropOffLocation").val('');
+
+                    return;
+                } else {
+                    var duration_text = duration.text;
+                    var duration_value = duration.value;
+                    $('.map-distance-value').text(distance_in_mile.toFixed(1));
+                    $('.tes34566').text(distance_in_kilo.toFixed(2));
+                    $('.map-time-value').text(generalTime);
+                    $('.tes12X').text(duration_value);
+                    $('#from').text(origin);
+                    $('#to').text(destination);
+                }
+            });
+            
         }
     }
 }
 
 window.initMap = initMap;
+

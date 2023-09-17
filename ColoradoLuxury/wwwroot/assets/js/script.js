@@ -139,6 +139,7 @@ Vue.component("step", {
             else {
                 if (this.currentstep == 1) {
                     this.$emit("step-change", this.currentstep + 1);
+                    CalculateAmount(hor);
                     $('.error').css("display", "none")
                 }
             }
@@ -427,7 +428,7 @@ $('#customPriceActive').on('click', function () {
     $('#btn40')[0].disabled = false;
     $('#btn50')[0].disabled = false;
     $('#bettButtons').css("opacity", "1");
-    $('#customPrice').css("opacity", "0.1"); 
+    $('#customPrice').css("opacity", "0.1");
     $('#customBettAddBtn').css("display", "none")
 
     if ($('#customPriceActive').is(':checked') == true) {
@@ -439,7 +440,7 @@ $('#customPriceActive').on('click', function () {
         $('#btn30')[0].disabled = true;
         $('#btn40')[0].disabled = true;
         $('#btn50')[0].disabled = true;
-        $('#customPrice').css("opacity", "1"); 
+        $('#customPrice').css("opacity", "1");
         $('#bettButtons').css("opacity", "0.1");
         $('#customBettAddBtn').css("display", "block")
 
@@ -528,3 +529,42 @@ for (var price of bonusPrices) {
     }, false);
 }
 
+
+function CalculateAmount(hourly) {
+    console.log(hourly);
+    /*AjaxPost("/Home/GetDistanceAndTime", JSON.stringify(data), true, true, "json", "application/json; charset=utf-8", (response) => {*/
+    /*url, data, cache, processData, dataType, contentType, successCallBack*/
+    if (hourly) {
+        AjaxPost("/Home/CalculatedAmount/", { hourly: hourly }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+            console.log(response);
+            if (response.hasOwnProperty('distanceAmount') && response.hasOwnProperty('gratuity')) {
+
+                $(".distanceAmount span").text(response.distanceAmount);
+                $(".gratuity span").text(response.gratuity);
+                $(".totalAmount span").text(response.totalAmount);
+            } else {
+
+            }
+        });
+    }
+    else {
+        let durationValue = $("#durationInHoursSelected").val();
+        if (durationValue == '' || durationValue == undefined) {
+            return;
+        }
+        AjaxPost("/Home/CalculatedAmount/", { hourly: hourly, durationValue: durationValue }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+            console.log(response);
+            if (response.hasOwnProperty('distanceAmount') && response.hasOwnProperty('gratuity')) {
+
+                $(".distanceAmount span").text(response.distanceAmount);
+                $(".gratuity span").text(response.gratuity);
+                $(".totalAmount span").text(response.totalAmount);
+            } else {
+
+            }
+        });
+
+    }
+
+
+}

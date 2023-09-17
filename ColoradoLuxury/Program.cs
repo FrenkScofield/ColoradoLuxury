@@ -8,20 +8,16 @@ using Microsoft.Extensions.Configuration;
 using Stripe;
 using ColoradoLuxury.Models.VM;
 using System.Configuration;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-//public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-//        WebHost.CreateDefaultBuilder(args)
-//            .UseUrls("https://*:5566")
-//            .UseContentRoot(Directory.GetCurrentDirectory())
-//            .UseIISIntegration()
-//            .UseStartup<Startup>();
-
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Program>());
 
 builder.Services.AddDbContext<ColoradoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
+
+builder.Services.AddSession();
 
 builder.WebHost
                             .UseUrls("https://*:5000")
@@ -31,7 +27,7 @@ builder.WebHost
 
 var app = builder.Build();
 
-StripeConfiguration.ApiKey = "sk_test_51DxVxFCfsgGnUgqjqZkYUOm9ZCixkzcRloQSlTYsEE3zRAbb18JJFRRPC99g1MY5qxW5dgvkrLIYxfI056zutLX000ft9sfaQV";
+StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:Secretkey");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -45,6 +41,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 
