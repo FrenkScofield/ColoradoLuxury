@@ -6,7 +6,7 @@
 
         public DateTime RegDate { get; set; }
 
-        public DateTime EditDate { get; set; }
+        public DateTime? EditDate { get; set; }
 
         public string? ClientIpAddress { get; set; }
 

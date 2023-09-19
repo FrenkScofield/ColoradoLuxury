@@ -140,6 +140,7 @@ Vue.component("step", {
                 if (this.currentstep == 1) {
                     this.$emit("step-change", this.currentstep + 1);
                     CalculateAmount(hor);
+                    SaveRideDetailsInfo(this.currentstep);
                     $('.error').css("display", "none")
                 }
             }
@@ -171,7 +172,7 @@ Vue.component("step", {
                     $('#passengersError').css("display", "none")
 
                     this.$emit("step-change", this.currentstep + 1);
-
+                    SaveRideDetailsInfo(this.currentstep);
 
                 }
             }
@@ -321,12 +322,13 @@ Vue.component("step", {
                                 else {
 
                                     this.$emit("step-change", this.currentstep + 1);
+                                    SaveRideDetailsInfo(this.currentstep);
                                 }
 
                             }
                         } else {
                             this.$emit("step-change", this.currentstep + 1);
-
+                            SaveRideDetailsInfo(this.currentstep);
                         }
 
 
@@ -339,7 +341,7 @@ Vue.component("step", {
                     $('#phoneNumberError').css("display", "none")
 
                     this.$emit("step-change", this.currentstep + 1);
-
+                    SaveRideDetailsInfo(this.currentstep);
                 }
             }
             //END
@@ -532,8 +534,6 @@ for (var price of bonusPrices) {
 
 function CalculateAmount(hourly) {
     console.log(hourly);
-    /*AjaxPost("/Home/GetDistanceAndTime", JSON.stringify(data), true, true, "json", "application/json; charset=utf-8", (response) => {*/
-    /*url, data, cache, processData, dataType, contentType, successCallBack*/
     if (hourly) {
         AjaxPost("/Home/CalculatedAmount/", { hourly: hourly }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
             console.log(response);
@@ -565,6 +565,133 @@ function CalculateAmount(hourly) {
         });
 
     }
+}
+
+function SaveRideDetailsInfo(step) {
+    let data = null;
+    switch (step) {
+        case 1:
+            let pickupDate = $("#pickupDate").val();
+            let time = $("#time").val();
+            let pickuplocation = $("#pickuplocation").val();
+            let dropOffLocation = $("#dropOffLocation").val();
+            let transferTypeId = $("#transferType").val();
+
+            if (transferTypeId == '')
+                transferTypeId = 0;
+
+            data = {
+                WayType: hor,
+                PickupDate: pickupDate,
+                PickupTime: time,
+                PickupLocation: pickuplocation,
+                DropOffLocation: dropOffLocation,
+                TransferTypeId: transferTypeId
+            }
+            console.log(data);
+            AjaxPost("/RideDetails/AddDetails/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
+                console.log(response);
+            });
+            break;
+
+        case 2:
+            let passengersSelect = $("#passengersSelect").val();
+            let suitcases = $("#suitcases").val();
+            let allcarTpes = $("#allcarTpes").val();
+            let childNumber = $("#childNumber").val();
+            let roofCargoBoxNumber = $("#roofCargoBoxNumber").val();
+            let childAdditionalMessage = $("#childAdditionalMessage").val();
+            let roofCargoBoxAdditionalMessage = $("#roofCargoBoxAdditionalMessage").val();
+
+            if (childNumber == '')
+                childNumber = 0;
+
+            if (roofCargoBoxNumber == '')
+                roofCargoBoxNumber = 0;
+
+            data = {
+                PassengersSelect: passengersSelect,
+                Suitcases: suitcases,
+                AllcarTpes: allcarTpes,
+                ChildNumber: childNumber,
+                RoofCargoBoxNumber: roofCargoBoxNumber,
+                ChildAdditionalMessage: childAdditionalMessage,
+                RoofCargoBoxAdditionalMessage: roofCargoBoxAdditionalMessage
+            }
+            console.log(data);
+            AjaxPost("/RideDetails/AddVehiclesInfo/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
+                console.log(response);
+            });
+            break;
+
+        case 3:
+            let firstName = $("#firstName").val();
+            let lastName = $("#lastName").val();
+            let email = $("#emailAddress").val();
+            let phoneNumber = $("#phoneNumber").val();
+            let AdditionalContactDetailsNote = $("#additional-contact-details-note").val();
+            let companyRegisteredName = $("#company-registered-name").val();
+            let taxNumber = $("#taxNumber").val();
+
+            let street = $("#street").val();
+            let streetNumber = $("#streetNumber").val();
+            let city = $("#city").val();
+            let state = $("#state").val();
+            let postalCode = $("#postalCode").val();
+            let country = $("#country").val();
+            let airline = $("#airline").val();
+            let filingNumber = $("#filingNumber").val();
 
 
+            data = {
+                Firstname: firstName,
+                Lastname: lastName,
+                Email: email,
+                PhoneNumber: phoneNumber,
+                AdditionalContactDetailNote: AdditionalContactDetailsNote,
+                CompanyRegisteredname: companyRegisteredName,
+                TaxNumber: taxNumber,
+                Street: street,
+                StreetNumber: streetNumber,
+                City: city,
+                State: state,
+                PostalCode: postalCode,
+                CountryId: country,
+                AirlineId: airline,
+                FlightNumber: filingNumber
+            }
+            console.log(data);
+            AjaxPost("/RideDetails/AddContactDetailsInfo/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
+                console.log(response);
+                ShowAllDatasFilledFromInput("firstname", response.contactDetails.firstname);
+                ShowAllDatasFilledFromInput("lastname", response.contactDetails.lastname);
+                ShowAllDatasFilledFromInput("email", response.contactDetails.email);
+                ShowAllDatasFilledFromInput("phoneNumber", response.contactDetails.phoneNumber);
+                ShowAllDatasFilledFromInput("companyName", response.contactDetails.companyRegisteredname);
+                ShowAllDatasFilledFromInput("taxNumber", response.contactDetails.taxNumber);
+
+                ShowAllDatasFilledFromInput("airLineType", response.getTextForIdVM.airLine);
+                ShowAllDatasFilledFromInput("flightNumber", response.contactDetails.flightNumber);
+                ShowAllDatasFilledFromInput("additionalContactDetailsNote", response.contactDetails.additionalContactDetailNote);
+                ShowAllDatasFilledFromInput("service-type", response.getTextForIdVM.wayType);
+                ShowAllDatasFilledFromInput("pickupLocation", response.rideDetails.pickupLocation);
+                ShowAllDatasFilledFromInput("dropOffLocation", response.rideDetails.dropOffLocation);
+                ShowAllDatasFilledFromInput("pickupDateAndTime", response.getTextForIdVM.pickupDateAndTime);
+                ShowAllDatasFilledFromInput("total-distance", response.getTextForIdVM.totalDistance);
+                ShowAllDatasFilledFromInput("total-time", response.getTextForIdVM.distanceTime);
+
+                ShowAllDatasFilledFromInput("vehicle-type", response.getTextForIdVM.vehicleType);
+                ShowAllDatasFilledFromInput("childSeatCount", response.vehicleDetails.childNumber);         
+            });
+            break;
+
+        case 4:
+
+            break;
+        default:
+    }
+}
+
+function ShowAllDatasFilledFromInput(id, text) {
+    $(`.${id}`).text(text);
 }
