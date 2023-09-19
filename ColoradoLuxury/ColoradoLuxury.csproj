@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Areas\WebCms\Data\" />
     <Folder Include="Areas\WebCms\Models\" />
-    <Folder Include="Enums\" />
   </ItemGroup>
 
   <ItemGroup>

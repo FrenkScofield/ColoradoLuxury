@@ -1,5 +1,6 @@
 ﻿using ColoradoLuxury.FluentValidation;
 using ColoradoLuxury.Models;
+using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +11,23 @@ namespace ColoradoLuxury.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ColoradoContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ColoradoContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeInfoDetailsVM viewModel = new HomeInfoDetailsVM() {
+                VehicleTypes = _context.VehicleTypes.ToList(),
+                TransferTypes= _context.TransferTypes.ToList(),
+                Countries= _context.Countries.ToList(),
+                AirLines = _context.AirLines.ToList()
+            };
+            return View(viewModel);
         }
 
         [HttpPost]

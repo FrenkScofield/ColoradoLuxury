@@ -1,4 +1,6 @@
-﻿@{
+﻿@using ColoradoLuxury.Models.VM;
+@model HomeInfoDetailsVM
+@{
     ViewData["Title"] = "Home Page";
 }
 <style>
@@ -29,7 +31,6 @@
         border: 2px solid #ffffff;
         color: #ffffff;
     }
-
 
 </style>
 <section class="mainImg">
@@ -109,9 +110,10 @@
                                                         <select id="transferType" class="form-select form-control"
                                                                 aria-label="Default select example">
                                                             <option value="" selected>Open this select menu</option>
-                                                            <option value="1">One Way</option>
-                                                            <option value="2">Return</option>
-                                                            <option value="3">Return (New ride)</option>
+                                                            @foreach (var transfertype in Model.TransferTypes)
+                                                            {
+                                                                <option value="@transfertype.Id">@transfertype.Name</option>
+                                                            }
                                                         </select>
                                                         <span class="error" id="transferTypeError">Cannot be left blank </span>
                                                         <span class="good" id="transferTypeGood">Good look </span>
@@ -168,26 +170,26 @@
                                                         </div>
                                                     </div> -->
                                                 </div>
-                                           @*     <hr>
+                                                @*     <hr>
                                                 <label>EXTRA OPTIONS</label>
                                                 <div class="form-group" id="extraTime">
-                                                    <label> Extra Time </label>
-                                                    <select class="form-select form-control"
-                                                            aria-label="Default select example">
-                                                        <option selected>Open this select menu</option>
-                                                        <option value="1">1 hour(s)</option>
-                                                        <option value="2">2 hour(s)</option>
-                                                        <option value="3">3 hour(s)</option>
-                                                        <option value="4">4 hour(s)</option>
-                                                        <option value="5">5 hour(s)</option>
-                                                        <option value="6">6 hour(s)</option>
-                                                        <option value="7">7 hour(s)</option>
-                                                        <option value="8">8 hour(s)</option>
-                                                        <option value="9">9 hour(s)</option>
-                                                        <option value="10">10 hour(s)</option>
-                                                        <option value="11">11 hour(s)</option>
-                                                        <option value="12">12 hour(s)</option>
-                                                    </select>
+                                                <label> Extra Time </label>
+                                                <select class="form-select form-control"
+                                                aria-label="Default select example">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">1 hour(s)</option>
+                                                <option value="2">2 hour(s)</option>
+                                                <option value="3">3 hour(s)</option>
+                                                <option value="4">4 hour(s)</option>
+                                                <option value="5">5 hour(s)</option>
+                                                <option value="6">6 hour(s)</option>
+                                                <option value="7">7 hour(s)</option>
+                                                <option value="8">8 hour(s)</option>
+                                                <option value="9">9 hour(s)</option>
+                                                <option value="10">10 hour(s)</option>
+                                                <option value="11">11 hour(s)</option>
+                                                <option value="12">12 hour(s)</option>
+                                                </select>
                                                 </div>*@
                                                 <div id="forHourlyDropLocation" class="form-group forHourlyDropLocation">
                                                     <label> Drop-off location </label>
@@ -222,8 +224,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                               
+
+
 
                                             </div>
                                             <!-- END Google-Map -->
@@ -260,7 +262,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label for="select">SUITCASES</label>
-                                            <select class="form-control" name="select">
+                                            <select class="form-control" name="select" id="suitcases">
                                                 <option value="0">Choose</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -274,10 +276,12 @@
                                     <div class="col-lg-4">
                                         <div class="form-group" id="carType">
                                             <label for="select">TYPE </label>
-                                            <select class="form-control" name="select">
-                                                <option value="1"> All vehicles</option>
-                                                <option value="2">Luxury Sedan</option>
-                                                <option value="3">Luxury SUV</option>
+                                            <select class="form-control" name="select" id="allcarTpes">
+                                                @foreach (var vehicletype in Model.VehicleTypes)
+                                                {
+                                                    <option value="@vehicletype.Id">@vehicletype.TypeName</option>
+                                                }
+
                                             </select>
                                         </div>
                                     </div>
@@ -321,12 +325,12 @@
                                                         <p>Baby car seat for children aged 0-36 months</p>
                                                         <div class="extraMessageluggage" id="extraMessageChildwillSit">
                                                             <label class="d-block mt-1"> Additional Message</label>
-                                                            <textarea name="" id="" cols="40" rows="3"></textarea>
+                                                            <textarea name="" id="childAdditionalMessage" cols="40" rows="3"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 childCount border-bottom ">
                                                         <label>Number</label>
-                                                        <input type="number">
+                                                        <input type="number" id="childNumber">
                                                     </div>
                                                     <div class="col-lg-3 border-bottom">
                                                         <button id="childSeat" type="button"
@@ -340,12 +344,12 @@
                                                         <span class="money">$0.00</span>
                                                         <div class="extraMessageluggage" id="extraMessageluggage">
                                                             <label class="d-block mt-1"> Additional Message</label>
-                                                            <textarea name="" cols="40" rows="3"></textarea>
+                                                            <textarea name="" cols="40" rows="3" id="roofCargoBoxAdditionalMessage"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 childCount border-top">
                                                         <label>Number</label>
-                                                        <input type="number" value="1" disabled>
+                                                        <input type="number" value="1" id="roofCargoBoxNumber" disabled>
                                                     </div>
                                                     <div class="col-lg-3 border-top">
                                                         <button id="cargoBox" type="button"
@@ -432,7 +436,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="textarea">Example textarea</label>
-                                            <textarea class="form-control" name="textarea" rows="3" cols="2"></textarea>
+                                            <textarea class="form-control" name="textarea" rows="3" cols="2" id="additional-contact-details-note"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 backroundAndBorderTema  ">
@@ -448,13 +452,13 @@
                                                             <div class="col-lg-6">
                                                                 <div class="form-control billBackgroundColor">
                                                                     <label for="">COMPANY REGISTERED NAME</label>
-                                                                    <input type="text" class="form-control ">
+                                                                    <input type="text" class="form-control " id="company-registered-name">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <div class="form-control billBackgroundColor">
                                                                     <label for="">TAX NUMBER</label>
-                                                                    <input type="text" class="form-control ">
+                                                                    <input type="text" class="form-control " id="taxNumber">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-4 margin_Top_Bottom">
@@ -468,7 +472,7 @@
                                                             <div class="col-lg-4 margin_Top_Bottom">
                                                                 <div class="form-control billBackgroundColor">
                                                                     <label for="">STREET NUMBER</label>
-                                                                    <input type="text" class="form-control ">
+                                                                    <input type="text" class="form-control " id="streetNumber">
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-4 margin_Top_Bottom">
@@ -500,11 +504,10 @@
                                                                     <label for="">COUNTRY*</label>
                                                                     <select name="" id="country" class="form-control ">
                                                                         <option value="">Select</option>
-                                                                        <option value="1">sadasdsa</option>
-                                                                        <option value="2">sadiyuiuyisa</option>
-                                                                        <option value="3">sa567567sa</option>
-                                                                        <option value="4">sadasdsa</option>
-                                                                        <option value="5">saghjghy6sa</option>
+                                                                        @foreach (var country in Model.Countries)
+                                                                        {
+                                                                            <option value="@country.Id">@country.Name</option>
+                                                                        }
                                                                     </select>
 
                                                                     <span class="error" id="countryError">Cannot be left blank </span>
@@ -533,11 +536,12 @@
                                                                 <div class="form-control billBackgroundColor">
                                                                     <label for="">AIRLINE*</label>
                                                                     <select name="" id="airline" class="form-control ">
-                                                                        <option value="">Chouse</option>
-                                                                        <option value="1">sadiyuiuyisa</option>
-                                                                        <option value="2">sa567567sa</option>
-                                                                        <option value="3">sadasdsa</option>
-                                                                        <option value="4">saghjghy6sa</option>
+                                                                        <option value="">Choose</option>
+                                                                        @foreach (var airline in Model.AirLines)
+                                                                        {
+                                                                            <option value="@airline.Id">@airline.Name</option>
+                                                                        }
+
                                                                     </select>
                                                                     <span class="error" id="airlineError">Cannot be left blank </span>
                                                                     <span class="good" id="airlineGood">Good look </span>
@@ -570,60 +574,60 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <h4>Contact & Billing Info</h4>
-                                        <div class="invoiceContent">FIRST NAME <span>Kamran</span></div>
-                                        <div class="invoiceContent">LAST NAME <span>Alibayli</span></div>
-                                        <div class="invoiceContent">EMAIL <span>Alibayli</span></div>
-                                        <div class="invoiceContent">PHONE NUMBER <span>Alibayli</span></div>
+                                        <div class="invoiceContent">FIRST NAME <span class="firstname">Kamran</span></div>
+                                        <div class="invoiceContent">LAST NAME <span class="lastname">Alibayli</span></div>
+                                        <div class="invoiceContent">EMAIL <span class="email">Alibayli</span></div>
+                                        <div class="invoiceContent">PHONE NUMBER <span class="phoneNumber">Alibayli</span></div>
                                         <hr>
-                                        <div class="invoiceContent">COMPANY NAME <span>Alibayli</span></div>
-                                        <div class="invoiceContent">TEX NUMBER <span>Alibayli</span></div>
+                                        <div class="invoiceContent">COMPANY NAME <span class="companyName">Alibayli</span></div>
+                                        <div class="invoiceContent">TAX NUMBER <span class="taxNumber">Alibayli</span></div>
                                         <hr>
-                                        <div class="invoiceContent">BILLING ADDRESS <span>Alibayli</span></div>
+                                        <div class="invoiceContent">BILLING ADDRESS <span class="">Alibayli</span></div>
                                         <hr>
                                         <h4>Payment Method</h4>
-                                        <div class="invoiceContent">YOUR CHOICE <span>Stripe </span></div>
+                                        <div class="invoiceContent">YOUR CHOICE <span class="paymentMethod">Stripe </span></div>
                                         <hr>
                                         <h4>Arrival Airline info</h4>
-                                        <div class="invoiceContent">AIRLINE <span>Aeromexico</span></div>
-                                        <div class="invoiceContent">FLIGHT NUMBER <span>89898</span></div>
+                                        <div class="invoiceContent">AIRLINE <span class="airLineType">Aeromexico</span></div>
+                                        <div class="invoiceContent">FLIGHT NUMBER <span class="flightNumber">89898</span></div>
                                         <hr>
-                                        <div class="invoiceContent">COMMENTS <span>fgxhfghfghfghfgh </span></div>
+                                        <div class="invoiceContent">COMMENTS <span class="additionalContactDetailsNote">fgxhfghfghfghfgh </span></div>
                                     </div>
                                     <div class="col-lg-4">
                                         <h4>Ride details</h4>
-                                        <div class="invoiceContent">SERVICE TYPE <span>Hourly</span></div>
+                                        <div class="invoiceContent">SERVICE TYPE <span class="service-type">Hourly</span></div>
                                         <hr>
                                         <div class="invoiceContent">
-                                            PICKUP LOCATION <span>
+                                            PICKUP LOCATION <span class="pickupLocation">
                                                 Breckenridge, CO,
                                                 USA
                                             </span>
                                         </div>
                                         <hr>
                                         <div class="invoiceContent">
-                                            DROP OFF LOCATION <span>
+                                            DROP OFF LOCATION <span class="dropOffLocation">
                                                 Arrowhead, CO,
                                                 USA
                                             </span>
                                         </div>
                                         <hr>
                                         <div class="invoiceContent">
-                                            PICKUP DATE, TIME <span>
+                                            PICKUP DATE, TIME <span class="pickupDateAndTime">
                                                 25-03-2023, 1:30
                                                 am
                                             </span>
                                         </div>
                                         <hr>
-                                        <div class="invoiceContent">TOTAL DISTANCE <span>0 mi</span></div>
-                                        <div class="invoiceContent">TOTAL TIME <span>2 h 0 m</span></div>
+                                        <div class="invoiceContent">TOTAL DISTANCE <span class="total-distance">0 </span><span>mi</span></div>
+                                        <div class="invoiceContent">TOTAL TIME <span class="total-time">2 h 0 m</span></div>
                                     </div>
                                     <div class="col-lg-4">
                                         <h4>Vehicle info</h4>
-                                        <div class="invoiceContent">VEHICLE <span>Luxury Sedan</span></div>
+                                        <div class="invoiceContent">VEHICLE <span class="vehicle-type">Luxury Sedan</span></div>
                                         <hr>
                                         <div class="invoiceContent">
-                                            EXTRA OPTIONS <span>
-                                                1 x Child Seat -
+                                            EXTRA OPTIONS <span class="childSeat">
+                                                <span class="childSeatCount"></span> x Child Seat -
                                                 $0.00
                                             </span>
                                         </div>
@@ -732,13 +736,13 @@
                                     Next
                                 </button>
 
-                                
+
 
                                      <a href="/Payment/Create" class="btn btn-primary" v-if="laststep">
                                     Submit
                                 </a>
-                         
-                               
+
+
                             </div>
                         </script>
                     </div>

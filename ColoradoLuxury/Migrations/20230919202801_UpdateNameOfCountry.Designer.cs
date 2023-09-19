@@ -4,6 +4,7 @@ using ColoradoLuxury.Models.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    partial class ColoradoContextModelSnapshot : ModelSnapshot
+    [Migration("20230919202801_UpdateNameOfCountry")]
+    partial class UpdateNameOfCountry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +35,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -61,7 +63,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Flight")
@@ -97,7 +99,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Postal")
@@ -137,7 +139,7 @@ namespace ColoradoLuxury.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Number")
@@ -163,7 +165,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -197,7 +199,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("CuponCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NewCupon")
@@ -228,7 +230,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -254,7 +256,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("RegDate")
@@ -279,7 +281,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("RegDate")
@@ -307,7 +309,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("RegDate")
@@ -338,7 +340,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<int>("DurationId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("ExtraTimeId")
@@ -387,7 +389,7 @@ namespace ColoradoLuxury.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Number")
@@ -413,7 +415,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -447,7 +449,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -498,7 +500,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Engine")
@@ -537,7 +539,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
+                    b.Property<DateTime>("EditDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("RegDate")
