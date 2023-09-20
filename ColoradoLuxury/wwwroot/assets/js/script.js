@@ -1,7 +1,8 @@
 
 
 var hor = true;
-
+var bill;
+var airlineInfo;
 
 Vue.component("step-navigation-step", {
     template: "#step-navigation-step-template",
@@ -181,8 +182,8 @@ Vue.component("step", {
             //Enter Contact Details page validation section Start
             if (this.currentstep == 3) {
 
-                var bill = document.getElementById('billingAddress');
-                var airlineInfo = document.getElementById('airlineInfo')
+                 bill = document.getElementById('billingAddress');
+                 airlineInfo = document.getElementById('airlineInfo')
                 debugger
 
                 if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '' || bill.checked == true || airlineInfo.checked == true) {
@@ -657,6 +658,8 @@ function SaveRideDetailsInfo(step) {
                 State: state,
                 PostalCode: postalCode,
                 CountryId: country,
+                BillingAddressStatus: bill.checked,
+                AirLineStatus: airlineInfo.checked,
                 AirlineId: airline,
                 FlightNumber: filingNumber
             }

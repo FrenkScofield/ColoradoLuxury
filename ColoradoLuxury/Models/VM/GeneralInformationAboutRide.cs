@@ -9,7 +9,7 @@
         public string? WayType { get; set; }
         public string? PickupDateAndTime { get; set; }
 
-        public decimal? TotalDistance { get; set; }
+        public string? TotalDistance { get; set; }
 
 
         public string? DistanceTime { get; set; }

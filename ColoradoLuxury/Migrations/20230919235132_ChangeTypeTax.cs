@@ -4,13 +4,13 @@
 
 namespace ColoradoLuxury.Migrations
 {
-    public partial class UpdateNameOfCountry : Migration
+    public partial class ChangeTypeTax : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Countries",
+                name: "Tax",
+                table: "BillingAddress",
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(int),
@@ -20,8 +20,8 @@ namespace ColoradoLuxury.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(
-                name: "Name",
-                table: "Countries",
+                name: "Tax",
+                table: "BillingAddress",
                 type: "int",
                 nullable: false,
                 defaultValue: 0,

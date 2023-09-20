@@ -9,6 +9,8 @@ using Stripe;
 using ColoradoLuxury.Models.VM;
 using System.Configuration;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using ColoradoLuxury.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -18,6 +20,18 @@ builder.Services.AddDbContext<ColoradoContext>(option => option.UseSqlServer(bui
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 
 builder.Services.AddSession();
+
+builder.Services.AddScoped<IEmailSender, EmailSender>(emailsender => new EmailSender(
+               builder.Configuration.GetValue<string>("EmailSetting:Host"),
+               builder.Configuration.GetValue<int>("EmailSetting:Port"),
+               builder.Configuration.GetValue<bool>("EmailSetting:SSL"),
+               builder.Configuration["EmailSetting:Username"],
+               builder.Configuration["EmailSetting:Password"],
+               builder.Configuration["EmailSetting:Subject"]
+
+               ));
+builder.Services.AddScoped<IViewRenderService, ViewRenderToString>();
+
 builder.WebHost
                             .UseUrls("https://*:5000")
                             .UseContentRoot(Directory.GetCurrentDirectory())

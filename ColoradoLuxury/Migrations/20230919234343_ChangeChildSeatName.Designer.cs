@@ -4,6 +4,7 @@ using ColoradoLuxury.Models.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    partial class ColoradoContextModelSnapshot : ModelSnapshot
+    [Migration("20230919234343_ChangeChildSeatName")]
+    partial class ChangeChildSeatName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,9 +90,8 @@ namespace ColoradoLuxury.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("City")
+                        .HasColumnType("int");
 
                     b.Property<string>("ClientIpAddress")
                         .HasColumnType("nvarchar(max)");
@@ -104,26 +105,23 @@ namespace ColoradoLuxury.Migrations
                     b.Property<DateTime?>("EditDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Postal")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Postal")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("State")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Street")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Tax")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Tax")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -387,10 +385,10 @@ namespace ColoradoLuxury.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("ArrivalAirlineInfoId")
+                    b.Property<int>("ArrivalAirlineInfoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BillingAddressId")
+                    b.Property<int>("BillingAddressId")
                         .HasColumnType("int");
 
                     b.Property<string>("ClientIpAddress")
@@ -407,7 +405,7 @@ namespace ColoradoLuxury.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ForDriverbettingId")
+                    b.Property<int>("ForDriverbettingId")
                         .HasColumnType("int");
 
                     b.Property<string>("Message")
@@ -483,8 +481,9 @@ namespace ColoradoLuxury.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<short>("ChildSeatCount")
-                        .HasColumnType("smallint");
+                    b.Property<string>("ChildSeatCount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ChildSeatDescription")
                         .IsRequired()
@@ -502,8 +501,9 @@ namespace ColoradoLuxury.Migrations
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<short>("RoofTopCargoBoxCount")
-                        .HasColumnType("smallint");
+                    b.Property<string>("RoofTopCargoBoxCount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoofTopCargoBoxDescription")
                         .IsRequired()
@@ -601,15 +601,21 @@ namespace ColoradoLuxury.Migrations
                 {
                     b.HasOne("ColoradoLuxury.Models.BLL.ArrivalAirlineInfo", "ArrivalAirlineInfo")
                         .WithMany()
-                        .HasForeignKey("ArrivalAirlineInfoId");
+                        .HasForeignKey("ArrivalAirlineInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ColoradoLuxury.Models.BLL.BillingAddress", "BillingAddress")
                         .WithMany()
-                        .HasForeignKey("BillingAddressId");
+                        .HasForeignKey("BillingAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ColoradoLuxury.Models.BLL.ForDriverBetting", "ForDriverBetting")
                         .WithMany()
-                        .HasForeignKey("ForDriverbettingId");
+                        .HasForeignKey("ForDriverbettingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ArrivalAirlineInfo");
 
