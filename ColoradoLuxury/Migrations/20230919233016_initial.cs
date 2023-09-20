@@ -17,7 +17,7 @@ namespace ColoradoLuxury.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -34,7 +34,7 @@ namespace ColoradoLuxury.Migrations
                     Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -48,9 +48,9 @@ namespace ColoradoLuxury.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -63,7 +63,7 @@ namespace ColoradoLuxury.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1000, 1"),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     NewCupon = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Percentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -71,7 +71,7 @@ namespace ColoradoLuxury.Migrations
                     CouponDeatline = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -85,9 +85,9 @@ namespace ColoradoLuxury.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -103,28 +103,12 @@ namespace ColoradoLuxury.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Time = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Durations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ExtraTimes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Time = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExtraTimes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,7 +119,7 @@ namespace ColoradoLuxury.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Betting = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -152,7 +136,7 @@ namespace ColoradoLuxury.Migrations
                     Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -169,7 +153,7 @@ namespace ColoradoLuxury.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -186,7 +170,7 @@ namespace ColoradoLuxury.Migrations
                     TypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -202,8 +186,9 @@ namespace ColoradoLuxury.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Flight = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AirlineId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -230,8 +215,9 @@ namespace ColoradoLuxury.Migrations
                     State = table.Column<int>(type: "int", nullable: false),
                     Postal = table.Column<int>(type: "int", nullable: false),
                     CountryId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -257,10 +243,9 @@ namespace ColoradoLuxury.Migrations
                     DropOffLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerTravelTypeId = table.Column<int>(type: "int", nullable: false),
                     TransferTypeId = table.Column<int>(type: "int", nullable: false),
-                    ExtraTimeId = table.Column<int>(type: "int", nullable: false),
-                    DurationId = table.Column<int>(type: "int", nullable: false),
+                    DurationId = table.Column<int>(type: "int", nullable: true),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -276,14 +261,7 @@ namespace ColoradoLuxury.Migrations
                         name: "FK_RideDetails_Durations_DurationId",
                         column: x => x.DurationId,
                         principalTable: "Durations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RideDetails_ExtraTimes_ExtraTimeId",
-                        column: x => x.ExtraTimeId,
-                        principalTable: "ExtraTimes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_RideDetails_TransferTypes_TransferTypeId",
                         column: x => x.TransferTypeId,
@@ -304,7 +282,7 @@ namespace ColoradoLuxury.Migrations
                     Fuel = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VehicleTypeId = table.Column<int>(type: "int", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -333,7 +311,7 @@ namespace ColoradoLuxury.Migrations
                     ArrivalAirlineInfoId = table.Column<int>(type: "int", nullable: false),
                     ForDriverbettingId = table.Column<int>(type: "int", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -378,11 +356,6 @@ namespace ColoradoLuxury.Migrations
                 name: "IX_RideDetails_DurationId",
                 table: "RideDetails",
                 column: "DurationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RideDetails_ExtraTimeId",
-                table: "RideDetails",
-                column: "ExtraTimeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RideDetails_TransferTypeId",
@@ -435,9 +408,6 @@ namespace ColoradoLuxury.Migrations
 
             migrationBuilder.DropTable(
                 name: "Durations");
-
-            migrationBuilder.DropTable(
-                name: "ExtraTimes");
 
             migrationBuilder.DropTable(
                 name: "TransferTypes");

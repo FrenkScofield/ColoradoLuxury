@@ -6,6 +6,12 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Options;
 using ColoradoLuxury.Models.VM;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using ColoradoLuxury.Extensions;
+using ColoradoLuxury.Services;
+using ColoradoLuxury.Models.BLL;
+using ColoradoLuxury.Enums;
+using ColoradoLuxury.Models.DAL;
 
 namespace ColoradoLuxury.Controllers
 {
@@ -13,18 +19,124 @@ namespace ColoradoLuxury.Controllers
     {
         public string? SessionId { get; set; }
         private readonly IConfiguration _configuration;
-        public PaymentController(IConfiguration configuration)
+        private readonly IEmailSender _emailsender;
+        private readonly IViewRenderService _viewRenderService;
+        private readonly ColoradoContext _context;
+
+        public PaymentController(IConfiguration configuration, IEmailSender emailsender, IViewRenderService viewRenderService, ColoradoContext context)
         {
-            _configuration= configuration;
+            _configuration = configuration;
+            _emailsender = emailsender;
+            _viewRenderService = viewRenderService;
+            _context = context;
         }
-        
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Success()
+        public async Task<IActionResult> SuccessAsync()
         {
+            //Insert 
+            //Get All Informations
+            var rideDetails = HttpContext.Session.GetObjectsession<RideDetailsVM>("rideDetails");
+            var vehicleDetails = HttpContext.Session.GetObjectsession<ChooseVehicleVM>("vehicleDetails");
+            var contactDetails = HttpContext.Session.GetObjectsession<ContactDetailsVM>("contactDetails");
+            BillingAddress billingAddress = null;
+            ArrivalAirlineInfo airlineInfo = null;
+            //using (var transaction = _context.Database.BeginTransaction())
+            //{
+                try
+                {
+                    RideDetail rideDetail = new RideDetail()
+                    {
+                        PickupDate = rideDetails.PickupDate,
+                        PickupTime = rideDetails.PickupTime,
+                        PickupLocation = rideDetails.PickupLocation,
+                        DropOffLocation = rideDetails.DropOffLocation,
+                        CustomerTravelTypeId = rideDetails.WayType ? (int)WayTypeEnum.Distance : (int)WayTypeEnum.Hourly,
+                        DurationId = null,
+                        TransferTypeId = rideDetails.TransferTypeId
+                    };
+
+                    VehicleInfoDetails vehicleInfoDetails = new VehicleInfoDetails()
+                    {
+                        PassengersCount = vehicleDetails.PassengersSelect,
+                        SuitCasesCount = vehicleDetails.Suitcases,
+                        VehicleTypeId = vehicleDetails.AllcarTpes,
+                        ChildSeatCount = vehicleDetails.ChildNumber,
+                        ChildSeatDescription = vehicleDetails.ChildAdditionalMessage,
+                        RoofTopCargoBoxCount = vehicleDetails.RoofCargoBoxNumber,
+                        RoofTopCargoBoxDescription = vehicleDetails.RoofCargoBoxAdditionalMessage
+                    };
+
+
+
+                    await _context.RideDetails.AddAsync(rideDetail);
+                    await _context.SaveChangesAsync();
+                    await _context.VehicleInfoDetails.AddAsync(vehicleInfoDetails);
+                    await _context.SaveChangesAsync();
+
+
+                    if (contactDetails.BillingAddressStatus)
+                    {
+                        billingAddress = new BillingAddress()
+                        {
+                            Company = contactDetails.CompanyRegisteredname,
+                            Tax = contactDetails.TaxNumber,
+                            City = contactDetails.City,
+                            Street = contactDetails.Street,
+                            State = contactDetails.State,
+                            Postal = contactDetails.PostalCode,
+                            CountryId = contactDetails.CountryId,
+                            Status = true
+                        };
+                       await _context.BillingAddress.AddAsync(billingAddress);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    if (contactDetails.AirLineStatus)
+                    {
+                        airlineInfo = new ArrivalAirlineInfo()
+                        {
+                            Flight = contactDetails.FlightNumber,
+                            AirlineId = contactDetails.AirlineId
+                        };
+                      await  _context.ArrivalAirlineInfos.AddAsync(airlineInfo);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    UserInfo userInfo = new UserInfo()
+                    {
+                        Firstname = contactDetails.Firstname,
+                        Surname = contactDetails.Lastname,
+                        Email = contactDetails.Email,
+                        Phone = contactDetails.PhoneNumber,
+                        Message = contactDetails.AdditionalContactDetailNote,
+                        BillingAddressId = billingAddress != null ? billingAddress.Id : null,
+                        ArrivalAirlineInfoId = airlineInfo != null ? airlineInfo.Id : null
+                    };
+                    await _context.UserInfos.AddAsync(userInfo);
+
+                    await _context.SaveChangesAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    //await transaction.RollbackAsync();
+
+                    throw;
+                }
+            //}
+
+
+
+            var result = await _viewRenderService.RenderToStringAsync("Checkout/Index", "");
+            await _emailsender.SendEmailAsync(contactDetails.Email, "Customer's all datas", result);
+            await _emailsender.SendEmailAsync("eminah@code.edu.az", "Customer's all datas", result);
+
+
             return View();
         }
 
@@ -38,7 +150,7 @@ namespace ColoradoLuxury.Controllers
             var currency = "usd";
             var successUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Payment/Success";
             var cancelUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Payment/Cancel";
-            
+
             StripeConfiguration.ApiKey = _configuration.GetValue<string>("StripeSettings:Secretkey");
             var options = new SessionCreateOptions
             {
@@ -46,7 +158,7 @@ namespace ColoradoLuxury.Controllers
                 {
                     "card"
                 },
-                LineItems= new List<SessionLineItemOptions> {
+                LineItems = new List<SessionLineItemOptions> {
                     new SessionLineItemOptions
                     {
                         PriceData = new SessionLineItemPriceDataOptions
@@ -63,7 +175,7 @@ namespace ColoradoLuxury.Controllers
                     }
                 },
                 Mode = "payment",
-                SuccessUrl=successUrl,
+                SuccessUrl = successUrl,
                 CancelUrl = cancelUrl
             };
 
