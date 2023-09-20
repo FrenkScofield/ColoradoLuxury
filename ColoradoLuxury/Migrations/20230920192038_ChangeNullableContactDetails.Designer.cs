@@ -4,6 +4,7 @@ using ColoradoLuxury.Models.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    partial class ColoradoContextModelSnapshot : ModelSnapshot
+    [Migration("20230920192038_ChangeNullableContactDetails")]
+    partial class ChangeNullableContactDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,32 +247,6 @@ namespace ColoradoLuxury.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Durations");
-                });
-
-            modelBuilder.Entity("ColoradoLuxury.Models.BLL.ExceptionLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ClientIpAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ExceptionLogs");
                 });
 
             modelBuilder.Entity("ColoradoLuxury.Models.BLL.ForDriverBetting", b =>

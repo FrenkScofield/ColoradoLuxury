@@ -47,96 +47,114 @@ namespace ColoradoLuxury.Controllers
             ArrivalAirlineInfo airlineInfo = null;
             //using (var transaction = _context.Database.BeginTransaction())
             //{
-                try
+            try
+            {
+                RideDetail rideDetail = new RideDetail()
                 {
-                    RideDetail rideDetail = new RideDetail()
-                    {
-                        PickupDate = rideDetails.PickupDate,
-                        PickupTime = rideDetails.PickupTime,
-                        PickupLocation = rideDetails.PickupLocation,
-                        DropOffLocation = rideDetails.DropOffLocation,
-                        CustomerTravelTypeId = rideDetails.WayType ? (int)WayTypeEnum.Distance : (int)WayTypeEnum.Hourly,
-                        DurationId = null,
-                        TransferTypeId = rideDetails.TransferTypeId
-                    };
+                    PickupDate = rideDetails.PickupDate,
+                    PickupTime = rideDetails.PickupTime,
+                    PickupLocation = rideDetails.PickupLocation,
+                    DropOffLocation = rideDetails.DropOffLocation,
+                    CustomerTravelTypeId = rideDetails.WayType ? (int)WayTypeEnum.Distance : (int)WayTypeEnum.Hourly,
+                    DurationId = null,
+                    TransferTypeId = rideDetails.TransferTypeId
+                };
 
-                    VehicleInfoDetails vehicleInfoDetails = new VehicleInfoDetails()
-                    {
-                        PassengersCount = vehicleDetails.PassengersSelect,
-                        SuitCasesCount = vehicleDetails.Suitcases,
-                        VehicleTypeId = vehicleDetails.AllcarTpes,
-                        ChildSeatCount = vehicleDetails.ChildNumber,
-                        ChildSeatDescription = vehicleDetails.ChildAdditionalMessage,
-                        RoofTopCargoBoxCount = vehicleDetails.RoofCargoBoxNumber,
-                        RoofTopCargoBoxDescription = vehicleDetails.RoofCargoBoxAdditionalMessage
-                    };
-
-
-
-                    await _context.RideDetails.AddAsync(rideDetail);
-                    await _context.SaveChangesAsync();
-                    await _context.VehicleInfoDetails.AddAsync(vehicleInfoDetails);
-                    await _context.SaveChangesAsync();
-
-
-                    if (contactDetails.BillingAddressStatus)
-                    {
-                        billingAddress = new BillingAddress()
-                        {
-                            Company = contactDetails.CompanyRegisteredname,
-                            Tax = contactDetails.TaxNumber,
-                            City = contactDetails.City,
-                            Street = contactDetails.Street,
-                            State = contactDetails.State,
-                            Postal = contactDetails.PostalCode,
-                            CountryId = contactDetails.CountryId,
-                            Status = true
-                        };
-                       await _context.BillingAddress.AddAsync(billingAddress);
-                        await _context.SaveChangesAsync();
-                    }
-
-                    if (contactDetails.AirLineStatus)
-                    {
-                        airlineInfo = new ArrivalAirlineInfo()
-                        {
-                            Flight = contactDetails.FlightNumber,
-                            AirlineId = contactDetails.AirlineId
-                        };
-                      await  _context.ArrivalAirlineInfos.AddAsync(airlineInfo);
-                        await _context.SaveChangesAsync();
-                    }
-
-                    UserInfo userInfo = new UserInfo()
-                    {
-                        Firstname = contactDetails.Firstname,
-                        Surname = contactDetails.Lastname,
-                        Email = contactDetails.Email,
-                        Phone = contactDetails.PhoneNumber,
-                        Message = contactDetails.AdditionalContactDetailNote,
-                        BillingAddressId = billingAddress != null ? billingAddress.Id : null,
-                        ArrivalAirlineInfoId = airlineInfo != null ? airlineInfo.Id : null
-                    };
-                    await _context.UserInfos.AddAsync(userInfo);
-
-                    await _context.SaveChangesAsync();
-
-                }
-                catch (Exception ex)
+                VehicleInfoDetails vehicleInfoDetails = new VehicleInfoDetails()
                 {
-                    //await transaction.RollbackAsync();
+                    PassengersCount = vehicleDetails.PassengersSelect,
+                    SuitCasesCount = vehicleDetails.Suitcases,
+                    VehicleTypeId = vehicleDetails.AllcarTpes,
+                    ChildSeatCount = vehicleDetails.ChildNumber,
+                    ChildSeatDescription = vehicleDetails.ChildAdditionalMessage,
+                    RoofTopCargoBoxCount = vehicleDetails.RoofCargoBoxNumber,
+                    RoofTopCargoBoxDescription = vehicleDetails.RoofCargoBoxAdditionalMessage
+                };
 
-                    throw;
+                await _context.RideDetails.AddAsync(rideDetail);
+                await _context.SaveChangesAsync();
+                await _context.VehicleInfoDetails.AddAsync(vehicleInfoDetails);
+                await _context.SaveChangesAsync();
+
+
+                if (contactDetails.BillingAddressStatus)
+                {
+                    billingAddress = new BillingAddress()
+                    {
+                        Company = contactDetails.CompanyRegisteredname,
+                        Tax = contactDetails.TaxNumber,
+                        City = contactDetails.City,
+                        Street = contactDetails.Street,
+                        State = contactDetails.State,
+                        Postal = contactDetails.PostalCode,
+                        CountryId = contactDetails.CountryId,
+                        Status = true
+                    };
+                    await _context.BillingAddress.AddAsync(billingAddress);
+                    await _context.SaveChangesAsync();
                 }
+
+                if (contactDetails.AirLineStatus)
+                {
+                    airlineInfo = new ArrivalAirlineInfo()
+                    {
+                        Flight = contactDetails.FlightNumber,
+                        AirlineId = contactDetails.AirlineId
+                    };
+                    await _context.ArrivalAirlineInfos.AddAsync(airlineInfo);
+                    await _context.SaveChangesAsync();
+                }
+
+                UserInfo userInfo = new UserInfo()
+                {
+                    Firstname = contactDetails.Firstname,
+                    Surname = contactDetails.Lastname,
+                    Email = contactDetails.Email,
+                    Phone = contactDetails.PhoneNumber,
+                    Message = contactDetails.AdditionalContactDetailNote,
+                    BillingAddressId = billingAddress != null ? billingAddress.Id : null,
+                    ArrivalAirlineInfoId = airlineInfo != null ? airlineInfo.Id : null
+                };
+                await _context.UserInfos.AddAsync(userInfo);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                //await transaction.RollbackAsync();
+
+                throw;
+            }
             //}
 
 
+            FilledAllDatas datas = new FilledAllDatas()
+            {
+                Firstname = contactDetails.Firstname,
+                Lastname = contactDetails.Lastname,
+                Email = contactDetails.Email,
+                Phonenumber = contactDetails.PhoneNumber,
+                PickupDate = rideDetails.PickupDate.Date.ToShortDateString(),
+                PickupTime = rideDetails.PickupTime,
+                PickupLocation = rideDetails.PickupLocation,
+                DropOffLocation = rideDetails.DropOffLocation,
+                Mile = $"{Convert.ToDecimal(HttpContext.Session.GetString("mile"))} mi",
+                DistanceTime = $"{HttpContext.Session.GetInt32("hours")}h {HttpContext.Session.GetInt32("minutes")}m",
+                TotalPrice = HttpContext?.Session?.GetString("distanceAmount"),
+                TransactionId = HttpContext?.Session?.GetString("TransactionId")
+            };
 
-            var result = await _viewRenderService.RenderToStringAsync("Checkout/Index", "");
-            await _emailsender.SendEmailAsync(contactDetails.Email, "Customer's all datas", result);
-            await _emailsender.SendEmailAsync("eminah@code.edu.az", "Customer's all datas", result);
+            var result = await _viewRenderService.RenderToStringAsync("Checkout/Index", datas);
 
-
+            try
+            {
+                await _emailsender.SendEmailAsync(contactDetails.Email, "Customer's all datas", result);
+                await _emailsender.SendEmailAsync("eminah@code.edu.az", "Customer's all datas", result);
+            }
+            catch (Exception ex)
+            {
+                ExceptionExtension.Log(ex, _context);
+                throw new Exception("There is problem on email provider!");
+            }
             return View();
         }
 
@@ -183,6 +201,7 @@ namespace ColoradoLuxury.Controllers
             var session = service.Create(options);
             SessionId = session.Id;
 
+            HttpContext?.Session?.SetString("TransactionId", SessionId);
             return Redirect(session.Url);
         }
     }

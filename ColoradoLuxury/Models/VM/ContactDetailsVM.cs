@@ -17,12 +17,12 @@
         public string? City { get; set; }
         public string? State { get; set; }
         public string? PostalCode { get; set; }
-        public int CountryId { get; set; }
+        public int? CountryId { get; set; }
 
         public bool BillingAddressStatus { get; set; }
         public bool AirLineStatus { get; set; }
 
-        public int AirlineId { get; set; }
+        public int? AirlineId { get; set; }
         public string? FlightNumber { get; set; }
 
 
