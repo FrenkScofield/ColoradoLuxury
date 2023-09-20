@@ -631,17 +631,36 @@ function SaveRideDetailsInfo(step) {
             let email = $("#emailAddress").val();
             let phoneNumber = $("#phoneNumber").val();
             let AdditionalContactDetailsNote = $("#additional-contact-details-note").val();
-            let companyRegisteredName = $("#company-registered-name").val();
-            let taxNumber = $("#taxNumber").val();
+            let companyRegisteredName = null;
+            let taxNumber = null;
+            let street = null;
+            let streetNumber = null;
+            let city = null;
+            let state = null;
+            let postalCode = null;
+            let country = null;
+            let airline = null;
+            let filingNumber = null;
 
-            let street = $("#street").val();
-            let streetNumber = $("#streetNumber").val();
-            let city = $("#city").val();
-            let state = $("#state").val();
-            let postalCode = $("#postalCode").val();
-            let country = $("#country").val();
-            let airline = $("#airline").val();
-            let filingNumber = $("#filingNumber").val();
+
+
+            if (bill.checked) {
+                 companyRegisteredName = $("#company-registered-name").val();
+                 taxNumber = $("#taxNumber").val();
+                 street = $("#street").val();
+                 streetNumber = $("#streetNumber").val();
+                 city = $("#city").val();
+                 state = $("#state").val();
+                 postalCode = $("#postalCode").val();
+                 country = $("#country").val();
+                 
+            }
+            if (airlineInfo.checked) {
+                airline = $("#airline").val();
+                filingNumber = $("#filingNumber").val();
+            }
+
+            
 
 
             data = {

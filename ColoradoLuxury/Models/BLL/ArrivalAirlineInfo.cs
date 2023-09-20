@@ -3,7 +3,7 @@
     public class ArrivalAirlineInfo:AbstractEntity
     {
         public string? Flight { get; set; }
-        public int AirlineId { get; set; }
+        public int? AirlineId { get; set; }
 
         public bool Status { get; set; }
 

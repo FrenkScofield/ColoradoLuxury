@@ -6,6 +6,7 @@ namespace ColoradoLuxury.Controllers
     {
         public IActionResult Index()
         {
+
             return View();
         }
     }

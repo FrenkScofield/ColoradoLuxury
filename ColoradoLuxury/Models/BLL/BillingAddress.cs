@@ -8,7 +8,7 @@
         public string City { get; set; }
         public string State { get; set; }
         public string Postal { get; set; }
-        public int CountryId { get; set; }
+        public int? CountryId { get; set; }
 
         public bool Status { get; set; }
         public Country Country { get; set; }
