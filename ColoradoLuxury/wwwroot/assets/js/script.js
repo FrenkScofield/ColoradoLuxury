@@ -577,6 +577,11 @@ function SaveRideDetailsInfo(step) {
             let pickuplocation = $("#pickuplocation").val();
             let dropOffLocation = $("#dropOffLocation").val();
             let transferTypeId = $("#transferType").val();
+            let durationInHours = $("#durationInHoursSelected").val();
+
+            if (durationInHours == '') {
+                durationInHours = null;
+            }
 
             if (transferTypeId == '')
                 transferTypeId = 0;
@@ -587,7 +592,8 @@ function SaveRideDetailsInfo(step) {
                 PickupTime: time,
                 PickupLocation: pickuplocation,
                 DropOffLocation: dropOffLocation,
-                TransferTypeId: transferTypeId
+                TransferTypeId: transferTypeId,
+                DurationInHours: durationInHours
             }
             console.log(data);
             AjaxPost("/RideDetails/AddDetails/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
