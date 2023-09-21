@@ -10,6 +10,9 @@
         public string? DropOffLocation { get; set; }
         public int TransferTypeId { get; set; }
 
+        public int? DurationInHours { get; set; }
+
+
         public string GetPickupDateAndTime()
         {
             return String.Concat(PickupDate.Date.ToShortDateString(),", ", PickupTime);

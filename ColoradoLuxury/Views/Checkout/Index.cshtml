@@ -19,7 +19,7 @@
                 <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
                     <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:150px">Order status</span><b style="color:green;font-weight:normal;margin:0">Success</b></p>
                     <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Transaction ID</span> @Model.TransactionId</p>
-                    <p style="font-size:14px;margin:0 0 0 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Total</span> @Model.TotalPrice</p>
+                    <p style="font-size:14px;margin:0 0 0 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Total</span> $@Model.TotalPrice</p>
                 </td>
             </tr>
             <tr>
@@ -33,41 +33,76 @@
                     <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Email</span> @Model.Email</p>
                     <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Phone</span> @Model.Phonenumber</p>
                 </td>
-               @* <td style="width:50%;padding:20px;vertical-align:top">
-                    <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Pickup Date</span> @Model.PickupDate</p>
-                    <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Pickup Time</span> @Model.PickupTime</p>
-                    <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Pickup Location</span> @Model.PickupLocation</p>
-                    <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Drop-Off Location</span> @Model.DropOffLocation</p>
 
-                    <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Mile</span> @Model.Mile</p>
-
-
-
-                </td>*@
             </tr>
             <tr>
-                <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">Items</td>
+                <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">Ride details</td>
             </tr>
             <tr>
                 <td colspan="2" style="padding:15px;">
+                    <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Customer travel type</span> @Model.CustomerTravelType</p>
+
                     <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Pickup Date</span> @Model.PickupDate</p>
                     <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Pickup Time</span> @Model.PickupTime</p>
                     <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Pickup Location</span> @Model.PickupLocation</p>
                     <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Drop-Off Location</span>  @Model.DropOffLocation</p>
+                    @if (Model.Duration != null)
+                    {
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Duration</span>  @Model.Duration</p>
+                    }
+
                     <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Mile</span> @Model.Mile</p>
                 </td>
             </tr>
-        </tbody>
-        @*<tfooter>
             <tr>
-                <td colspan="2" style="font-size:14px;padding:50px 15px 0 15px;">
-                    <strong style="display:block;margin:0 0 10px 0;">Regards</strong> Bachana Tours<br> Gorubathan, Pin/Zip - 735221, Darjeeling, West bengal, India<br><br>
-                    <b>Phone:</b> 03552-222011<br>
-                    <b>Email:</b> contact@bachanatours.in
+                <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">Vehicle details</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding:15px;">
+                    <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Passengers count</span> @Model.PassengersCount</p>
+                    <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Suitcase count</span> @Model.SuitCasesCount</p>
+                    <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Vehicle type</span> @Model.VehicleType</p>
+                    <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Child count</span>  @Model.ChildSeatCount</p>
+                    <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Note</span> @Model.ChildSeatAdditionalNote</p>
+                    <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Rooftop cargo box count</span>  @Model.RoofCargoBoxCount</p>
+                    <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Note</span> @Model.RoofCargoBoxAdditionalNote</p>
                 </td>
             </tr>
-        </tfooter>*@
+
+            @if (Model.BillingAddressStatus)
+            {
+                <tr>
+                    <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">Billing address details</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding:15px;">
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Company name</span> @Model.CompanyName</p>
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Tax number</span> @Model.TaxNumber</p>
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Street</span> @Model.Street</p>
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Street number</span>  @Model.StreetNumber</p>
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">City</span> @Model.City</p>
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">State</span> @Model.State</p>
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Postal code</span> @Model.PostalCode</p>
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Country</span> @Model.Country</p>
+
+
+                    </td>
+                </tr>
+            }
+
+            @if (Model.AirlineStatus)
+            {
+                <tr>
+                    <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">Airline details</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding:15px;">
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Airline</span> @Model.Airline</p>
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"><span style="display:block;font-size:13px;font-weight:normal;">Flight number</span> @Model.FlightNumber</p>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 </body>
-
 </html>

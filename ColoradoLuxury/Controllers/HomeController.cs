@@ -18,7 +18,6 @@ namespace ColoradoLuxury.Controllers
             _logger = logger;
             _context = context;
         }
-
         public IActionResult Index()
         {
             HomeInfoDetailsVM viewModel = new HomeInfoDetailsVM() {
@@ -110,11 +109,7 @@ namespace ColoradoLuxury.Controllers
             HttpContext.Session.SetInt32("minutes", model.Minutes);
 
 
-            return Json(new
-            {
-
-
-            });
+            return Json(new{});
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -36,6 +36,7 @@ namespace ColoradoLuxury.Controllers
             return View();
         }
 
+
         public async Task<IActionResult> SuccessAsync()
         {
             //Insert 
@@ -49,6 +50,7 @@ namespace ColoradoLuxury.Controllers
             //{
             try
             {
+
                 RideDetail rideDetail = new RideDetail()
                 {
                     PickupDate = rideDetails.PickupDate,
@@ -56,8 +58,8 @@ namespace ColoradoLuxury.Controllers
                     PickupLocation = rideDetails.PickupLocation,
                     DropOffLocation = rideDetails.DropOffLocation,
                     CustomerTravelTypeId = rideDetails.WayType ? (int)WayTypeEnum.Distance : (int)WayTypeEnum.Hourly,
-                    DurationId = null,
-                    TransferTypeId = rideDetails.TransferTypeId
+                    DurationId = rideDetails.DurationInHours != null ? rideDetails.DurationInHours : null,
+                    TransferTypeId = rideDetails.TransferTypeId != 0 ? rideDetails.TransferTypeId : 0
                 };
 
                 VehicleInfoDetails vehicleInfoDetails = new VehicleInfoDetails()
@@ -129,18 +131,40 @@ namespace ColoradoLuxury.Controllers
 
             FilledAllDatas datas = new FilledAllDatas()
             {
+                CustomerTravelType = rideDetails.WayType ? WayTypeEnum.Distance.ToString() : WayTypeEnum.Hourly.ToString(),
                 Firstname = contactDetails.Firstname,
                 Lastname = contactDetails.Lastname,
                 Email = contactDetails.Email,
                 Phonenumber = contactDetails.PhoneNumber,
+                ContactAdditionalNote = contactDetails.AdditionalContactDetailNote,
+                CompanyName = contactDetails.CompanyRegisteredname,
+                TaxNumber = contactDetails.TaxNumber,
+                Street = contactDetails.Street,
+                StreetNumber = contactDetails.StreetNumber,
+                City = contactDetails.City,
+                State = contactDetails.State,
+                PostalCode = contactDetails.PostalCode,
+                Country = contactDetails.CountryId != null ? _context.Countries.Where(c => c.Id == contactDetails.CountryId).FirstOrDefault()?.Name : null,
+                Airline = contactDetails.AirlineId != null ? _context.AirLines.Where(a => a.Id == contactDetails.AirlineId).FirstOrDefault()?.Name : null,
+                FlightNumber = contactDetails.FlightNumber,
+                PassengersCount = vehicleDetails.PassengersSelect,
+                SuitCasesCount = vehicleDetails.Suitcases,
+                VehicleType = vehicleDetails.AllcarTpes != 0 ? _context.VehicleTypes.Where(v => v.Id == vehicleDetails.AllcarTpes).FirstOrDefault()?.TypeName : null,
+                ChildSeatCount = vehicleDetails.ChildNumber,
+                ChildSeatAdditionalNote = vehicleDetails.ChildAdditionalMessage,
+                RoofCargoBoxCount = vehicleDetails.RoofCargoBoxNumber,
+                RoofCargoBoxAdditionalNote = vehicleDetails.RoofCargoBoxAdditionalMessage,
                 PickupDate = rideDetails.PickupDate.Date.ToShortDateString(),
                 PickupTime = rideDetails.PickupTime,
                 PickupLocation = rideDetails.PickupLocation,
                 DropOffLocation = rideDetails.DropOffLocation,
+                Duration = rideDetails.DurationInHours != null ? _context.Durations.Where(d => d.Id == rideDetails.DurationInHours).FirstOrDefault()?.Time : null,
                 Mile = $"{Convert.ToDecimal(HttpContext.Session.GetString("mile"))} mi",
                 DistanceTime = $"{HttpContext.Session.GetInt32("hours")}h {HttpContext.Session.GetInt32("minutes")}m",
                 TotalPrice = HttpContext?.Session?.GetString("distanceAmount"),
-                TransactionId = HttpContext?.Session?.GetString("TransactionId")
+                TransactionId = HttpContext?.Session?.GetString("TransactionId"),
+                BillingAddressStatus = contactDetails.BillingAddressStatus,
+                AirlineStatus = contactDetails.AirLineStatus
             };
 
             var result = await _viewRenderService.RenderToStringAsync("Checkout/Index", datas);
@@ -163,6 +187,7 @@ namespace ColoradoLuxury.Controllers
             return View();
         }
 
+        [Route("payment")]
         public ActionResult Create()
         {
             var currency = "usd";
