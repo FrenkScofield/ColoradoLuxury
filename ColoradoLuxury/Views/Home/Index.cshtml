@@ -288,28 +288,41 @@
                                 </div>
 
                             </div>
-                            <div class="col-lg-12 backroundAndBorderTema">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="imagesAllVehicles">
-                                            <p class="carType">Luxury Sedan</p>
-                                            <p class="vehiclePrice">$ 450.00</p>
+
+
+
+                            <div class="allvehicletypes">
+                                @foreach (var type in Model.VehicleTypes)
+                                {
+                                    @if (type.Id != 2)
+                                    {
+                                        <div class="col-lg-12 backroundAndBorderTema">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="imagesAllVehicles">
+                                                        <p class="carType">@type.TypeName</p>
+                                                        <p class="vehiclePrice">$ 450.00</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="humanSuitcase">
+                                                        <img src="https://img.icons8.com/ios/50/ADADAD/conference-call--v1.png" /><span>4</span>
+                                                        <img src="https://img.icons8.com/50/ADADAD/pastel-glyph/64/null/suitcase--v4.png"
+                                                     style="padding-bottom: 8px;" /><span>4</span>
+                                                        <button id="vehicleSelect" type="button"
+                                                        class="btn btn-outline-secondary toggle-button-vehicle">
+                                                            Select
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="humanSuitcase">
-                                            <img src="https://img.icons8.com/ios/50/ADADAD/conference-call--v1.png" /><span>4</span>
-                                            <img src="https://img.icons8.com/50/ADADAD/pastel-glyph/64/null/suitcase--v4.png"
-                                                 style="padding-bottom: 8px;" /><span>4</span>
-                                            <button id="vehicleSelect" type="button"
-                                                    class="btn btn-outline-secondary toggle-button-vehicle">
-                                                Select
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                    }
+
+                                }
                             </div>
-                            <div class="col-lg-12 backroundAndBorderTema  ">
+
+                            <div class="col-lg-12 backroundAndBorderTema mt-3">
                                 <div class=" accordion">
                                     <div class="accordion-item">
                                         <div class="accordion-item-header">
