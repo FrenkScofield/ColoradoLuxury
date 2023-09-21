@@ -1,10 +1,10 @@
-﻿@model ColoradoLuxury.Models.BLL.VehicleType
+﻿@model ColoradoLuxury.Models.VM.VehicleTypeDetailsVM
 @{
     ViewData["Title"] = "EditVehicleType";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
 }
 
-
+<link href="~/admin/css/vehicletype.css" rel="stylesheet" />
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
         <form class="form-horizontal" method="post" enctype="multipart/form-data"  role="form">
@@ -18,6 +18,10 @@
                     <label class="col-sm-4 control-label" for="textinput">Type Name</label>
                     <div class="col-sm-10">
                         <input asp-for="TypeName" type="text" placeholder="write new name..." value="@Model.TypeName" class="form-control">
+                    </div>
+                    <label class="col-sm-4 control-label" for="textinput">Per mile</label>
+                    <div class="col-sm-10">
+                        <input asp-for="PerMile" type="text" placeholder="per mile" value="@Model.PerMile" id="permile" class="form-control">
                     </div>
                 </div>
 
@@ -34,5 +38,12 @@
         </form>
     </div><!-- /.col-lg-12 -->
 </div><!-- /.row -->
+
+<span class="validation">@Html.ValidationMessage("PerMile")</span>
+
+<script src="~/lib/jquery/jquery3.6.4/jquery3.6.4.js"></script>
+<partial name="_ValidationScriptsPartial" />
+
+<script src="~/admin/js/vehicletype/vehicletype.js"></script>
 
 

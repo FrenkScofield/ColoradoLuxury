@@ -14,7 +14,7 @@
         display: none;
     }
 
-    .btn-outline-secondary{
+    .btn-outline-secondary {
         margin-bottom: 10px
     }
 </style>
@@ -35,20 +35,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                           @foreach (var item in Model)
+                        @for (int i = 0; i < Model.Count(); i++)
                         {
-                        <tr>
-                            <td>@item.TypeName</td>
-                            <td>
-                                <div style="display:flex">
+                            <tr>
+                                <td>@Model.ToArray()[i].TypeName</td>
+                                <td>$@Model.ToArray()[i].PerMile</td>
 
-                                    <a asp-controller="VehicleType" asp-action="EditVehicleType" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-Id="@item.Id"></a>
-                                        <a asp-controller="VehicleType" asp-action="DeleteVehicleType" asp-route-id="@item.Id" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
-
-                                </div>
-                            </td>
-                        </tr>
+                                <td>
+                                    <div style="display:flex">
+                                        <a asp-controller="VehicleType" asp-action="EditVehicleType" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-Id="@Model.ToArray()[i].Id"></a>
+                                        <a asp-controller="VehicleType" asp-action="DeleteVehicleType" asp-route-id="@Model.ToArray()[i].Id" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
+                                        <input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" />
+                                    </div>
+                                </td>
+                            </tr>
                         }
+
                     </tbody>
                 </table>
             </div>
@@ -56,3 +58,20 @@
     </div>
 </div>
 
+<script src="/lib/jquery/jquery3.6.4/jquery3.6.4.js"></script>
+<script>
+    function selectOnlyThis(id) {
+        for (var i = 0; i < @Model.Count(); i++) {
+            var getCheckedInput = $(`#check${i}`);
+
+            for (var index = 0; index < getCheckedInput[0].attributes.length; index++) {
+                if (getCheckedInput[0].attributes[index].name == "checked") {
+                    getCheckedInput.attr("checked", false);
+                    getCheckedInput.prop("checked", false);
+                    getCheckedInput.trigger("change");
+                }
+            }
+        }
+        $(`#${id}`).attr("checked", true);
+    }
+</script>
