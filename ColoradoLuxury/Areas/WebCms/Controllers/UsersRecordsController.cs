@@ -11,5 +11,10 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         {
             return View();
         }
+
+        public IActionResult OrderRecord()
+        {
+            return View();
+        }
     }
 }

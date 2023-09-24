@@ -3,7 +3,11 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    .card-body .col-6 .specialSpace {
+        margin-bottom: 25px;
+    }
+</style>
 <div class="row">
     <div class="col-md-12 my-4">
         <div class="card shadow mb-4">
@@ -39,45 +43,33 @@
                     <div class="col-6">
                         <div class="input-group specialSpace ">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Distance</span>
+                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Distance KM</span>
                             </div>
                             <input type="number" class="form-control" aria-label="MinumumDistance" aria-describedby="inputGroup-sizing-default" placeholder="0 Km">
                         </div>
-                       @* <div class="input-group specialSpace ">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Duration</span>
-                            </div>
-                            <input type="number" class="form-control" aria-label="MinumumDuration" aria-describedby="inputGroup-sizing-default" placeholder="0 Minute">
-                        </div>*@
                         <div class="input-group specialSpace ">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Booking Value</span>
+                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Booking Value $</span>
                             </div>
                             <input type="number" class="form-control" aria-label="MinumumBookingValue" aria-describedby="inputGroup-sizing-default" placeholder="0 $">
                         </div>
-                        <button type="button" class="btn btn-outline-success float-right">Add</button>
+                        <button type="button" class="btn btn-outline-success float-right">Save</button>
                     </div>
 
                     <div class="col-6">
-                       @* <div class="input-group specialSpace ">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Distance</span>
-                            </div>
-                            <input type="number" class="form-control" aria-label="MinumumDistance" aria-describedby="inputGroup-sizing-default" placeholder="0 Km">
-                        </div>*@
                         <div class="input-group specialSpace ">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Duration</span>
+                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Duration Minute</span>
                             </div>
                             <input type="number" class="form-control" aria-label="MinumumDuration" aria-describedby="inputGroup-sizing-default" placeholder="0 Minute">
                         </div>
                         <div class="input-group specialSpace ">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Booking Value</span>
+                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Booking Value $</span>
                             </div>
                             <input type="number" class="form-control" aria-label="MinumumBookingValue" aria-describedby="inputGroup-sizing-default" placeholder="0 $">
                         </div>
-                        <button type="button" class="btn btn-outline-success float-right">Add</button>
+                        <button type="button" class="btn btn-outline-success float-right">Save</button>
                     </div>
                 </div>
             </div>

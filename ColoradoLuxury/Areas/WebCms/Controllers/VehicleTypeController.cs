@@ -1,4 +1,4 @@
-﻿using ColoradoLuxury.Models.BLL;
+using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
 using Microsoft.AspNetCore.Mvc;
@@ -26,29 +26,31 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddVehicleType(string vehicleType, string permile)
+        [HttpPost] 
+        public async Task<IActionResult> AddVehicleType(string TypeName, string PerMile , string Hourly)
         {
             if (ModelState.IsValid)
             {
-                if (decimal.TryParse(permile, out decimal result))
+                if (decimal.TryParse(PerMile, out decimal PerMileResult) && decimal.TryParse(PerMile, out decimal HourlyResult))
                 {
-                    result = decimal.Parse(permile);
+                    PerMileResult = decimal.Parse(PerMile);
+                    HourlyResult = decimal.Parse(Hourly);
+
                 }
                 else
                 {
-                    ModelState.AddModelError("PerMile", "Value not valid");
+                    ModelState.AddModelError("PerMile or Hourly", "Value not valid");
                     return View();
                 }
-                if (vehicleType != null)
+                if (TypeName != null)
                 {
 
-                    string perMileTake2digit = Convert.ToDecimal(permile).ToString("F2");
+                    string perMileTake2digit = Convert.ToDecimal(PerMile).ToString("F2");
                     VehicleType typName = new VehicleType()
                     {
-                        TypeName = vehicleType,
-                        PerMile = result,
-                        IsActive = false
+                        TypeName = TypeName,
+                        PerMile = PerMileResult,
+                        Hourly = HourlyResult
                     };
 
                     if (_context.VehicleTypes.Count() == 0)
@@ -74,8 +76,8 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
             if (vehicleType == null) return NotFound();
 
-            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() { Id = vehicleType.Id, TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2"), IsActive = vehicleType.IsActive };
 
+            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() {Id = vehicleType.Id,  Hourly = vehicleType.Hourly.ToString("F3"), TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2"), , IsActive = vehicleType.IsActive };
             return View(model);
         }
 
@@ -84,13 +86,14 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         {
             if (vehicleType == null) return NotFound();
 
-            if (decimal.TryParse(vehicleType.PerMile, out decimal permile))
+            if (decimal.TryParse(vehicleType.PerMile, out decimal permile) && decimal.TryParse(vehicleType.Hourly, out decimal hourly))
             {
                 permile = decimal.Parse(vehicleType.PerMile);
+                hourly = decimal.Parse(vehicleType.Hourly);
             }
             else
             {
-                ModelState.AddModelError("PerMile", "Value not valid");
+                ModelState.AddModelError("PerMile or Hourly", "Value not valid");
                 return View(vehicleType);
             }
 
@@ -99,14 +102,18 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             if (vehicleT == null) return NotFound();
 
             vehicleT.TypeName = vehicleType.TypeName;
-            vehicleT.PerMile = permile;
+            vehicleT.PerMile = permile;    
             vehicleT.IsActive = vehicleType.IsActive;
+            vehicleT.Hourly = hourly;
+
+
 
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
 
         }
+
 
         [HttpPost]
         public IActionResult SetAsDefaultVehicleType(int id)
@@ -141,6 +148,23 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 vehicleType,
                 success = true
             });
+
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteVehicleType(int Id)
+        {
+            if (Id == 0) return NotFound();
+
+            VehicleType vehicleType  = await _context.VehicleTypes.FindAsync(Id);
+
+            if (vehicleType == null) return NotFound();
+
+            _context.VehicleTypes.Remove(vehicleType);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }
