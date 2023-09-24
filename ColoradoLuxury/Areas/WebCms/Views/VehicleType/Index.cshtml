@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ColoradoLuxury.Models.BLL.VehicleType>
+@model IEnumerable<ColoradoLuxury.Models.BLL.VehicleType>
 
 @{
     ViewData["Title"] = "Index";
@@ -48,7 +48,7 @@
                     <tbody>
                         @for (int i = 0; i < Model.Count(); i++)
                         {
-                            <tr>
+                            <tr data-v-id="@Model.ToArray()[i].Id">
                                 <td>@Model.ToArray()[i].TypeName</td>
                                 <td>$@Model.ToArray()[i].PerMile</td>
                                 <td>@Model.ToArray()[i].Hourly</td>
@@ -57,8 +57,12 @@
                                 <td>
                                     <div >
                                         <a asp-controller="VehicleType" asp-action="EditVehicleType" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-Id="@Model.ToArray()[i].Id"></a>
+
+                                        <input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" @(Model.ToArray()[i].IsActive ? "checked='checked'" : "") />
+
                                         <a asp-controller="VehicleType" asp-action="DeleteVehicleType" asp-route-Id="@Model.ToArray()[i].Id" class="btn text-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
                                         
+
                                     </div>
                                 </td>
                             </tr>
@@ -72,6 +76,8 @@
 </div>
 
 <script src="/lib/jquery/jquery3.6.4/jquery3.6.4.js"></script>
+<script src="/lib/ajax/ajax-library.js"></script>
+
 <script>
     function selectOnlyThis(id) {
         for (var i = 0; i < @Model.Count(); i++) {
@@ -79,6 +85,7 @@
 
             for (var index = 0; index < getCheckedInput[0].attributes.length; index++) {
                 if (getCheckedInput[0].attributes[index].name == "checked") {
+                    console.log(getCheckedInput[0].attributes[index].name);
                     getCheckedInput.attr("checked", false);
                     getCheckedInput.prop("checked", false);
                     getCheckedInput.trigger("change");
@@ -86,5 +93,22 @@
             }
         }
         $(`#${id}`).attr("checked", true);
+
+        let dataVehicleId = $(`#${id}`).parent().parent().parent().attr("data-v-id");
+
+        console.log()
+
+        AjaxPost("/WebCms/VehicleType/SetAsDefaultVehicleType/", { id: dataVehicleId }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+        console.log(response);
+
+            if (response.hasOwnProperty('success')) {
+                alert(`${response.vehicleType.typeName} is already Active`);
+                return;
+            }
+        
+            if (response.hasOwnProperty('BadRequest')) {
+                alert("Something went wrong!");
+            }
+    });
     }
 </script>

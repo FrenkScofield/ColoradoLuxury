@@ -11,6 +11,7 @@ using System.Configuration;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ColoradoLuxury.Services;
+using Stripe.BillingPortal;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -18,7 +19,7 @@ builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterVa
 
 builder.Services.AddDbContext<ColoradoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
-
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
 builder.Services.AddScoped<IEmailSender, EmailSender>(emailsender => new EmailSender(
@@ -30,6 +31,8 @@ builder.Services.AddScoped<IEmailSender, EmailSender>(emailsender => new EmailSe
                builder.Configuration["EmailSetting:Subject"]
 
                ));
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IViewRenderService, ViewRenderToString>();
 
 builder.WebHost
@@ -53,8 +56,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
 app.UseSession();
+app.UseRouting();
 
 app.UseAuthorization();
 

@@ -1,4 +1,4 @@
-﻿using ColoradoLuxury.Models.BLL;
+using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +35,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 {
                     PerMileResult = decimal.Parse(PerMile);
                     HourlyResult = decimal.Parse(Hourly);
+
                 }
                 else
                 {
@@ -43,6 +44,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 }
                 if (TypeName != null)
                 {
+
                     string perMileTake2digit = Convert.ToDecimal(PerMile).ToString("F2");
                     VehicleType typName = new VehicleType()
                     {
@@ -50,6 +52,10 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                         PerMile = PerMileResult,
                         Hourly = HourlyResult
                     };
+
+                    if (_context.VehicleTypes.Count() == 0)
+                        typName.IsActive = true;
+
 
                     _context.VehicleTypes.Add(typName);
                 }
@@ -66,12 +72,12 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         {
             if (Id == 0) return NotFound();
 
-            VehicleType vehicleType = await _context.VehicleTypes.FindAsync(Id);
+            VehicleType? vehicleType = await _context.VehicleTypes.FindAsync(Id);
 
             if (vehicleType == null) return NotFound();
 
-            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() {Id = vehicleType.Id,  Hourly = vehicleType.Hourly.ToString("F3"), TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2") };
 
+            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() {Id = vehicleType.Id,  Hourly = vehicleType.Hourly.ToString("F3"), TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2"), , IsActive = vehicleType.IsActive };
             return View(model);
         }
 
@@ -91,13 +97,15 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 return View(vehicleType);
             }
 
-            VehicleType vehicleT = await _context.VehicleTypes.FindAsync(vehicleType.Id);
+            VehicleType? vehicleT = await _context.VehicleTypes.FindAsync(vehicleType.Id);
 
             if (vehicleT == null) return NotFound();
 
             vehicleT.TypeName = vehicleType.TypeName;
-            vehicleT.PerMile = permile;
+            vehicleT.PerMile = permile;    
+            vehicleT.IsActive = vehicleType.IsActive;
             vehicleT.Hourly = hourly;
+
 
 
             await _context.SaveChangesAsync();
@@ -105,6 +113,41 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
+
+        [HttpPost]
+        public IActionResult SetAsDefaultVehicleType(int id)
+        {
+            if (id <= 0)
+                return Json(new
+                {
+                    BadRequest = true
+                });
+
+            var vehicleType = _context.VehicleTypes.Where(x => x.Id == id).FirstOrDefault();
+
+            if (vehicleType == null) return NotFound();
+
+            var defaultVehicleType = _context.VehicleTypes.Where(x => x.IsActive == true).FirstOrDefault();
+
+            if (defaultVehicleType != null)
+            {
+                defaultVehicleType.IsActive = false;
+                _context.VehicleTypes.Update(defaultVehicleType);
+            }
+
+            
+
+            vehicleType.IsActive = true;
+
+            _context.VehicleTypes.Update(vehicleType);
+            _context.SaveChanges();
+
+            return Json(new
+            {
+                vehicleType,
+                success = true
+            });
 
 
         [HttpGet]
@@ -121,6 +164,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+
         }
     }
 }

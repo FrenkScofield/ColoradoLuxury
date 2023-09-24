@@ -500,9 +500,6 @@ div.map-info span{
     font-weight: bold;
 }
 
-div.allvehicletypes {
-    width: 100%;
-    height: 500px;
-    overflow-y: scroll;
-    border-radius: 10px;
+button.toggle-button-vehicle{
+    cursor: pointer;
 }

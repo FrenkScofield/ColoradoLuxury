@@ -4,6 +4,7 @@ using ColoradoLuxury.Models.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    partial class ColoradoContextModelSnapshot : ModelSnapshot
+    [Migration("20230924190843_addRideAndVehicleDetailsForeignKeyId")]
+    partial class addRideAndVehicleDetailsForeignKeyId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -454,7 +456,10 @@ namespace ColoradoLuxury.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("VehicleInfoDetailsId")
+                    b.Property<int?>("VehicleIndoDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VehicleInfoDetailsId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -572,9 +577,6 @@ namespace ColoradoLuxury.Migrations
                     b.Property<DateTime?>("EditDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<decimal>("PerMile")
                         .HasColumnType("decimal(18,2)");
 
@@ -655,7 +657,9 @@ namespace ColoradoLuxury.Migrations
 
                     b.HasOne("ColoradoLuxury.Models.BLL.VehicleInfoDetails", "VehicleInfoDetails")
                         .WithMany()
-                        .HasForeignKey("VehicleInfoDetailsId");
+                        .HasForeignKey("VehicleInfoDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ArrivalAirlineInfo");
 
