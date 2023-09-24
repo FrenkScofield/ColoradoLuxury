@@ -53,18 +53,27 @@ namespace ColoradoLuxury.Controllers
                 wayType = WayTypeEnum.Distance.ToString();
             else
                 wayType = WayTypeEnum.Hourly.ToString();
-
-            GeneralInformationAboutRide getTextForIdVM = new GeneralInformationAboutRide()
+            GeneralInformationAboutRide getTextForIdVM = null;
+            try
             {
-                TransferType = _context.TransferTypes.Where(tp => tp.Id == rideDetails.TransferTypeId).FirstOrDefault()?.Name,
-                VehicleType = _context.VehicleTypes.Where(tp => tp.Id == vehicleDetails.AllcarTpes).FirstOrDefault()?.TypeName,
-                Country = _context.Countries.Where(tp => tp.Id == contactDetails.CountryId).FirstOrDefault()?.Name,
-                AirLine = _context.AirLines.Where(tp => tp.Id == contactDetails.AirlineId).FirstOrDefault()?.Name,
-                WayType = wayType,
-                PickupDateAndTime = rideDetails.GetPickupDateAndTime(),
-                TotalDistance = $"{Convert.ToDecimal(HttpContext.Session.GetString("mile"))} mi",
-                DistanceTime = $"{HttpContext.Session.GetInt32("hours")}h {HttpContext.Session.GetInt32("minutes")}m" 
-            };
+                 getTextForIdVM = new GeneralInformationAboutRide()
+                {
+                    TransferType = _context.TransferTypes.Where(tp => tp.Id == rideDetails.TransferTypeId).FirstOrDefault()?.Name,
+                    VehicleType = _context.VehicleTypes.Where(tp => tp.Id == vehicleDetails.AllcarTpes).FirstOrDefault()?.TypeName,
+                    Country = _context.Countries.Where(tp => tp.Id == contactDetails.CountryId).FirstOrDefault()?.Name,
+                    AirLine = _context.AirLines.Where(tp => tp.Id == contactDetails.AirlineId).FirstOrDefault()?.Name,
+                    WayType = wayType,
+                    PickupDateAndTime = rideDetails.GetPickupDateAndTime(),
+                    TotalDistance = $"{Convert.ToDecimal(HttpContext.Session.GetString("mile"))} mi",
+                    DistanceTime = $"{HttpContext.Session.GetInt32("hours")}h {HttpContext.Session.GetInt32("minutes")}m"
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
             return Json(new
             {
                 rideDetails,
@@ -72,6 +81,22 @@ namespace ColoradoLuxury.Controllers
                 contactDetails,
                 getTextForIdVM
             });
+
+        }
+
+        [HttpPost]
+        public IActionResult GetAmountByVehicle(string sessionName)
+        {
+            VehicleAmounts? amount = HttpContext.Session.GetObjectsession<VehicleAmounts>($"{sessionName}-result");
+
+            if (HttpContext.Session.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession") != null)
+            {
+                HttpContext.Session.Remove("activeVehicleAmountSession");
+            }
+            HttpContext.Session.SetObjectsession("activeVehicleAmountSession", amount);
+            
+
+            return Json(new { amount });
 
         }
     }

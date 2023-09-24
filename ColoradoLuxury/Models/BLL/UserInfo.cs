@@ -11,9 +11,17 @@
         public int? ArrivalAirlineInfoId { get; set; }
         public int? ForDriverbettingId { get; set; }
 
+        public int? RideDetailId { get; set; }
+        public int? VehicleInfoDetailsId { get; set; }
+
+
         public BillingAddress BillingAddress { get; set; }
         public ArrivalAirlineInfo ArrivalAirlineInfo { get; set; }
         public ForDriverBetting ForDriverBetting { get; set; }
+        public RideDetail RideDetail { get; set; }
+        public VehicleInfoDetails VehicleInfoDetails { get; set; }
+
+
 
 
 

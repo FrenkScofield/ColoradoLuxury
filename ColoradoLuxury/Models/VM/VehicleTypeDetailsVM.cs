@@ -7,5 +7,7 @@
 
         public string? PerMile { get; set; }
 
+        public bool IsActive { get; set; }
+
     }
 }

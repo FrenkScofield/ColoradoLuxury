@@ -66,7 +66,7 @@ namespace ColoradoLuxury.Controllers
                 {
                     PassengersCount = vehicleDetails.PassengersSelect,
                     SuitCasesCount = vehicleDetails.Suitcases,
-                    VehicleTypeId = vehicleDetails.AllcarTpes,
+                    VehicleTypeId = (int)vehicleDetails.AllcarTpes,
                     ChildSeatCount = vehicleDetails.ChildNumber,
                     ChildSeatDescription = vehicleDetails.ChildAdditionalMessage,
                     RoofTopCargoBoxCount = vehicleDetails.RoofCargoBoxNumber,
@@ -115,7 +115,9 @@ namespace ColoradoLuxury.Controllers
                     Phone = contactDetails.PhoneNumber,
                     Message = contactDetails.AdditionalContactDetailNote,
                     BillingAddressId = billingAddress != null ? billingAddress.Id : null,
-                    ArrivalAirlineInfoId = airlineInfo != null ? airlineInfo.Id : null
+                    ArrivalAirlineInfoId = airlineInfo != null ? airlineInfo.Id : null,
+                    RideDetailId = rideDetail.Id,
+                    VehicleInfoDetailsId = vehicleInfoDetails.Id
                 };
                 await _context.UserInfos.AddAsync(userInfo);
                 await _context.SaveChangesAsync();
@@ -128,7 +130,7 @@ namespace ColoradoLuxury.Controllers
             }
             //}
 
-
+            VehicleAmounts? vehicleAmounts = HttpContext?.Session?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
             FilledAllDatas datas = new FilledAllDatas()
             {
                 CustomerTravelType = rideDetails.WayType ? WayTypeEnum.Distance.ToString() : WayTypeEnum.Hourly.ToString(),
@@ -161,7 +163,7 @@ namespace ColoradoLuxury.Controllers
                 Duration = rideDetails.DurationInHours != null ? _context.Durations.Where(d => d.Id == rideDetails.DurationInHours).FirstOrDefault()?.Time : null,
                 Mile = $"{Convert.ToDecimal(HttpContext.Session.GetString("mile"))} mi",
                 DistanceTime = $"{HttpContext.Session.GetInt32("hours")}h {HttpContext.Session.GetInt32("minutes")}m",
-                TotalPrice = HttpContext?.Session?.GetString("distanceAmount"),
+                TotalPrice = vehicleAmounts?.TotalAmount,
                 TransactionId = HttpContext?.Session?.GetString("TransactionId"),
                 BillingAddressStatus = contactDetails.BillingAddressStatus,
                 AirlineStatus = contactDetails.AirLineStatus
@@ -194,6 +196,8 @@ namespace ColoradoLuxury.Controllers
             var successUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Payment/Success";
             var cancelUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Payment/Cancel";
 
+            VehicleAmounts? vehicleAmounts = HttpContext?.Session?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
+
             StripeConfiguration.ApiKey = _configuration.GetValue<string>("StripeSettings:Secretkey");
             var options = new SessionCreateOptions
             {
@@ -207,7 +211,7 @@ namespace ColoradoLuxury.Controllers
                         PriceData = new SessionLineItemPriceDataOptions
                         {
                             Currency= currency,
-                            UnitAmountDecimal = Convert.ToDecimal(HttpContext?.Session?.GetString("totalAmount")) * 100,
+                            UnitAmountDecimal = Convert.ToDecimal(vehicleAmounts?.TotalAmount) * 100,
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
                                 Name = "Travel",

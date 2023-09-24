@@ -139,9 +139,9 @@ Vue.component("step", {
             }
             else {
                 if (this.currentstep == 1) {
-                    this.$emit("step-change", this.currentstep + 1);
                     CalculateAmount(hor);
                     SaveRideDetailsInfo(this.currentstep);
+                    this.$emit("step-change", this.currentstep + 1);
                     $('.error').css("display", "none")
                 }
             }
@@ -182,8 +182,8 @@ Vue.component("step", {
             //Enter Contact Details page validation section Start
             if (this.currentstep == 3) {
 
-                 bill = document.getElementById('billingAddress');
-                 airlineInfo = document.getElementById('airlineInfo')
+                bill = document.getElementById('billingAddress');
+                airlineInfo = document.getElementById('airlineInfo')
                 debugger
 
                 if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '' || bill.checked == true || airlineInfo.checked == true) {
@@ -533,16 +533,43 @@ for (var price of bonusPrices) {
 }
 
 
-function CalculateAmount(hourly) {
+async function CalculateAmount(hourly) {
     console.log(hourly);
     if (hourly) {
         AjaxPost("/Home/CalculatedAmount/", { hourly: hourly }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
             console.log(response);
-            if (response.hasOwnProperty('distanceAmount') && response.hasOwnProperty('gratuity')) {
 
-                $(".distanceAmount span").text(response.distanceAmount);
-                $(".gratuity span").text(response.gratuity);
-                $(".totalAmount span").text(response.totalAmount);
+            if (response.hasOwnProperty('vehicleTypeNotFound')) {
+                alert("Something went wrong!");
+                return;
+            }
+
+            
+            let dataTypes = $(".toggle-button-vehicle");
+            if (response.hasOwnProperty('getVehicleDistanceAmounts') && response.hasOwnProperty('getVehiclesIsActive')) {
+
+                let allvehicle = [];
+
+                dataTypes.each(function () {
+                    allvehicle.push($(this).data('type'));
+
+                    for (var i = 0; i < response.getVehicleDistanceAmounts.length; i++) {                       
+                        if ($(this).data('type') == response.getVehicleDistanceAmounts[i].key) {
+                            console.log(`$${response.getVehicleDistanceAmounts[i].distanceAmount}`);
+                            $(this).parent().parent().parent()[0].children[0].children[0].children[1].innerText = `$${response.getVehicleDistanceAmounts[i].distanceAmount}`;
+                            break;
+                        }
+                    }
+                });
+
+                console.log(response.getVehiclesIsActive.distanceAmount)
+                console.log(response.getVehiclesIsActive.graduity)
+                console.log(response.getVehiclesIsActive.totalAmount)
+
+
+                $(".distanceAmount span").text(response.getVehiclesIsActive.distanceAmount);
+                $(".gratuity span").text(response.getVehiclesIsActive.graduity);
+                $(".totalAmount span").text(response.getVehiclesIsActive.totalAmount);
             } else {
 
             }
@@ -568,7 +595,7 @@ function CalculateAmount(hourly) {
     }
 }
 
-function SaveRideDetailsInfo(step) {
+async function SaveRideDetailsInfo(step) {
     let data = null;
     switch (step) {
         case 1:
@@ -602,19 +629,26 @@ function SaveRideDetailsInfo(step) {
             break;
 
         case 2:
+            let selectedVehicleTypeElement = $(".btn.btn-outline-secondary.toggle-button-vehicle.toggle-button-selected");
+            let selectedVehicleTypeValue = selectedVehicleTypeElement.parent().parent().parent().parent().data("v-identifier-value");
+
             let passengersSelect = $("#passengersSelect").val();
             let suitcases = $("#suitcases").val();
-            let allcarTpes = $("#allcarTpes").val();
+            let allcarTpes = selectedVehicleTypeValue;
             let childNumber = $("#childNumber").val();
             let roofCargoBoxNumber = $("#roofCargoBoxNumber").val();
             let childAdditionalMessage = $("#childAdditionalMessage").val();
             let roofCargoBoxAdditionalMessage = $("#roofCargoBoxAdditionalMessage").val();
 
+            console.log(allcarTpes)
             if (childNumber == '')
                 childNumber = 0;
 
             if (roofCargoBoxNumber == '')
                 roofCargoBoxNumber = 0;
+
+            if (allcarTpes == '')
+                allcarTpes = 0;
 
             data = {
                 PassengersSelect: passengersSelect,
@@ -651,23 +685,20 @@ function SaveRideDetailsInfo(step) {
 
 
             if (bill.checked) {
-                 companyRegisteredName = $("#company-registered-name").val();
-                 taxNumber = $("#taxNumber").val();
-                 street = $("#street").val();
-                 streetNumber = $("#streetNumber").val();
-                 city = $("#city").val();
-                 state = $("#state").val();
-                 postalCode = $("#postalCode").val();
-                 country = $("#country").val();
-                 
+                companyRegisteredName = $("#company-registered-name").val();
+                taxNumber = $("#taxNumber").val();
+                street = $("#street").val();
+                streetNumber = $("#streetNumber").val();
+                city = $("#city").val();
+                state = $("#state").val();
+                postalCode = $("#postalCode").val();
+                country = $("#country").val();
+
             }
             if (airlineInfo.checked) {
                 airline = $("#airline").val();
                 filingNumber = $("#filingNumber").val();
             }
-
-            
-
 
             data = {
                 Firstname: firstName,
@@ -709,7 +740,7 @@ function SaveRideDetailsInfo(step) {
                 ShowAllDatasFilledFromInput("total-time", response.getTextForIdVM.distanceTime);
 
                 ShowAllDatasFilledFromInput("vehicle-type", response.getTextForIdVM.vehicleType);
-                ShowAllDatasFilledFromInput("childSeatCount", response.vehicleDetails.childNumber);         
+                ShowAllDatasFilledFromInput("childSeatCount", response.vehicleDetails.childNumber);
             });
             break;
 
@@ -722,4 +753,22 @@ function SaveRideDetailsInfo(step) {
 
 function ShowAllDatasFilledFromInput(id, text) {
     $(`.${id}`).text(text);
+}
+
+function SelectedVehicleType(currentElement) {
+    document.querySelectorAll('.btn.btn-outline-secondary.toggle-button-vehicle').forEach(element => {
+        element.classList.remove('toggle-button-selected');
+        element.setAttribute("aria-pressed", false);
+    });
+    currentElement.setAttribute("aria-pressed", true);
+    console.log(currentElement.getAttribute("data-type"));
+
+
+    AjaxPost("/RideDetails/GetAmountByVehicle/", { sessionName: currentElement.getAttribute("data-type") }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+        console.log(response);
+        $(".distanceAmount span").text(response.amount.distanceAmount);
+        $(".gratuity span").text(response.amount.graduity);
+        $(".totalAmount span").text(response.amount.totalAmount);
+
+    });
 }

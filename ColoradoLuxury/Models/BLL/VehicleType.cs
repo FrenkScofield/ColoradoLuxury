@@ -6,6 +6,8 @@
 
         public decimal PerMile { get; set; }
         public bool Status { get; set; }
+        public bool IsActive { get; set; }
+
         public ICollection<Vehicle> Vehicles { get; set; }
     }
 }

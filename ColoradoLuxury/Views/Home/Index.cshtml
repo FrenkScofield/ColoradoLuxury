@@ -75,7 +75,7 @@
                                                         <label for="dateTime"> Pickup date </label>
                                                         <input type="date" name="dateTime"
                                                                style="padding-right: 5px;" class="form-control"
-                                                               id="pickupDate">
+                                                               id="pickupDate" value="2023-09-29">
                                                         <span class="error" id="dateError">Cannot be left blank </span>
                                                         <span class="good" id="dateGood">Good look </span>
                                                     </div>
@@ -84,7 +84,7 @@
                                                     <div class="form-group">
                                                         <label for="dateTime"> Pickup time </label>
                                                         <input type="time" name="time" class="form-control"
-                                                               placeholder="00:00" id="time">
+                                                               placeholder="00:00" id="time" value="14:00">
                                                         <span class="error" id="timeError">Cannot be left blank </span>
                                                         <span class="good" id="timeGood">Good look </span>
                                                     </div>
@@ -93,14 +93,14 @@
 
                                             <div class="form-group">
                                                 <label> Pickup location </label>
-                                                <input type="text" class="form-control" id="pickuplocation" placeholder="Write Location" />
+                                                <input type="text" class="form-control" id="pickuplocation" placeholder="Write Location" value="Denver, CO, USA" />
                                                 <span class="error" id="pickupError">Cannot be left blank </span>
                                                 <span class="good" id="pickupGood">Good look </span>
                                             </div>
                                             <div>
                                                 <div id="DropLocation" class="form-group">
                                                     <label> Drop-off location </label>
-                                                    <input type="text" class="form-control" id="dropOffLocation" placeholder="Write Location" />
+                                                    <input type="text" class="form-control" id="dropOffLocation" placeholder="Write Location" value="Denver International Airport (DEN), Peña Boulevard, Denver, CO, USA"/>
                                                     <span class="error" id="dropError">Cannot be left blank </span>
                                                     <span class="good" id="dropGood">Good look </span>
                                                 </div>
@@ -277,6 +277,7 @@
                                         <div class="form-group" id="carType">
                                             <label for="select">TYPE </label>
                                             <select class="form-control" name="select" id="allcarTpes">
+                                                <option value="">All Vehicles</option>
                                                 @foreach (var vehicletype in Model.VehicleTypes)
                                                 {
                                                     <option value="@vehicletype.Id">@vehicletype.TypeName</option>
@@ -292,15 +293,13 @@
 
 
                             <div class="allvehicletypes">
-                                @foreach (var type in Model.VehicleTypes)
+                                @for (var i = 0; i < Model.VehicleTypes.Count; i++)
                                 {
-                                    @if (type.Id != 2)
-                                    {
-                                        <div class="col-lg-12 backroundAndBorderTema">
+                                        <div class="col-lg-12 backroundAndBorderTema" data-v-identifier-value="@Model.VehicleTypes[i].Id">
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="imagesAllVehicles">
-                                                        <p class="carType">@type.TypeName</p>
+                                                        <p class="carType">@Model.VehicleTypes[i].TypeName</p>
                                                         <p class="vehiclePrice">$ 450.00</p>
                                                     </div>
                                                 </div>
@@ -309,16 +308,14 @@
                                                         <img src="https://img.icons8.com/ios/50/ADADAD/conference-call--v1.png" /><span>4</span>
                                                         <img src="https://img.icons8.com/50/ADADAD/pastel-glyph/64/null/suitcase--v4.png"
                                                      style="padding-bottom: 8px;" /><span>4</span>
-                                                        <button id="vehicleSelect" type="button"
-                                                        class="btn btn-outline-secondary toggle-button-vehicle">
+                                                        <button  type="button"
+                                                        class="btn btn-outline-secondary toggle-button-vehicle @(Model.VehicleTypes[i].IsActive ? "toggle-button-selected" : "")" @(Model.VehicleTypes[i].IsActive ? "aria-pressed=true" : "") onclick="SelectedVehicleType(this)" data-type="@(Model.VehicleTypes[i].TypeName.Replace(" ", "").ToLower())" data-type-total="@(Model.VehicleTypes[i].TypeName.Replace(" ", "").ToLower())-result">
                                                             Select
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    }
-
                                 }
                             </div>
 
