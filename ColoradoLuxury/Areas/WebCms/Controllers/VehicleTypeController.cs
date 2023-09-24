@@ -31,7 +31,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (decimal.TryParse(PerMile, out decimal PerMileResult) && decimal.TryParse(PerMile, out decimal HourlyResult))
+                if (decimal.TryParse(PerMile, out decimal PerMileResult) && decimal.TryParse(Hourly, out decimal HourlyResult))
                 {
                     PerMileResult = decimal.Parse(PerMile);
                     HourlyResult = decimal.Parse(Hourly);
@@ -77,7 +77,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             if (vehicleType == null) return NotFound();
 
 
-            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() {Id = vehicleType.Id,  Hourly = vehicleType.Hourly.ToString("F3"), TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2"), , IsActive = vehicleType.IsActive };
+            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() {Id = vehicleType.Id,  Hourly = vehicleType.Hourly.ToString("F3"), TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2"),  IsActive = vehicleType.IsActive };
             return View(model);
         }
 
@@ -136,7 +136,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 _context.VehicleTypes.Update(defaultVehicleType);
             }
 
-            
+
 
             vehicleType.IsActive = true;
 
@@ -148,7 +148,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 vehicleType,
                 success = true
             });
-
+        }
 
         [HttpGet]
         public async Task<IActionResult> DeleteVehicleType(int Id)
