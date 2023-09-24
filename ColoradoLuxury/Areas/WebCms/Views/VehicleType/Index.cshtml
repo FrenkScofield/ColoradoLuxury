@@ -17,20 +17,31 @@
     .btn-outline-secondary {
         margin-bottom: 10px
     }
+
+    table tbody tr{
+        text-align:center;
+    }
+
+    .addvehicletype{
+        float:right
+    }
 </style>
 
-<div class="col-md-5 my-4">
-    <div class="card shadow mb-4">
+<div class="col-md-9 my-9">
+    <div class="card shadow mb-5">
         <div class="card-header py-4">
             Nwe Vehicles Type Add
         </div>
         <div class="card-body">
-            <a href="AddVehicleType" class="btn btn-outline-secondary">Add Vehicle Type</a>
+            <a href="AddVehicleType" class="btn btn-outline-secondary addvehicletype">Add Vehicle Type</a>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-shorting" id="dataTable">
                     <thead>
                         <tr>
                             <th scope="col">VEHICLE TYPE NAME</th>
+                            <th scope="col">PER MILE PRICE</th>
+                            <th scope="col">HOURLY PRICE</th>
+                            <th scope="col"> Default Show</th>
                             <th scope="col">EDIT - DELETE</th>
                         </tr>
                     </thead>
@@ -40,12 +51,14 @@
                             <tr>
                                 <td>@Model.ToArray()[i].TypeName</td>
                                 <td>$@Model.ToArray()[i].PerMile</td>
+                                <td>@Model.ToArray()[i].Hourly</td>
+                                <td><input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" /></td>
 
                                 <td>
-                                    <div style="display:flex">
+                                    <div >
                                         <a asp-controller="VehicleType" asp-action="EditVehicleType" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-Id="@Model.ToArray()[i].Id"></a>
-                                        <a asp-controller="VehicleType" asp-action="DeleteVehicleType" asp-route-id="@Model.ToArray()[i].Id" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
-                                        <input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" />
+                                        <a asp-controller="VehicleType" asp-action="DeleteVehicleType" asp-route-Id="@Model.ToArray()[i].Id" class="btn text-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
+                                        
                                     </div>
                                 </td>
                             </tr>

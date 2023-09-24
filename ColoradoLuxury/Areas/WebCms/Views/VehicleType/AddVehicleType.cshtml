@@ -3,11 +3,15 @@
     ViewData["Title"] = "AddVehicleType";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    .col-md-4 form .col-sm-12 {
+        margin-bottom:20px;
+    }
+</style>
 <link href="/admin/css/vehicletype.css" />
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-        <form class="form-horizontal" asp-action="AddVehicleType" role="form">
+        <form class="form-horizontal" asp-action="AddVehicleType" role="form" method="post">
             <fieldset>
 
                 <!-- Form Name -->
@@ -15,17 +19,25 @@
 
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-sm-4 control-label" for="textinput">Type Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" placeholder="write name..." name="vehicleType" class="form-control">
+                    <label class="col-sm-6 control-label" for="textinput">Type Name</label>
+                    <div class="col-sm-12">
+                        <input type="text" placeholder="write name..."  asp-for="TypeName"  class="form-control">
+                        <span asp-validation-for="TypeName" class="text-danger"></span>
                     </div>
-                    <div class="col-sm-10">
-                        <input type="text" placeholder="per mile" step="any" name="permile" id="permile" class="form-control">
+                    <label class="col-sm-6 control-label" for="textinput">Distance Price</label>
+                    <div class="col-sm-12">
+                        <input type="text" placeholder="For Duration"  asp-for="PerMile" id="permile" class="form-control">
+                        <span asp-validation-for="PerMile" class="text-danger"></span>
+                    </div>
+                    <label class="col-sm-6 control-label" for="textinput">Hourly Price</label>
+                    <div class="col-sm-12">
+                        <input type="text" placeholder="For Hourly" asp-for="Hourly" class="form-control">
+                        <span asp-validation-for="Hourly" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-2 col-sm-12">
                         <div class="pull-right" style="float:right;">
                             <a href="index" class="btn btn-default">Cancel</a>
                             <button type="submit" class="btn btn-outline-success">Add</button>
