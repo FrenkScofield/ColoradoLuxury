@@ -16,6 +16,14 @@
     .col-md-12 .card .card-body .col-4 .ShowOrNotshowLabelText {
         display:block;
     }
+
+    thead tr{
+        text-align:center;
+    }
+
+    tbody tr{
+        text-align:center;
+    }
     </style>
 
 <div class="row">
@@ -84,10 +92,10 @@
                                 <td>4400</td>
                                 <td>Benzin</td>
                                 <td>
-                                    <div style="display:flex">
+                                    <div >
 
                                         <a asp-controller="VeliBilgi" asp-action="EditOgrenciVeliBilgi" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="ID"></a>
-                                        <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="ID" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
+                                        <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="ID" class="btn text-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
 
                                     </div>
                                 </td>

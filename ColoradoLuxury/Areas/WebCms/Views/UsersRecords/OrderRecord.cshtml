@@ -1,0 +1,238 @@
+﻿
+@{
+    ViewData["Title"] = "OrderRecord";
+    Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
+}
+<style>
+    hr{
+        border-top: 2px solid #5f82e98c;
+        width: 100%;
+    }
+    p{
+        font-weight: 800;
+        font-size: 15px;
+        margin:0px;
+    }
+
+    .col-md-3 span {
+        font-size: 16px;
+        color:black;
+    }
+
+    .col-md-6 span {
+        font-size: 16px;
+        color: black;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12 my-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-4">
+                Order Detail Page
+            </div>
+            <div class="card-body">
+             
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="row">
+                        <div class="col-md-3">
+                                <p class="col-sm-12 ">FIRST NAME </p>
+                                <span class="col-sm-12 "> </span>
+
+                        </div>
+                        <div class="col-md-3">
+                                <p class="col-sm-12 " >LAST NAME</p>
+                                <span class="col-sm-12 "> </span>
+
+                        </div>
+                        <div class="col-md-3">
+                                <p class="col-sm-12 " >EMAIL</p>
+                                <span class="col-sm-12 "> </span>
+
+                        </div>
+                        <div class="col-md-3">
+                                <p class="col-sm-12 " >PHONE NUMBER</p>
+                                <span class="col-sm-12 "> </span>
+
+                        </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >PICKUP LOCATION</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >DROP-OFF LOCATION</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >PICKUP DATE</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >PICKUP TIME</p>
+
+                                <span class="col-sm-12 "> </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="col-sm-12 " >TRANSFER TYPE</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-6">
+                            <p class="col-sm-12 " >DURATION (IN HOURS)</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                        </div>  
+                        </div>
+                    <hr />
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >PASSENGERS</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >SUITCASES</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >CHILD SEAT</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >ROOFTOP CARGO BOX</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                        </div>
+                </div>
+
+                    <hr />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="col-sm-12 " >AIRLINE</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-6">
+                                <p class="col-sm-12 " >FLIGHT NUMBER</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                        </div> 
+                    </div>
+                    <hr />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >COMPANY REGISTERED NAME</p>
+                                <span class="col-sm-12 "> </span>
+
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >STREET</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >STREET NUMBER</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >CITY</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                        <div class="col-md-3">
+                                <p class="col-sm-12 " >STATE</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 " >POSTAL CODE</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                               <div class="col-md-3">
+                                <p class="col-sm-12 " >COUNTRY</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="col-sm-12 ">VEHICLE PRICE</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 ">GRATUITY</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3">
+                                <p class="col-sm-12 ">TOTAL PRICE</p>
+                                <span class="col-sm-12 "> </span>
+
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-md-6 ">
+                    <p class="col-sm-12 " >MESSAGE</p>
+                        <span class="col-sm-12 "> </span>
+                    </div>
+                    <div class="col-md-6 ">
+                        <p class="col-sm-12 ">COUPON USED</p>
+                        <span class="col-sm-12 "> </span>
+                    </div>
+
+                    </div><!-- /.col-lg-12 -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="pull-right" style="float:right;">
+                            <a href="Index" class="btn btn-outline-secondary">Back To Index</a>
+                                </div>
+                            </div>
+                        </div>
+                </div><!-- /.row -->
+
+
+        </div>
+    </div>
+</div>
+
+

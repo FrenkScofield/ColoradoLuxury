@@ -4,11 +4,18 @@
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
 }
 
-@*<style>
-    div.dataTables_wrapper div.dataTables_length label {
+<style>
+  /*  div.dataTables_wrapper div.dataTables_length label {
        display:none;
+    }*/
+    thead tr{
+        text-align:center;
     }
-</style>*@
+
+    tbody tr {
+        text-align: center;
+    }
+</style>
 <div class="row">
     <div class="col-md-12 my-4">
         <div class="card shadow mb-4">
@@ -24,35 +31,30 @@
                                 <th scope="col">SURNAME</th>
                                 <th scope="col">PHONE </th>
                                 <th scope="col">EMAIL</th>
-                                <th scope="col">BILL ADDRES</th>
+                                <th scope="col">VEHICLE TYPE</th>
                                 <th scope="col">DETAILS SHOW</th>
                             </tr>
                         </thead>
                         <tbody>
-                           @* @if (TempData["Orgs"] != null)
-                            {
-                                @foreach (var item in Model.OgrenciVeliBilgis)
-                                {
+                         
+                               @* @foreach (var item in Model.OgrenciVeliBilgis)
+                                {*@
                                     <tr>
-                                        <th scope="row">@item.ID</th>
-                                        <td>@item.AD</td>
-                                        <td>@item.SOYAD</td>
-                                        <td>@item.TC_KIMLIK</td>
-                                        <td>@item.ILISKI_DURUMU</td>
-                                        <td>@item.CEP_TELEFONU_1</td>
-                                        <td>@item.EMAIL</td>
-                                        <td>@item.MESLEK</td>
+                                        <td>AD</td>
+                                        <td>SOYAD</td>
+                                        <td>693169316931</td>
+                                        <td>TOFIQ_EMIN@GMAIL.COM</td>
+                                        <td>PIKAP</td>
                                         <td>
-                                            <div style="display:flex">
+                                            <div>
 
-                                                <a asp-controller="VeliBilgi" asp-action="EditOgrenciVeliBilgi" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="@item.ID"></a>
-                                                <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="@item.ID" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
+                                        <a asp-controller="UsersRecords" asp-action="OrderRecord" class="fas fa-regular fa-eye updateBtn btnForm" asp-route-id="ID"></a>
 
                                             </div>
                                         </td>
                                     </tr>
-                                }
-                            }*@
+                                @*}*@
+                          
                         </tbody>
                     </table>
                 </div>
