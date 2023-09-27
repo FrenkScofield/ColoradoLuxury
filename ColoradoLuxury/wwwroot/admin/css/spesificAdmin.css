@@ -1,5 +1,5 @@
 ﻿.col-md-12 .card .card-body .btnShowOrNotshow {
-    width: 15%;
+  /*  width: 15%;*/
     font-size: 20px;
     border-color: #bfbfbf;
     border-radius: 6px;
@@ -12,8 +12,9 @@
     font-size: 16px;
 }
 
-.card-body .col-6 .specialSpace{
-    margin-bottom:25px;
+.card-body .col-6 .specialSpace {
+    margin-bottom: 25px;
+  
 }
 
 

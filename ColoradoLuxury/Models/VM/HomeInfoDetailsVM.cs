@@ -9,6 +9,7 @@ namespace ColoradoLuxury.Models.VM
 
         public List<Country> Countries { get; set; }
         public List<AirLine> AirLines { get; set; }
+        public List<ValueOfTipButton> ValueOfTipButtons { get; set; }
 
 
     }

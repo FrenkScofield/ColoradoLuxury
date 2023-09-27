@@ -26,8 +26,8 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             return View();
         }
 
-        [HttpPost] 
-        public async Task<IActionResult> AddVehicleType(string TypeName, string PerMile , string Hourly)
+        [HttpPost]
+        public async Task<IActionResult> AddVehicleType(string TypeName, string PerMile, string Hourly)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +77,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             if (vehicleType == null) return NotFound();
 
 
-            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() {Id = vehicleType.Id,  Hourly = vehicleType.Hourly.ToString("F3"), TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2"), , IsActive = vehicleType.IsActive };
+            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() { Id = vehicleType.Id, Hourly = vehicleType.Hourly.ToString("F3"), TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2"), IsActive = vehicleType.IsActive };
             return View(model);
         }
 
@@ -102,7 +102,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             if (vehicleT == null) return NotFound();
 
             vehicleT.TypeName = vehicleType.TypeName;
-            vehicleT.PerMile = permile;    
+            vehicleT.PerMile = permile;
             vehicleT.IsActive = vehicleType.IsActive;
             vehicleT.Hourly = hourly;
 
@@ -136,7 +136,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 _context.VehicleTypes.Update(defaultVehicleType);
             }
 
-            
+
 
             vehicleType.IsActive = true;
 
@@ -149,22 +149,23 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 success = true
             });
 
-
-        [HttpGet]
-        public async Task<IActionResult> DeleteVehicleType(int Id)
-        {
-            if (Id == 0) return NotFound();
-
-            VehicleType vehicleType  = await _context.VehicleTypes.FindAsync(Id);
-
-            if (vehicleType == null) return NotFound();
-
-            _context.VehicleTypes.Remove(vehicleType);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
-
         }
+            [HttpGet]
+            public async Task<IActionResult> DeleteVehicleType(int Id)
+            {
+                if (Id == 0) return NotFound();
+
+                VehicleType vehicleType = await _context.VehicleTypes.FindAsync(Id);
+
+                if (vehicleType == null) return NotFound();
+
+                _context.VehicleTypes.Remove(vehicleType);
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+
+            }
+        
     }
 }
