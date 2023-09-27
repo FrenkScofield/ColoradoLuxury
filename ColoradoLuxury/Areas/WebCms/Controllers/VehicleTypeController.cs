@@ -158,7 +158,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             {
                 if (Id == 0) return NotFound();
 
-        }
+        
 
 
                 VehicleType vehicleType = await _context.VehicleTypes.FindAsync(Id);
