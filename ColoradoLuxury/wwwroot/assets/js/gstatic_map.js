@@ -1,6 +1,8 @@
 ﻿let coloradoBounds;
 let searchBox1;
 let searchBox2;
+let searchBox3;
+
 function initMap() {
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
@@ -16,11 +18,17 @@ function initMap() {
     );
 
     let toLocation = document.getElementById("dropOffLocation");
+    let toLocationForHourly = document.getElementById("forHourlydropOffLocation");
     let fromLocation = document.getElementById("pickuplocation");
+
+
+    
 
     // Create SearchBox instances
     searchBox1 = new google.maps.places.SearchBox(fromLocation);
     searchBox2 = new google.maps.places.SearchBox(toLocation);
+    searchBox3 = new google.maps.places.SearchBox(toLocationForHourly);
+
 
     directionsRenderer.setMap(map);
 
@@ -50,6 +58,22 @@ function initMap() {
 
     searchBox2.addListener("places_changed", function () {
         const places = searchBox2.getPlaces();
+        if (places.length === 0) {
+            return;
+        }
+
+        const place = places[0];
+
+        if (!coloradoBounds.contains(place.geometry.location)) {
+            alert("Please select a location within Colorado, USA.");
+        } else {
+            onChangeHandler();
+            oncalculateDistance();
+        }
+    });
+
+    searchBox3.addListener("places_changed", function () {
+        const places = searchBox3.getPlaces();
         if (places.length === 0) {
             return;
         }

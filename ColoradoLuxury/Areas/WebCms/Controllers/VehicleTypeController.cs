@@ -39,7 +39,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("PerMile or Hourly", "Value not valid");
+                    ModelState.AddModelError("PerMile", "Value not valid");
                     return View();
                 }
                 if (TypeName != null)

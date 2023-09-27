@@ -52,13 +52,13 @@
                                 <td>@Model.ToArray()[i].TypeName</td>
                                 <td>$@Model.ToArray()[i].PerMile</td>
                                 <td>@Model.ToArray()[i].Hourly</td>
-                                <td><input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" /></td>
+                                @*<td><input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" /></td>*@
+                                <td><input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" @(Model.ToArray()[i].IsActive ? "checked='checked'" : "") /></td>
 
                                 <td>
                                     <div >
                                         <a asp-controller="VehicleType" asp-action="EditVehicleType" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-Id="@Model.ToArray()[i].Id"></a>
 
-                                        <input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" @(Model.ToArray()[i].IsActive ? "checked='checked'" : "") />
 
                                         <a asp-controller="VehicleType" asp-action="DeleteVehicleType" asp-route-Id="@Model.ToArray()[i].Id" class="btn text-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
                                         
@@ -94,7 +94,7 @@
         }
         $(`#${id}`).attr("checked", true);
 
-        let dataVehicleId = $(`#${id}`).parent().parent().parent().attr("data-v-id");
+        let dataVehicleId = $(`#${id}`).parent().parent().attr("data-v-id");
 
         console.log()
 
