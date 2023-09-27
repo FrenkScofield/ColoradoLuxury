@@ -424,12 +424,12 @@ $('#distance').on('click', function () {
 $('#customPriceActive').on('click', function () {
 
     $('#forDriveBett')[0].disabled = true;
-    $('#btn0')[0].disabled = false;
-    $('#btn10')[0].disabled = false;
-    $('#btn20')[0].disabled = false;
-    $('#btn30')[0].disabled = false;
-    $('#btn40')[0].disabled = false;
-    $('#btn50')[0].disabled = false;
+    $('#btn1')[0].disabled = false;
+    $('#btn2')[0].disabled = false;
+    $('#btn3')[0].disabled = false;
+    //$('#btn30')[0].disabled = false;
+    //$('#btn40')[0].disabled = false;
+    //$('#btn50')[0].disabled = false;
     $('#bettButtons').css("opacity", "1");
     $('#customPrice').css("opacity", "0.1");
     $('#customBettAddBtn').css("display", "none")
@@ -437,12 +437,12 @@ $('#customPriceActive').on('click', function () {
     if ($('#customPriceActive').is(':checked') == true) {
 
         $('#forDriveBett')[0].disabled = false;
-        $('#btn0')[0].disabled = true;
-        $('#btn10')[0].disabled = true;
-        $('#btn20')[0].disabled = true;
-        $('#btn30')[0].disabled = true;
-        $('#btn40')[0].disabled = true;
-        $('#btn50')[0].disabled = true;
+        $('#btn1')[0].disabled = true;
+        $('#btn2')[0].disabled = true;
+        $('#btn3')[0].disabled = true;
+        //$('#btn30')[0].disabled = true;
+        //$('#btn40')[0].disabled = true;
+        //$('#btn50')[0].disabled = true;
         $('#customPrice').css("opacity", "1");
         $('#bettButtons').css("opacity", "0.1");
         $('#customBettAddBtn').css("display", "block")
@@ -782,3 +782,19 @@ function SelectedVehicleType(currentElement) {
 
     });
 }
+
+$("#childSeatMessegShowCekbox").on('change', function () {
+    if ($("#childSeatMessegShowCekbox").is(':checked'))
+        $('#childAdditionalMessage').css("display", "block");
+    else {
+        $('#childAdditionalMessage').css("display", "none");
+    }
+});
+
+$("#cargoBoxMessegShowCekbox").on('change', function () {
+    if ($("#cargoBoxMessegShowCekbox").is(':checked'))
+        $('#roofCargoBoxAdditionalMessage').css("display", "block");
+    else {
+        $('#roofCargoBoxAdditionalMessage').css("display", "none");
+    }
+});

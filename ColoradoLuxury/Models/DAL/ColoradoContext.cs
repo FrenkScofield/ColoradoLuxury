@@ -18,6 +18,7 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<Duration> Durations { get; set; }
         public DbSet<ForDriverBetting> ForDriverBettings { get; set; }
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
+        public DbSet<ValueOfTipButton> ValueOfTipButtons { get; set; }
 
         public DbSet<RideDetail> RideDetails { get; set; }
         public DbSet<RoofTopCargoBox> RoofTopCargoBoxs { get; set; }

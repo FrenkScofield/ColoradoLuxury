@@ -1,9 +1,30 @@
 ﻿
+@model ColoradoLuxury.Areas.WebCms.VM.ValueOfTipBttonsVM
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
 }
+<style>
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    
+    }
 
+    .specialSpace {
+        width: 70px;
+        border-radius: 139px;
+        margin-right: 15px;
+    }
+    h3{
+        font-size: 25px;
+        margin-bottom: 20px;
+    }
+
+    .btn-outline-success{
+        margin-top:15px;
+        margin-right: 15%;
+    }
+</style>
 <div class="row">
     <div class="col-md-12 my-4">
         <div class="card shadow mb-4">
@@ -41,31 +62,137 @@
             <div class="card-body">
 
                 <div class="col-12">
-                    <label class="ShowOrNotshowLabelText">Betting Section</label>
-                    <select class="form-select btnShowOrNotshow" id="btnBetting">
+                    <div class="row">
+                    <div class="col-3">
+                    <label class="ShowOrNotshowLabelText">All Betting Section</label>
+                            <select class="form-select btnShowOrNotshow" id="allBettingSection">
                         <option value="activ">Show</option>
                         <option value="deactiv">Not Show</option>
                     </select>
-
+                    </div>
+                     <div class="col-3">
+                    <label class="ShowOrNotshowLabelText">Button Betting Section</label>
+                    <select class="form-select btnShowOrNotshow" id="buttonBetting">
+                        <option value="activ">Show</option>
+                        <option value="deactiv">Not Show</option>
+                    </select>
+                    </div>
+                    <div class="col-3">
+                        <label class="ShowOrNotshowLabelText">Custom Betting Section</label>
+                        <select class="form-select btnShowOrNotshow" id="bettingCustom">
+                            <option value="activ">Show</option>
+                            <option value="deactiv">Not Show</option>
+                        </select>
+                        </div>
+                        <div class="col-3">
+                            <label class="ShowOrNotshowLabelText">Discont Cuppon Section</label>
+                            <select class="form-select btnShowOrNotshow" id="cupponSelect">
+                                <option value="activ">Show</option>
+                                <option value="deactiv">Not Show</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-              
+                <hr />
+                <div class="col-5" style="margin-top: 30px;">
+                    <h3 style=" ">Value of Tip Buttons</h3>
+    <form class="form-horizontal" role="form" asp-controller="CalculationMethot" asp-action="CreateValueOfTipButtons" method="post">
+                    <div class="row">
+                         
+                        <div class="input-group col-4">
+                                <div class="specialSpace ">
+
+                                        <input type="number" asp-for="lowInterest" value="@Model.lowInterest" onKeyPress="if(this.value.length==2) return false;" class="form-control" style="height: 70px;    font-size: 33px;
+    border-radius: 100px;text-align: center;" placeholder="%">
+                                <span asp-validation-for="lowInterest" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="input-group  col-4">
+                                <div class="specialSpace ">
+                                <input type="number" asp-for="MiddleInterest" onKeyPress="if(this.value.length==2) return false;" class="form-control" style="height: 70px;    font-size: 33px;
+    border-radius: 100px;text-align: center;" aria-label="MinumumDistance" aria-describedby="inputGroup-sizing-default" placeholder="%">
+                                <span asp-validation-for="MiddleInterest" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                            <div class="input-group  col-4">
+                                    <div class="specialSpace ">
+                                <input type="number" asp-for="HighInterest" onKeyPress="if(this.value.length==2) return false;" class="form-control" style="height: 70px;    font-size: 33px;
+    border-radius: 100px;text-align: center;" aria-label="HighInterest" aria-describedby="inputGroup-sizing-default" placeholder="%">
+                                <span asp-validation-for="HighInterest" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                            
+                    </div>
+                    <button type="submit" class="btn btn-outline-success float-right">Save</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    //=============Betting Show or Notshow============
+    //=============All Betting Section Show or Notshow============
 
-    const timeZoneList = document.getElementById('btnBetting');
+    var allBettSelect = document.getElementById('allBettingSection');
 
-    timeZoneList.addEventListener('change', (event) => {
+    allBettSelect.addEventListener('change', (event) => {
         let currentArea = event.target.value;
-        localStorage.setItem('btnBettingValueKey', currentArea);
+        localStorage.setItem('btnAllBettingValueKey', currentArea);
     });
 
-    if (localStorage.getItem('btnBettingValueKey')) {
-        timeZoneList.value = localStorage.getItem('btnBettingValueKey');
+    if (localStorage.getItem('btnAllBettingValueKey')) {
+        allBettSelect.value = localStorage.getItem('btnAllBettingValueKey');
     }
-</script>
 
+    //=============Button Betting Show or Notshow============
+
+    var btnBettSelect = document.getElementById('buttonBetting');
+
+    btnBettSelect.addEventListener('change', (event) => {
+        let currentArea = event.target.value;
+        console.log(currentArea)
+        localStorage.setItem('buttonBettingValueKey', currentArea);
+    });
+
+    if (localStorage.getItem('buttonBettingValueKey')) {
+        btnBettSelect.value = localStorage.getItem('buttonBettingValueKey');
+    }
+
+    //=============Custom Betting Show or Notshow============
+
+    var customBettSelect = document.getElementById('bettingCustom');
+
+    customBettSelect.addEventListener('change', (event) => {
+        let currentArea = event.target.value;
+        console.log(currentArea)
+        localStorage.setItem('customBettinkValueKey', currentArea);
+    });
+
+    if (localStorage.getItem('customBettinkValueKey')) {
+        customBettSelect.value = localStorage.getItem('customBettinkValueKey');
+    }
+
+    //=============Discount Cuppon Show or Notshow============
+
+    var cupponSelect = document.getElementById('cupponSelect');
+
+    cupponSelect.addEventListener('change', (event) => {
+        let currentArea = event.target.value;
+        console.log(currentArea)
+        localStorage.setItem('cupponSectionValueKey', currentArea);
+    });
+
+    if (localStorage.getItem('cupponSectionValueKey')) {
+        cupponSelect.value = localStorage.getItem('cupponSectionValueKey');
+    }
+    cupponSectionValueKey
+</script>
+@section scripts
+    {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}
