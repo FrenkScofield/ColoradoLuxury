@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    [Migration("20230924194533_addIsActiveToVehicleTypes")]
-    partial class addIsActiveToVehicleTypes
+    [Migration("20230924230949_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -573,6 +573,9 @@ namespace ColoradoLuxury.Migrations
 
                     b.Property<DateTime?>("EditDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Hourly")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

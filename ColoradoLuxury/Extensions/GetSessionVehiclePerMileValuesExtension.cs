@@ -6,7 +6,7 @@ namespace ColoradoLuxury.Extensions
 {
     public static class GetSessionVehiclePerMileValuesExtension
     {
-        public static List<GetVehicleDistanceAmounts> GetPermileValues(this List<VehicleType> vehicleTypes, HttpContext httpContext)
+        public static List<GetVehicleDistanceAmounts> GetPermileOrValues(this List<VehicleType> vehicleTypes, HttpContext httpContext)
         {
             List<GetVehicleDistanceAmounts> result = new List<GetVehicleDistanceAmounts>();
             for (int i = 0; i < vehicleTypes.Count; i++)
@@ -15,5 +15,7 @@ namespace ColoradoLuxury.Extensions
             }
             return result;
         }
+
+       
     }
 }

@@ -38,96 +38,109 @@ namespace ColoradoLuxury.Controllers
         [HttpPost]
         public JsonResult CalculatedAmount(bool hourly, short durationValue)
         {
-            string? distanceAmount = null;
-            string? gratuity = null;
-            string? totalAmount = null;
-            List<VehicleAmounts> vehicleAmountsList = new List<VehicleAmounts>();
-            VehicleAmounts? vehicleAmounts = null;
-            List<GetVehicleDistanceAmounts> getVehicleDistanceAmounts = new List<GetVehicleDistanceAmounts>();
-            List<VehicleType>? vehicleTypes = null;
-            VehicleAmounts? getVehiclesIsActive = null;
-            List<GetVehicleDistanceAmounts>? getVehiclesPermileValues = null;
+            GetVehiclesAmountDetailsVM? getVehiclesAmountDetails = null;
+            List<VehicleType>? vehicleTypes = _context.VehicleTypes.Select(x => new VehicleType
+            {
+                TypeName = x.TypeName,
+                PerMile = x.PerMile,
+                Hourly = x.Hourly,
+                IsActive = x.IsActive,
+            }).ToList();
+
             if (hourly && durationValue == 0)
             {
-                vehicleTypes = _context.VehicleTypes.Select(x => new VehicleType
-                {
-                    TypeName = x.TypeName,
-                    PerMile = x.PerMile,
-                    IsActive = x.IsActive,
-                }).ToList();
+                if (vehicleTypes.Count == 0)
+                    return Json(new { vehicleTypeNotFound = true });
 
-                if (vehicleTypes.Count == 0)                
-                    return Json(new
-                    {
-                        vehicleTypeNotFound = true
+                var mile = SessionExtension.GetSessionString(_httpContextAccessor.HttpContext, "mile");
 
-                    });
-                
+                var hours = SessionExtension.GetSessionInt32(_httpContextAccessor.HttpContext, "hours");
 
-                //get per mile for vehicles
-                vehicleTypes.SetPermileValues(_httpContextAccessor.HttpContext);
-
-                var mile = HttpContext?.Session?.GetString("mile");
-                var hours = HttpContext?.Session?.GetInt32("hours");
-                var minutes = HttpContext?.Session?.GetInt32("minutes");
+                var minutes = SessionExtension.GetSessionInt32(_httpContextAccessor.HttpContext, "minutes");
 
                 if (mile != null)
-                {
-                    getVehiclesPermileValues = vehicleTypes.GetPermileValues(_httpContextAccessor.HttpContext);
-
-
-                    foreach (var getVehiclesPermileValue in getVehiclesPermileValues)
-                    {
-                        distanceAmount = (Convert.ToDecimal(mile) * decimal.Parse(getVehiclesPermileValue.DistanceAmount)).ToString("F2");
-                        if (Convert.ToDecimal(distanceAmount) <= 80)
-                            distanceAmount = "80";
-
-                        gratuity = (Convert.ToDecimal(distanceAmount) * 0.15m).ToString("F2");
-                        totalAmount = (Convert.ToDecimal(distanceAmount) + Convert.ToDecimal(gratuity)).ToString("F2");
-
-                        getVehicleDistanceAmounts.Add(new GetVehicleDistanceAmounts() { Key = getVehiclesPermileValue.Key, DistanceAmount = distanceAmount, IsActive = getVehiclesPermileValue.IsActive });
-
-                        vehicleAmounts = new VehicleAmounts
-                        {
-                            DistanceAmount = distanceAmount,
-                            Graduity = gratuity,
-                            TotalAmount = totalAmount,
-                            IsActive= getVehiclesPermileValue.IsActive
-                        };
-                        vehicleAmountsList?.Add(vehicleAmounts);
-                        HttpContext?.Session?.SetObjectsession($"{getVehiclesPermileValue.Key}-result", vehicleAmounts);
-                    }
-
-                    getVehiclesIsActive = vehicleAmountsList.Where(x => x.IsActive == true).FirstOrDefault();
-
-                    if (vehicleTypes != null && vehicleTypes.Any(x => x.IsActive == true))
-                        HttpContext?.Session?.SetObjectsession("activeVehicleAmountSession", getVehiclesIsActive);
-                }
+                    getVehiclesAmountDetails = CalculateForDistanceOrHourly(hourly, mile, 80, vehicleTypes, 30.5);
+                else
+                    return Json(new { NotFoundMileValue = true });
             }
             else
-            {
-                if (durationValue <= 4)
-                    durationValue = 4;
-                distanceAmount = (durationValue * 50).ToString("F2");
+                getVehiclesAmountDetails = CalculateForDistanceOrHourly(hourly, durationValue, 100, vehicleTypes, 4);
 
-
-                gratuity = (Convert.ToDecimal(distanceAmount) * 0.15m).ToString("F2");
-                totalAmount = (Convert.ToDecimal(distanceAmount) + Convert.ToDecimal(gratuity)).ToString("F2");
-
-                HttpContext?.Session?.SetString("distanceAmount", distanceAmount);
-                HttpContext?.Session?.SetString("gratuity", gratuity);
-                HttpContext?.Session?.SetString("totalAmount", totalAmount);
-            }
 
             return Json(new
             {
-                getVehicleDistanceAmounts,
-                getVehiclesIsActive,
-                //distanceAmount = distanceAmount,
-                //gratuity = gratuity,
-                //totalAmount = totalAmount
-
+                getVehiclesAmountDetails.GetVehicleDistanceAmounts,
+                getVehiclesAmountDetails.GetVehiclesIsActive,
             });
+        }
+
+        public GetVehiclesAmountDetailsVM CalculateForDistanceOrHourly(bool distanceType, dynamic minimumTravelValueType, dynamic distanceTypeValue, List<VehicleType>? vehicleTypes, object checkingMinimumTravelValueTypeFromDbValue)
+        {
+            List<GetVehicleDistanceAmounts> getVehicleDistanceAmounts = new List<GetVehicleDistanceAmounts>();
+            List<VehicleAmounts> vehicleAmountsList = new List<VehicleAmounts>();
+            List<GetVehicleDistanceAmounts>? getVehiclesPermileOrHourValues = null;
+
+            if (distanceType)
+            {
+                distanceTypeValue = Convert.ToDecimal(distanceTypeValue);
+                if (Convert.ToDecimal(minimumTravelValueType) < Convert.ToDecimal(checkingMinimumTravelValueTypeFromDbValue))
+                {
+                    minimumTravelValueType = Convert.ToDecimal(checkingMinimumTravelValueTypeFromDbValue);
+                }
+
+                vehicleTypes?.SetPermileValues(_httpContextAccessor.HttpContext);
+                getVehiclesPermileOrHourValues = vehicleTypes.GetPermileOrValues(_httpContextAccessor.HttpContext);
+
+            }
+            else
+            {
+                distanceTypeValue = (short)distanceTypeValue;
+
+                if ((Int32)minimumTravelValueType  < (Int32)checkingMinimumTravelValueTypeFromDbValue)
+                {
+                    minimumTravelValueType = (Int32)checkingMinimumTravelValueTypeFromDbValue;
+                }
+
+                //set hourly for vehicles
+                vehicleTypes?.SetByHourValues(_httpContextAccessor.HttpContext);
+                getVehiclesPermileOrHourValues = vehicleTypes.GetPermileOrValues(_httpContextAccessor.HttpContext);
+            }
+
+            foreach (var getVehiclesPermileValue in getVehiclesPermileOrHourValues)
+            {
+                string? distanceAmount = (minimumTravelValueType * decimal.Parse(getVehiclesPermileValue.DistanceAmount)).ToString("F2");
+                if (Convert.ToDecimal(distanceAmount) <= distanceTypeValue)
+                    distanceAmount = GeneralExtension<decimal>.ToString(distanceTypeValue);
+
+                string? gratuity = (Convert.ToDecimal(distanceAmount) * 0.15m).ToString("F2");
+                string? totalAmount = (Convert.ToDecimal(distanceAmount) + Convert.ToDecimal(gratuity)).ToString("F2");
+
+                getVehicleDistanceAmounts.Add(new GetVehicleDistanceAmounts() { Key = getVehiclesPermileValue.Key, DistanceAmount = distanceAmount, IsActive = getVehiclesPermileValue.IsActive });
+
+                VehicleAmounts? vehicleAmounts = new VehicleAmounts
+                {
+                    DistanceAmount = distanceAmount,
+                    Graduity = gratuity,
+                    TotalAmount = totalAmount,
+                    IsActive = getVehiclesPermileValue.IsActive
+                };
+                vehicleAmountsList?.Add(vehicleAmounts);
+                HttpContext?.Session?.SetObjectsession($"{getVehiclesPermileValue.Key}-result", vehicleAmounts);
+            }
+
+            VehicleAmounts? getVehiclesIsActive = vehicleAmountsList.Where(x => x.IsActive == true).FirstOrDefault();
+
+            if (vehicleTypes != null && vehicleTypes.Any(x => x.IsActive == true))
+                HttpContext?.Session?.SetObjectsession("activeVehicleAmountSession", getVehiclesIsActive);
+
+
+            GetVehiclesAmountDetailsVM model = new GetVehiclesAmountDetailsVM()
+            {
+                GetVehicleDistanceAmounts = getVehicleDistanceAmounts,
+                GetVehiclesIsActive = getVehiclesIsActive
+            };
+
+            return model;
         }
 
         [HttpPost]
@@ -156,9 +169,12 @@ namespace ColoradoLuxury.Controllers
                 model.Hours = 2;
 
             string mile = model.Mile.ToString();
-            HttpContext.Session.SetString("mile", mile);
-            HttpContext.Session.SetInt32("hours", model.Hours);
-            HttpContext.Session.SetInt32("minutes", model.Minutes);
+
+            SessionExtension.SetSessionString(_httpContextAccessor.HttpContext, "mile", mile);
+
+            SessionExtension.SetSessionInt32(_httpContextAccessor.HttpContext, "hours", model.Hours);
+
+            SessionExtension.SetSessionInt32(_httpContextAccessor.HttpContext, "minutes", model.Minutes);
 
 
             return Json(new { });

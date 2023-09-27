@@ -533,46 +533,13 @@ for (var price of bonusPrices) {
 }
 
 
-async function CalculateAmount(hourly) {
+ function CalculateAmount(hourly) {
     console.log(hourly);
     if (hourly) {
         AjaxPost("/Home/CalculatedAmount/", { hourly: hourly }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
             console.log(response);
 
-            if (response.hasOwnProperty('vehicleTypeNotFound')) {
-                alert("Something went wrong!");
-                return;
-            }
-
-            
-            let dataTypes = $(".toggle-button-vehicle");
-            if (response.hasOwnProperty('getVehicleDistanceAmounts') && response.hasOwnProperty('getVehiclesIsActive')) {
-
-                let allvehicle = [];
-
-                dataTypes.each(function () {
-                    allvehicle.push($(this).data('type'));
-
-                    for (var i = 0; i < response.getVehicleDistanceAmounts.length; i++) {                       
-                        if ($(this).data('type') == response.getVehicleDistanceAmounts[i].key) {
-                            console.log(`$${response.getVehicleDistanceAmounts[i].distanceAmount}`);
-                            $(this).parent().parent().parent()[0].children[0].children[0].children[1].innerText = `$${response.getVehicleDistanceAmounts[i].distanceAmount}`;
-                            break;
-                        }
-                    }
-                });
-
-                console.log(response.getVehiclesIsActive.distanceAmount)
-                console.log(response.getVehiclesIsActive.graduity)
-                console.log(response.getVehiclesIsActive.totalAmount)
-
-
-                $(".distanceAmount span").text(response.getVehiclesIsActive.distanceAmount);
-                $(".gratuity span").text(response.getVehiclesIsActive.graduity);
-                $(".totalAmount span").text(response.getVehiclesIsActive.totalAmount);
-            } else {
-
-            }
+            CalculatedAmountResponse(response);
         });
     }
     else {
@@ -582,20 +549,63 @@ async function CalculateAmount(hourly) {
         }
         AjaxPost("/Home/CalculatedAmount/", { hourly: hourly, durationValue: durationValue }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
             console.log(response);
-            if (response.hasOwnProperty('distanceAmount') && response.hasOwnProperty('gratuity')) {
 
-                $(".distanceAmount span").text(response.distanceAmount);
-                $(".gratuity span").text(response.gratuity);
-                $(".totalAmount span").text(response.totalAmount);
-            } else {
-
-            }
+            CalculatedAmountResponse(response);
         });
 
     }
 }
 
-async function SaveRideDetailsInfo(step) {
+function CalculatedAmountResponse(response) {
+    if (response.hasOwnProperty('vehicleTypeNotFound')) {
+        alert("Something went wrong!");
+        location.href = "/";
+        return;
+    }
+
+    if (response.hasOwnProperty('notFoundMileValue')) {
+        alert("Mile is not given this context!");
+        location.href = "/";
+        return;
+    }
+    
+
+    let dataTypes = $(".toggle-button-vehicle");
+    if (response.hasOwnProperty('getVehicleDistanceAmounts') && response.hasOwnProperty('getVehiclesIsActive')) {
+
+        let allvehicle = [];
+        console.log(response.getVehiclesIsActive);
+        if (response.getVehiclesIsActive === null) {
+            alert("Map is not selected");
+            location.href = "/";
+            return;
+        }
+
+        dataTypes.each(function () {
+            allvehicle.push($(this).data('type'));
+
+            for (var i = 0; i < response.getVehicleDistanceAmounts.length; i++) {
+                if ($(this).data('type') == response.getVehicleDistanceAmounts[i].key) {
+                    console.log(`$${response.getVehicleDistanceAmounts[i].distanceAmount}`);
+                    $(this).parent().parent().parent()[0].children[0].children[0].children[1].innerText = `$${response.getVehicleDistanceAmounts[i].distanceAmount}`;
+                    break;
+                }
+            }
+        });
+
+        console.log(response.getVehiclesIsActive.distanceAmount)
+        console.log(response.getVehiclesIsActive.graduity)
+        console.log(response.getVehiclesIsActive.totalAmount)
+
+
+        $(".distanceAmount span").text(response.getVehiclesIsActive.distanceAmount);
+        $(".gratuity span").text(response.getVehiclesIsActive.graduity);
+        $(".totalAmount span").text(response.getVehiclesIsActive.totalAmount);
+    } else {
+    }
+}
+
+ function SaveRideDetailsInfo(step) {
     let data = null;
     switch (step) {
         case 1:

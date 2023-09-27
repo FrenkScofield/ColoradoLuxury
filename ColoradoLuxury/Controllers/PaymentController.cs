@@ -59,7 +59,7 @@ namespace ColoradoLuxury.Controllers
                     DropOffLocation = rideDetails.DropOffLocation,
                     CustomerTravelTypeId = rideDetails.WayType ? (int)WayTypeEnum.Distance : (int)WayTypeEnum.Hourly,
                     DurationId = rideDetails.DurationInHours != null ? rideDetails.DurationInHours : null,
-                    TransferTypeId = rideDetails.TransferTypeId != 0 ? rideDetails.TransferTypeId : 0
+                    TransferTypeId = rideDetails.TransferTypeId != 0 ? rideDetails.TransferTypeId : null
                 };
 
                 VehicleInfoDetails vehicleInfoDetails = new VehicleInfoDetails()
