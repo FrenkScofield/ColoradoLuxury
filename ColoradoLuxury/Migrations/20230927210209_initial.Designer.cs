@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    [Migration("20230924230949_initial")]
+    [Migration("20230927210209_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -335,7 +335,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TransferTypeId")
+                    b.Property<int?>("TransferTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -472,6 +472,37 @@ namespace ColoradoLuxury.Migrations
                     b.HasIndex("VehicleInfoDetailsId");
 
                     b.ToTable("UserInfos");
+                });
+
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.ValueOfTipButton", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClientIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HighInterest")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MiddleInterest")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("lowInterest")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ValueOfTipButtons");
                 });
 
             modelBuilder.Entity("ColoradoLuxury.Models.BLL.Vehicle", b =>
@@ -629,9 +660,7 @@ namespace ColoradoLuxury.Migrations
 
                     b.HasOne("ColoradoLuxury.Models.BLL.TransferType", "TransferType")
                         .WithMany("RideDetails")
-                        .HasForeignKey("TransferTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TransferTypeId");
 
                     b.Navigation("CustomerTravelType");
 

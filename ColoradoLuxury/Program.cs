@@ -70,6 +70,8 @@ using (var scope = app.Services.CreateScope())
     SeedData.AddCustomTravelType(dbContext);
     SeedData.AddAirlines(dbContext);
     SeedData.AddCountries(dbContext);
+    SeedData.AddValueOfTipBtn(dbContext);
+
 
 }
 #endif

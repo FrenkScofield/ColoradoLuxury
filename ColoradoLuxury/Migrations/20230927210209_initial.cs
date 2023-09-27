@@ -161,6 +161,24 @@ namespace ColoradoLuxury.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ValueOfTipButtons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    lowInterest = table.Column<int>(type: "int", nullable: false),
+                    MiddleInterest = table.Column<int>(type: "int", nullable: false),
+                    HighInterest = table.Column<int>(type: "int", nullable: false),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ValueOfTipButtons", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VehicleTypes",
                 columns: table => new
                 {
@@ -242,7 +260,7 @@ namespace ColoradoLuxury.Migrations
                     PickupLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DropOffLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerTravelTypeId = table.Column<int>(type: "int", nullable: false),
-                    TransferTypeId = table.Column<int>(type: "int", nullable: false),
+                    TransferTypeId = table.Column<int>(type: "int", nullable: true),
                     DurationId = table.Column<int>(type: "int", nullable: true),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -266,8 +284,7 @@ namespace ColoradoLuxury.Migrations
                         name: "FK_RideDetails_TransferTypes_TransferTypeId",
                         column: x => x.TransferTypeId,
                         principalTable: "TransferTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -448,6 +465,9 @@ namespace ColoradoLuxury.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserInfos");
+
+            migrationBuilder.DropTable(
+                name: "ValueOfTipButtons");
 
             migrationBuilder.DropTable(
                 name: "Vehicles");
