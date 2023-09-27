@@ -472,6 +472,37 @@ namespace ColoradoLuxury.Migrations
                     b.ToTable("UserInfos");
                 });
 
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.ValueOfTipButton", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClientIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HighInterest")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MiddleInterest")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("lowInterest")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ValueOfTipButtons");
+                });
+
             modelBuilder.Entity("ColoradoLuxury.Models.BLL.Vehicle", b =>
                 {
                     b.Property<int>("Id")
