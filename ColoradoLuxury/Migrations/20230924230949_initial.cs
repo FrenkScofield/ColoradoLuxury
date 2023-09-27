@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ColoradoLuxury.Migrations
 {
-    public partial class V5 : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -170,6 +170,7 @@ namespace ColoradoLuxury.Migrations
                     PerMile = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Hourly = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -337,6 +338,8 @@ namespace ColoradoLuxury.Migrations
                     BillingAddressId = table.Column<int>(type: "int", nullable: true),
                     ArrivalAirlineInfoId = table.Column<int>(type: "int", nullable: true),
                     ForDriverbettingId = table.Column<int>(type: "int", nullable: true),
+                    RideDetailId = table.Column<int>(type: "int", nullable: true),
+                    VehicleInfoDetailsId = table.Column<int>(type: "int", nullable: true),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -358,6 +361,16 @@ namespace ColoradoLuxury.Migrations
                         name: "FK_UserInfos_ForDriverBettings_ForDriverbettingId",
                         column: x => x.ForDriverbettingId,
                         principalTable: "ForDriverBettings",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserInfos_RideDetails_RideDetailId",
+                        column: x => x.RideDetailId,
+                        principalTable: "RideDetails",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserInfos_VehicleInfoDetails_VehicleInfoDetailsId",
+                        column: x => x.VehicleInfoDetailsId,
+                        principalTable: "VehicleInfoDetails",
                         principalColumn: "Id");
                 });
 
@@ -402,6 +415,16 @@ namespace ColoradoLuxury.Migrations
                 column: "ForDriverbettingId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserInfos_RideDetailId",
+                table: "UserInfos",
+                column: "RideDetailId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserInfos_VehicleInfoDetailsId",
+                table: "UserInfos",
+                column: "VehicleInfoDetailsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VehicleInfoDetails_VehicleTypeId",
                 table: "VehicleInfoDetails",
                 column: "VehicleTypeId");
@@ -421,28 +444,13 @@ namespace ColoradoLuxury.Migrations
                 name: "ExceptionLogs");
 
             migrationBuilder.DropTable(
-                name: "RideDetails");
-
-            migrationBuilder.DropTable(
                 name: "RoofTopCargoBoxs");
 
             migrationBuilder.DropTable(
                 name: "UserInfos");
 
             migrationBuilder.DropTable(
-                name: "VehicleInfoDetails");
-
-            migrationBuilder.DropTable(
                 name: "Vehicles");
-
-            migrationBuilder.DropTable(
-                name: "CustomerTravelTypes");
-
-            migrationBuilder.DropTable(
-                name: "Durations");
-
-            migrationBuilder.DropTable(
-                name: "TransferTypes");
 
             migrationBuilder.DropTable(
                 name: "ArrivalAirlineInfos");
@@ -454,13 +462,28 @@ namespace ColoradoLuxury.Migrations
                 name: "ForDriverBettings");
 
             migrationBuilder.DropTable(
-                name: "VehicleTypes");
+                name: "RideDetails");
+
+            migrationBuilder.DropTable(
+                name: "VehicleInfoDetails");
 
             migrationBuilder.DropTable(
                 name: "AirLines");
 
             migrationBuilder.DropTable(
                 name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "CustomerTravelTypes");
+
+            migrationBuilder.DropTable(
+                name: "Durations");
+
+            migrationBuilder.DropTable(
+                name: "TransferTypes");
+
+            migrationBuilder.DropTable(
+                name: "VehicleTypes");
         }
     }
 }

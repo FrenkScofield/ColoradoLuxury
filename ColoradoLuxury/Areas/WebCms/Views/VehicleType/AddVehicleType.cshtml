@@ -26,7 +26,7 @@
                     </div>
                     <label class="col-sm-6 control-label" for="textinput">Distance Price</label>
                     <div class="col-sm-12">
-                        <input type="text" placeholder="For Duration"  asp-for="PerMile" id="permile" class="form-control">
+                        <input type="text" placeholder="For Duration" name="PerMile" id="permile" class="form-control">
                         <span asp-validation-for="PerMile" class="text-danger"></span>
                     </div>
                     <label class="col-sm-6 control-label" for="textinput">Hourly Price</label>
@@ -50,7 +50,6 @@
     </div><!-- /.col-lg-12 -->
 </div><!-- /.row -->
 
-<span class="validation">@Html.ValidationMessage("PerMile")</span>
 
 <script src="~/lib/jquery/jquery3.6.4/jquery3.6.4.js"></script>
 <partial name="_ValidationScriptsPartial" />

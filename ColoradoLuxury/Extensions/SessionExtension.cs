@@ -17,11 +17,17 @@ namespace ColoradoLuxury.Extensions
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
 
+        //set session string
+        public static void SetSessionString(this HttpContext context, string key, string value) => context.Session.SetString(key, value);
 
-        public static void SetSessionString(this ISession session, string key, string value) => session.SetString(key, value);
+        //get session string
+        public static string GetSessionString(this HttpContext context, string key) => context.Session.GetString(key);
 
-        //get session
-        public static string GetSessionString(this ISession session, string key) => session.GetString(key);
+        //set session int
+        public static void SetSessionInt32(this HttpContext context, string key, int value) => context.Session.SetInt32(key, value);
+
+        //get session int
+        public static int? GetSessionInt32(this HttpContext context, string key) => context.Session.GetInt32(key);
 
 
     }

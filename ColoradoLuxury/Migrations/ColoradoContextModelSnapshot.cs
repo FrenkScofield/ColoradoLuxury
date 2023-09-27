@@ -333,7 +333,7 @@ namespace ColoradoLuxury.Migrations
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TransferTypeId")
+                    b.Property<int?>("TransferTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -572,6 +572,9 @@ namespace ColoradoLuxury.Migrations
                     b.Property<DateTime?>("EditDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("Hourly")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -624,9 +627,7 @@ namespace ColoradoLuxury.Migrations
 
                     b.HasOne("ColoradoLuxury.Models.BLL.TransferType", "TransferType")
                         .WithMany("RideDetails")
-                        .HasForeignKey("TransferTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TransferTypeId");
 
                     b.Navigation("CustomerTravelType");
 

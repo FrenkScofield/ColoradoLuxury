@@ -12,6 +12,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ColoradoLuxury.Services;
 using Stripe.BillingPortal;
+using System;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -21,6 +23,7 @@ builder.Services.AddDbContext<ColoradoContext>(option => option.UseSqlServer(bui
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+builder.Services.AddScoped<ColoradoContext>();
 
 builder.Services.AddScoped<IEmailSender, EmailSender>(emailsender => new EmailSender(
                builder.Configuration.GetValue<string>("EmailSetting:Host"),
@@ -32,6 +35,7 @@ builder.Services.AddScoped<IEmailSender, EmailSender>(emailsender => new EmailSe
 
                ));
 
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IViewRenderService, ViewRenderToString>();
 
@@ -39,6 +43,8 @@ builder.WebHost
                             .UseUrls("https://*:5000")
                             .UseContentRoot(Directory.GetCurrentDirectory())
                             .UseIISIntegration();
+
+
 
 
 var app = builder.Build();
@@ -52,6 +58,22 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+#if DEBUG
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ColoradoContext>();
+
+    SeedData.AddTransferType(dbContext);
+    SeedData.AddDuration(dbContext);
+    SeedData.AddCustomTravelType(dbContext);
+    SeedData.AddAirlines(dbContext);
+    SeedData.AddCountries(dbContext);
+
+}
+#endif
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
