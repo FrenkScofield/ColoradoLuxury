@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<Vehicle>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
@@ -85,45 +85,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>BMW</td>
-                                <td>X5</td>
-                                <td>Black</td>
-                                <td>4400</td>
-                                <td>Benzin</td>
-                                <td>
-                                    <div >
-
-                                        <a asp-controller="VeliBilgi" asp-action="EditOgrenciVeliBilgi" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="ID"></a>
-                                        <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="ID" class="btn text-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
-
-                                    </div>
-                                </td>
-                            </tr>
-                            @* @if (TempData["Orgs"] != null)
+                            @foreach (var vehicle in Model)
                             {
-                            @foreach (var item in Model.OgrenciVeliBilgis)
-                            {
-                            <tr>
-                            <th scope="row">@item.ID</th>
-                            <td>@item.AD</td>
-                            <td>@item.SOYAD</td>
-                            <td>@item.TC_KIMLIK</td>
-                            <td>@item.ILISKI_DURUMU</td>
-                            <td>@item.CEP_TELEFONU_1</td>
-                            <td>@item.EMAIL</td>
-                            <td>@item.MESLEK</td>
-                            <td>
-                            <div style="display:flex">
-
-                            <a asp-controller="VeliBilgi" asp-action="EditOgrenciVeliBilgi" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="@item.ID"></a>
-                            <a asp-controller="VeliBilgi" asp-action="DeleteOgrenciVeliBilgi" asp-route-id="@item.ID" class="btn text-warning" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
-
-                            </div>
-                            </td>
-                            </tr>
+                                <tr>
+                                    <td>@vehicle.Name</td>
+                                    <td>@vehicle.Model</td>
+                                    <td>@vehicle.Color</td>
+                                    <td>@vehicle.Engine</td>
+                                    <td>@vehicle.Fuel</td>
+                                    <td>
+                                        <div>
+                                            <a asp-controller="ChooseVehiclePage" asp-action="EditVehicle" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-id="@vehicle.Id"></a>
+                                            <a asp-controller="ChooseVehiclePage" asp-action="DeleteVehicle" asp-route-id="@vehicle.Id" class="btn text-danger" onclick="return confirm('Are you sure you want to delete?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
                             }
-                            }*@
                         </tbody>
                     </table>
                 </div>

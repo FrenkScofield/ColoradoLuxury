@@ -11,7 +11,7 @@ namespace ColoradoLuxury.Extensions
             List<GetVehicleDistanceAmounts> result = new List<GetVehicleDistanceAmounts>();
             for (int i = 0; i < vehicleTypes.Count; i++)
             {
-                result.Add(new GetVehicleDistanceAmounts { Key = vehicleTypes[i].TypeName.Replace(" ", "").ToLower(), DistanceAmount = httpContext.Session.GetString(vehicleTypes[i].TypeName.Replace(" ", "").ToLower()), IsActive = vehicleTypes[i].IsActive });
+                result.Add(new GetVehicleDistanceAmounts { Key = vehicleTypes[i].TypeName.Replace(" ", "").ToLower(), DistanceAmount = httpContext.Session.GetString(vehicleTypes[i].TypeName.Replace(" ", "").ToLower()), IsActive = vehicleTypes[i].IsActive,VehicleTypeId = vehicleTypes[i].Id });
             }
             return result;
         }

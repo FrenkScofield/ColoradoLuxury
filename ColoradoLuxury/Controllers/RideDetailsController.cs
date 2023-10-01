@@ -4,6 +4,7 @@ using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ColoradoLuxury.Controllers
 {
@@ -23,7 +24,7 @@ namespace ColoradoLuxury.Controllers
         [HttpPost]
         public IActionResult AddDetails([FromBody] RideDetailsVM model)
         {
-            HttpContext.Session.SetObjectsession("rideDetails", model);
+            HttpContext.SetObjectsession("FirstrideDetails", model);
 
             return Json(new { });
 
@@ -32,22 +33,39 @@ namespace ColoradoLuxury.Controllers
         [HttpPost]
         public IActionResult AddVehiclesInfo([FromBody] ChooseVehicleVM model)
         {
-            HttpContext.Session.SetObjectsession("vehicleDetails", model);
+            HttpContext.SetObjectsession("vehicleDetails", model);
+            var keys = HttpContext.Session.Keys;
+            var rideDetails = HttpContext.GetObjectsession<RideDetailsVM>("FirstrideDetails");
+            string text = "Denver International Airport (DEN), Peña Boulevard, Denver, CO, USA";
+            bool airlineAutoCheck = false;
+            if (rideDetails != null)
+            {
+                if (rideDetails.DropOffLocation == text || rideDetails.PickupLocation == text)
+                    airlineAutoCheck = true;
+            }
 
-            return Json(new { });
+            return Json(new { airlineAutoCheck });
 
         }
 
         [HttpPost]
         public IActionResult AddContactDetailsInfo([FromBody] ContactDetailsVM model)
         {
+            if (model.AirlineAutoCheck && !model.AirLineStatus)
+            {
+                return Json(new
+                {
+                    wrongStatus = true
+                });
+            }
+
             string? wayType = null;
-            HttpContext.Session.SetObjectsession("contactDetails", model);
+            HttpContext.SetObjectsession("contactDetails", model);
 
             //Get All Informations
-            var rideDetails = HttpContext.Session.GetObjectsession<RideDetailsVM>("rideDetails");
-            var vehicleDetails = HttpContext.Session.GetObjectsession<ChooseVehicleVM>("vehicleDetails");
-            var contactDetails = HttpContext.Session.GetObjectsession<ContactDetailsVM>("contactDetails");
+            var rideDetails = HttpContext.GetObjectsession<RideDetailsVM>("FirstrideDetails");
+            var vehicleDetails = HttpContext.GetObjectsession<ChooseVehicleVM>("vehicleDetails");
+            var contactDetails = HttpContext.GetObjectsession<ContactDetailsVM>("contactDetails");
 
             if (rideDetails.WayType)
                 wayType = WayTypeEnum.Distance.ToString();
@@ -56,7 +74,7 @@ namespace ColoradoLuxury.Controllers
             GeneralInformationAboutRide getTextForIdVM = null;
             try
             {
-                 getTextForIdVM = new GeneralInformationAboutRide()
+                getTextForIdVM = new GeneralInformationAboutRide()
                 {
                     TransferType = _context.TransferTypes.Where(tp => tp.Id == rideDetails.TransferTypeId).FirstOrDefault()?.Name,
                     VehicleType = _context.VehicleTypes.Where(tp => tp.Id == vehicleDetails.AllcarTpes).FirstOrDefault()?.TypeName,
@@ -73,7 +91,7 @@ namespace ColoradoLuxury.Controllers
 
                 throw;
             }
-            
+
             return Json(new
             {
                 rideDetails,
@@ -85,16 +103,68 @@ namespace ColoradoLuxury.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetAmountByVehicle(string sessionName)
+        public async Task<IActionResult> GetAmountByVehicle(string sessionName)
         {
-            VehicleAmounts? amount = HttpContext.Session.GetObjectsession<VehicleAmounts>($"{sessionName}-result");
+            VehicleAmounts? amount = HttpContext.GetObjectsession<VehicleAmounts>($"{sessionName}-result");
 
-            if (HttpContext.Session.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession") != null)
+            var getAllVehicleTypes = _context.VehicleTypes.ToList();
+            foreach (var getAllVehicleType in getAllVehicleTypes)
+            {
+                if (HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result").IsActive == true)
+                {
+
+                    //HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result").IsActive = false;
+                    //await HttpContext.Session.LoadAsync();
+                    var previusAmountResultSession = HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
+                    HttpContext.Session.Remove($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
+
+                    var VehicleAmountsForUpdatePreviusSession = new VehicleAmounts()
+                    {
+                        DistanceAmount = previusAmountResultSession.DistanceAmount,
+                        Graduity = previusAmountResultSession.Graduity,
+                        TotalAmount = previusAmountResultSession.TotalAmount,
+                        VehicleTypeId = previusAmountResultSession.VehicleTypeId,
+                        IsActive = false
+                    };
+
+                    HttpContext.SetObjectsession($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result", VehicleAmountsForUpdatePreviusSession);
+
+                }
+
+                getAllVehicleType.IsActive = false;
+
+                _context.VehicleTypes.Update(getAllVehicleType);
+                _context.SaveChanges();
+            }
+
+            var getVehicleType = _context.VehicleTypes.Where(x => x.Id == amount.VehicleTypeId).FirstOrDefault();
+
+            getVehicleType.IsActive = true;
+            amount.IsActive = getVehicleType.IsActive;
+            var currentAmountResultSession = HttpContext.GetObjectsession<VehicleAmounts>($"{getVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
+            HttpContext.Session.Remove($"{getVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
+            var VehicleAmountsForUpdateCurrentSession = new VehicleAmounts()
+            {
+                DistanceAmount = currentAmountResultSession.DistanceAmount,
+                Graduity = currentAmountResultSession.Graduity,
+                TotalAmount = currentAmountResultSession.TotalAmount,
+                VehicleTypeId = currentAmountResultSession.VehicleTypeId,
+                IsActive = getVehicleType.IsActive
+            };
+            HttpContext.SetObjectsession($"{getVehicleType.TypeName.Replace(" ", "").ToLower()}-result", VehicleAmountsForUpdateCurrentSession);
+            _context.VehicleTypes.Update(getVehicleType);
+            _context.SaveChanges();
+
+            //HttpContext.Session.Remove($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
+
+            //VehicleAmounts? amount = new VehicleAmounts { IsActive = false, DistanceAmount = getAllVehicleType };
+            //HttpContext.SetObjectsession($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result", amount);
+
+            if (HttpContext.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession") != null)
             {
                 HttpContext.Session.Remove("activeVehicleAmountSession");
             }
-            HttpContext.Session.SetObjectsession("activeVehicleAmountSession", amount);
-            
+            HttpContext.SetObjectsession("activeVehicleAmountSession", amount);
 
             return Json(new { amount });
 

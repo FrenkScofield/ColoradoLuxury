@@ -1,4 +1,4 @@
-﻿
+﻿@model ApiSettingsDetail
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
@@ -8,26 +8,29 @@
     <div class="col-md-8 my-4">
         <div class="card shadow mb-4">
             <div class="card-header py-4">
-               FOR API KEY SETTING
+                FOR API KEY SETTING
             </div>
-            <div class="card-body">
 
-                
-                        <div class="input-group specialSpace  mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Secret API KEY</span>
-                            </div>
-                            <input type="text" class="form-control" aria-label="MinumumDistance" aria-describedby="inputGroup-sizing-default" >
-                        </div>
-                        <div class="input-group specialSpace mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Publishable API KEY</span>
-                            </div>
-                            <input type="text" class="form-control" aria-label="MinumumDuration" aria-describedby="inputGroup-sizing-default" >
-                        </div>
-             
-                <button type="button" class="btn btn-outline-success float-right">Add</button>
+            <form action="/WebCms/ForApiKey/AddApiSettingsDetails" method="post">
+            <div class="card-body">
+                <div class="input-group specialSpace  mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Secret API KEY</span>
+                    </div>
+                    <input type="text" class="form-control" asp-for="Secretkey" aria-label="MinumumDistance" aria-describedby="inputGroup-sizing-default">
+                        <span style="color: red">@Html.ValidationMessage("Secretkey")</span>
+                </div>
+                <div class="input-group specialSpace mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Publishable API KEY</span>
+                    </div>
+                    <input type="text" class="form-control" asp-for="Publickey" aria-label="MinumumDuration" aria-describedby="inputGroup-sizing-default">
+                        <span style="color: red">@Html.ValidationMessage("Publickey")</span>
+                </div>
+
+                <button type="submit" class="btn btn-outline-success float-right">Save</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
