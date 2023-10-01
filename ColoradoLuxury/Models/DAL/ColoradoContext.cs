@@ -17,6 +17,12 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<CustomerTravelType> CustomerTravelTypes { get; set; }
         public DbSet<Duration> Durations { get; set; }
         public DbSet<ForDriverBetting> ForDriverBettings { get; set; }
+        public DbSet<DefineMinimumAmountAndDistanceSize> DefineMinimumAmountAndDistanceSizes { get; set; }
+        public DbSet<ApiSettingsDetail> ApiSettingsDetails { get; set; }
+        public DbSet<ApplicationUsers> ApplicationUsers { get; set; }
+
+
+
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
 
         public DbSet<RideDetail> RideDetails { get; set; }
@@ -26,6 +32,8 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<Cupon> Cupons { get; set; }
+
+        
 
 
     }

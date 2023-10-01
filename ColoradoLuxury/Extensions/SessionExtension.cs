@@ -5,15 +5,15 @@ namespace ColoradoLuxury.Extensions
 {
     public static class SessionExtension
     {
-        public static void SetObjectsession(this ISession session, string key, object value)
+        public static void SetObjectsession(this HttpContext context, string key, object value)
         {
-            session.SetString(key, JsonConvert.SerializeObject(value));
+            context.Session.SetString(key, JsonConvert.SerializeObject(value));
         }
 
         //get session
-        public static T? GetObjectsession<T>(this ISession session, string key)
+        public static T? GetObjectsession<T>(this HttpContext context, string key)
         {
-            var value = session.GetString(key);
+            var value = context.Session.GetString(key);
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
 

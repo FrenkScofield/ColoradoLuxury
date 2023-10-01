@@ -14,8 +14,13 @@ using ColoradoLuxury.Services;
 using Stripe.BillingPortal;
 using System;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using ColoradoLuxury.Middleware;
+using ColoradoLuxury.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Program>());
 
@@ -24,6 +29,9 @@ builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Str
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddScoped<ColoradoContext>();
+builder.Services.AddTransient<HttpContextAccessor>();
+
+
 
 builder.Services.AddScoped<IEmailSender, EmailSender>(emailsender => new EmailSender(
                builder.Configuration.GetValue<string>("EmailSetting:Host"),
@@ -37,6 +45,8 @@ builder.Services.AddScoped<IEmailSender, EmailSender>(emailsender => new EmailSe
 
 
 builder.Services.AddHttpContextAccessor();
+
+
 builder.Services.AddScoped<IViewRenderService, ViewRenderToString>();
 
 builder.WebHost
@@ -46,8 +56,8 @@ builder.WebHost
 
 
 
-
 var app = builder.Build();
+
 
 StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:Secretkey");
 
@@ -70,18 +80,22 @@ using (var scope = app.Services.CreateScope())
     SeedData.AddCustomTravelType(dbContext);
     SeedData.AddAirlines(dbContext);
     SeedData.AddCountries(dbContext);
-
 }
 #endif
 
 
+
+
+
+
 app.UseHttpsRedirection();
+app.UseAuthorization();
 app.UseStaticFiles();
 
 app.UseSession();
 app.UseRouting();
 
-app.UseAuthorization();
+
 
 app.UseEndpoints(endpoints =>
 {

@@ -45,6 +45,7 @@ namespace ColoradoLuxury.Controllers
                 PerMile = x.PerMile,
                 Hourly = x.Hourly,
                 IsActive = x.IsActive,
+                Id= x.Id
             }).ToList();
 
             if (hourly && durationValue == 0)
@@ -96,7 +97,7 @@ namespace ColoradoLuxury.Controllers
             {
                 distanceTypeValue = (short)distanceTypeValue;
 
-                if ((Int32)minimumTravelValueType  < (Int32)checkingMinimumTravelValueTypeFromDbValue)
+                if ((Int32)minimumTravelValueType < (Int32)checkingMinimumTravelValueTypeFromDbValue)
                 {
                     minimumTravelValueType = (Int32)checkingMinimumTravelValueTypeFromDbValue;
                 }
@@ -115,23 +116,24 @@ namespace ColoradoLuxury.Controllers
                 string? gratuity = (Convert.ToDecimal(distanceAmount) * 0.15m).ToString("F2");
                 string? totalAmount = (Convert.ToDecimal(distanceAmount) + Convert.ToDecimal(gratuity)).ToString("F2");
 
-                getVehicleDistanceAmounts.Add(new GetVehicleDistanceAmounts() { Key = getVehiclesPermileValue.Key, DistanceAmount = distanceAmount, IsActive = getVehiclesPermileValue.IsActive });
+                getVehicleDistanceAmounts.Add(new GetVehicleDistanceAmounts() { Key = getVehiclesPermileValue.Key, DistanceAmount = distanceAmount, IsActive = getVehiclesPermileValue.IsActive, VehicleTypeId = getVehiclesPermileValue.VehicleTypeId });
 
                 VehicleAmounts? vehicleAmounts = new VehicleAmounts
                 {
                     DistanceAmount = distanceAmount,
                     Graduity = gratuity,
                     TotalAmount = totalAmount,
-                    IsActive = getVehiclesPermileValue.IsActive
+                    IsActive = getVehiclesPermileValue.IsActive,
+                    VehicleTypeId = getVehiclesPermileValue.VehicleTypeId
                 };
                 vehicleAmountsList?.Add(vehicleAmounts);
-                HttpContext?.Session?.SetObjectsession($"{getVehiclesPermileValue.Key}-result", vehicleAmounts);
+                HttpContext?.SetObjectsession($"{getVehiclesPermileValue.Key}-result", vehicleAmounts);
             }
 
             VehicleAmounts? getVehiclesIsActive = vehicleAmountsList.Where(x => x.IsActive == true).FirstOrDefault();
 
             if (vehicleTypes != null && vehicleTypes.Any(x => x.IsActive == true))
-                HttpContext?.Session?.SetObjectsession("activeVehicleAmountSession", getVehiclesIsActive);
+                HttpContext?.SetObjectsession("activeVehicleAmountSession", getVehiclesIsActive);
 
 
             GetVehiclesAmountDetailsVM model = new GetVehiclesAmountDetailsVM()
@@ -162,12 +164,6 @@ namespace ColoradoLuxury.Controllers
 
             }
 
-            if (model.Mile <= 10)
-                model.Mile = 10;
-
-            if (model.Hours <= 2)
-                model.Hours = 2;
-
             string mile = model.Mile.ToString();
 
             SessionExtension.SetSessionString(_httpContextAccessor.HttpContext, "mile", mile);
@@ -178,6 +174,34 @@ namespace ColoradoLuxury.Controllers
 
 
             return Json(new { });
+        }
+
+        [HttpPost]
+        public IActionResult ChangeVehicleType(int id, short passengersCount,  short suitcasesCount)
+        {
+            dynamic? getVehicleTypes = null;
+            List<DistanceAmountListVM>? distanceAmountListVMs = new List<DistanceAmountListVM>();
+            VehicleAmounts? vehicleAmountsDetails = null;
+            if (id == 0)
+            {
+                getVehicleTypes = _context.VehicleTypes.ToList();
+                foreach (var getVehicleType in getVehicleTypes)
+                {
+                    vehicleAmountsDetails = HttpContext.GetObjectsession<VehicleAmounts>($"{getVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
+                    distanceAmountListVMs.Add(new DistanceAmountListVM() { DistanceAmount = vehicleAmountsDetails?.DistanceAmount, VehicleTypeId = getVehicleType.Id, TypeName = getVehicleType.TypeName,
+                                                                           IsActive = vehicleAmountsDetails.IsActive, PassengersCount = passengersCount, SuitCasesCount = suitcasesCount });
+                }
+            }
+            else
+            {
+                getVehicleTypes = _context.VehicleTypes.Where(x => x.Id == id).FirstOrDefault();
+                vehicleAmountsDetails = HttpContext.GetObjectsession<VehicleAmounts>($"{getVehicleTypes?.TypeName.Replace(" ", "").ToLower()}-result");
+                distanceAmountListVMs.Add(new DistanceAmountListVM() { DistanceAmount = vehicleAmountsDetails?.DistanceAmount, VehicleTypeId = getVehicleTypes?.Id, TypeName=getVehicleTypes?.TypeName,
+                                                                       IsActive = vehicleAmountsDetails.IsActive, PassengersCount = passengersCount, SuitCasesCount = suitcasesCount
+                });
+            }
+
+            return Json(new { distanceAmountListVMs });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

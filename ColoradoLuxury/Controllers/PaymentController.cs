@@ -41,9 +41,9 @@ namespace ColoradoLuxury.Controllers
         {
             //Insert 
             //Get All Informations
-            var rideDetails = HttpContext.Session.GetObjectsession<RideDetailsVM>("rideDetails");
-            var vehicleDetails = HttpContext.Session.GetObjectsession<ChooseVehicleVM>("vehicleDetails");
-            var contactDetails = HttpContext.Session.GetObjectsession<ContactDetailsVM>("contactDetails");
+            var rideDetails = HttpContext.GetObjectsession<RideDetailsVM>("FirstrideDetails");
+            var vehicleDetails = HttpContext.GetObjectsession<ChooseVehicleVM>("vehicleDetails");
+            var contactDetails = HttpContext.GetObjectsession<ContactDetailsVM>("contactDetails");
             BillingAddress billingAddress = null;
             ArrivalAirlineInfo airlineInfo = null;
             //using (var transaction = _context.Database.BeginTransaction())
@@ -130,7 +130,7 @@ namespace ColoradoLuxury.Controllers
             }
             //}
 
-            VehicleAmounts? vehicleAmounts = HttpContext?.Session?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
+            VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
             FilledAllDatas datas = new FilledAllDatas()
             {
                 CustomerTravelType = rideDetails.WayType ? WayTypeEnum.Distance.ToString() : WayTypeEnum.Hourly.ToString(),
@@ -196,7 +196,7 @@ namespace ColoradoLuxury.Controllers
             var successUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Payment/Success";
             var cancelUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/Payment/Cancel";
 
-            VehicleAmounts? vehicleAmounts = HttpContext?.Session?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
+            VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
 
             StripeConfiguration.ApiKey = _configuration.GetValue<string>("StripeSettings:Secretkey");
             var options = new SessionCreateOptions

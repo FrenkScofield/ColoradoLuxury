@@ -7,8 +7,10 @@
         public int Engine { get; set; }
         public string? Fuel { get; set; }
 
+        public string? Color { get; set; }
+
         public int VehicleTypeId { get; set; }
 
-        public VehicleType VehicleType { get; set; }
+        public VehicleType? VehicleType { get; set; }
     }
 }

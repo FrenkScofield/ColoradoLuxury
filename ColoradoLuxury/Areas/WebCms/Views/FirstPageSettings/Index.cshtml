@@ -1,4 +1,5 @@
-﻿
+﻿@using ColoradoLuxury.Models.VM;
+@model DefineMinimumAmountsAndDistanceVM
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
@@ -15,15 +16,15 @@
                 ENTER RIDE DETAILS PAGES SETTINGS
             </div>
             <div class="card-body">
-                
+
                 <label class="ShowOrNotshowLabelText">Hourly Button</label>
                 <select class="form-select btnShowOrNotshow" id="btnHourly">
-                        <option value="activ">Show</option>
-                        <option value="deactiv">Not Show</option>
-                    </select>
-            
+                    <option value="activ">Show</option>
+                    <option value="deactiv">Not Show</option>
+                </select>
+
             </div>
-          
+
             <hr />
             <div class="row">
                 <div class="col-6">
@@ -38,44 +39,51 @@
                 </div>
             </div>
             <div class="card-body">
-                
-                <div class="row">
-                    <div class="col-6">
-                        <div class="input-group specialSpace ">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Distance KM</span>
+                <form action="/WebCms/FirstPageSettings/Index" method="post">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="input-group specialSpace ">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Minumum Distance Mile</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="MinumumDistance" asp-for="MinimumMile" id ="mile" aria-describedby="inputGroup-sizing-default" placeholder="0 Mile"><br />
+                                <span style="color:red">@Html.ValidationMessage("MinimumMile")</span>
                             </div>
-                            <input type="number" class="form-control" aria-label="MinumumDistance" aria-describedby="inputGroup-sizing-default" placeholder="0 Km">
-                        </div>
-                        <div class="input-group specialSpace ">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Booking Value $</span>
+                            <div class="input-group specialSpace ">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Minumum Booking Value $</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="MinumumBookingValue" asp-for="MinimumBookingvalueForDistance" id="minimumBookingvalueForDistance" aria-describedby="inputGroup-sizing-default" placeholder="0 $"><br />
+                                <span style="color:red">@Html.ValidationMessage("MinimumBookingvalueForDistance")</span>
                             </div>
-                            <input type="number" class="form-control" aria-label="MinumumBookingValue" aria-describedby="inputGroup-sizing-default" placeholder="0 $">
                         </div>
-                        <button type="button" class="btn btn-outline-success float-right">Save</button>
+                        
+                        <div class="col-6">
+                            <div class="input-group specialSpace ">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Minumum Duration Minute</span>
+                                </div>
+                                <input type="number" class="form-control" aria-label="MinumumDuration" asp-for="MinimumDuration" id="minimumDuration" aria-describedby="inputGroup-sizing-default" placeholder="0 Minute"><br />
+                                <span style="color:red">@Html.ValidationMessage("DurationValue")</span>
+                            </div>
+                            <div class="input-group specialSpace ">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Minumum Booking Value $</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="MinumumBookingValue" asp-for="MinimumBookingvalueForHourly" id="minimumBookingvalueForHourly" aria-describedby="inputGroup-sizing-default" placeholder="0 $"><br />
+                                <span style="color:red">@Html.ValidationMessage("MinimumBookingvalueForHourly")</span>
+                            </div>
+                            <button type="submit" class="btn btn-outline-success float-right">Save</button>
+                        </div>
                     </div>
+                </form>
 
-                    <div class="col-6">
-                        <div class="input-group specialSpace ">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Duration Minute</span>
-                            </div>
-                            <input type="number" class="form-control" aria-label="MinumumDuration" aria-describedby="inputGroup-sizing-default" placeholder="0 Minute">
-                        </div>
-                        <div class="input-group specialSpace ">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Minumum Booking Value $</span>
-                            </div>
-                            <input type="number" class="form-control" aria-label="MinumumBookingValue" aria-describedby="inputGroup-sizing-default" placeholder="0 $">
-                        </div>
-                        <button type="button" class="btn btn-outline-success float-right">Save</button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
+<script src="/lib/jquery/jquery3.6.4/jquery3.6.4.js"></script>
+<script src="~/admin/js/firstpagesettings/firstpagesettings.js"></script>
 <script>
     //=============Hourly Show or Notshow============
 

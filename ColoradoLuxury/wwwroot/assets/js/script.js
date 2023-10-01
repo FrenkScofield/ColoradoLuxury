@@ -1,6 +1,7 @@
 
 
 var hor = true;
+$('#distance').attr("selected", true)
 var bill;
 var airlineInfo;
 
@@ -159,21 +160,24 @@ Vue.component("step", {
                         }, 1000);
                         $('#passengersError').css("display", "none")
 
-                    } else {
+                    }
+                    else {
                         $('#passengersGood').css("display", "none")
                         $('#passengersError').css("display", "block")
                     }
 
-                } else if ($('#passengersSelect').val() >= 5) {
+                }
+                else if ($('#passengersSelect').val() >= 5) {
 
                     type.disabled = true;
-
+                    SaveRideDetailsInfo(this.currentstep);
+                    this.$emit("step-change", this.currentstep + 1);
                 }
                 else {
                     $('#passengersError').css("display", "none")
 
-                    this.$emit("step-change", this.currentstep + 1);
                     SaveRideDetailsInfo(this.currentstep);
+                    this.$emit("step-change", this.currentstep + 1);
 
                 }
             }
@@ -322,14 +326,14 @@ Vue.component("step", {
                                 }
                                 else {
 
-                                    this.$emit("step-change", this.currentstep + 1);
                                     SaveRideDetailsInfo(this.currentstep);
+                                    this.$emit("step-change", this.currentstep + 1);
                                 }
 
                             }
                         } else {
-                            this.$emit("step-change", this.currentstep + 1);
                             SaveRideDetailsInfo(this.currentstep);
+                            this.$emit("step-change", this.currentstep + 1);
                         }
 
 
@@ -414,10 +418,14 @@ accordionItemHeaders.forEach(accordionItemHeader => {
 //When this documend is ready, it will run
 $('#hourly').on('click', function () {
     hor = false;
-
+    $(this).attr("selected", true)
+    $('#distance').attr("selected", true)
 })
 $('#distance').on('click', function () {
     hor = true;
+    $(this).attr("selected", true);
+    $('#hourly').attr("selected", true)
+
 });
 
 //when checkbox checked, then custom drive betting input enable will be
@@ -606,13 +614,25 @@ function CalculatedAmountResponse(response) {
 }
 
  function SaveRideDetailsInfo(step) {
-    let data = null;
+     let data = null;
+     let airlineAutoCheck = false;
+
     switch (step) {
         case 1:
+            let dropOffLocation = null;
             let pickupDate = $("#pickupDate").val();
             let time = $("#time").val();
             let pickuplocation = $("#pickuplocation").val();
-            let dropOffLocation = $("#dropOffLocation").val();
+            console.log(hor)
+            if (hor)
+                dropOffLocation = $("#dropOffLocation").val();
+            else
+                dropOffLocation = $("#forHourlydropOffLocation").val();
+
+
+            console.log(dropOffLocation)
+
+            
             let transferTypeId = $("#transferType").val();
             let durationInHours = $("#durationInHoursSelected").val();
 
@@ -672,6 +692,16 @@ function CalculatedAmountResponse(response) {
             console.log(data);
             AjaxPost("/RideDetails/AddVehiclesInfo/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
                 console.log(response);
+                airlineAutoCheck = response.airlineAutoCheck;
+                sessionStorage.setItem("airlineAutoCheck", airlineAutoCheck);
+                console.log(sessionStorage.getItem("airlineAutoCheck"))
+                if (response.airlineAutoCheck) {
+                    $("#airlineInfo").parent().addClass("active");
+                    $("#airlineInfo").parent().siblings(".accordion-item-body.billBackgroundColor").attr("style", "max-height: 397px;");
+                    $("#airlineInfo").attr("checked", true)
+                    $("#airlineInfo").prop("checked", true)
+
+                }
             });
             break;
 
@@ -727,11 +757,18 @@ function CalculatedAmountResponse(response) {
                 BillingAddressStatus: bill.checked,
                 AirLineStatus: airlineInfo.checked,
                 AirlineId: airline,
-                FlightNumber: filingNumber
+                FlightNumber: filingNumber,
+                AirlineAutoCheck: Boolean(sessionStorage.getItem("airlineAutoCheck"))
             }
             console.log(data);
             AjaxPost("/RideDetails/AddContactDetailsInfo/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
                 console.log(response);
+
+                if (response.hasOwnProperty("wrongStatus")) {
+                    alert("If PickupLocation or DropOfLocation choosen 'Denver International Airport (DEN), Peña Boulevard, Denver, CO, USA' international airport , must be selected 'ARRIVAL AIRLINE INFO' tab!");
+                    return;
+                }
+
                 ShowAllDatasFilledFromInput("firstname", response.contactDetails.firstname);
                 ShowAllDatasFilledFromInput("lastname", response.contactDetails.lastname);
                 ShowAllDatasFilledFromInput("email", response.contactDetails.email);
@@ -766,6 +803,7 @@ function ShowAllDatasFilledFromInput(id, text) {
 }
 
 function SelectedVehicleType(currentElement) {
+
     document.querySelectorAll('.btn.btn-outline-secondary.toggle-button-vehicle').forEach(element => {
         element.classList.remove('toggle-button-selected');
         element.setAttribute("aria-pressed", false);

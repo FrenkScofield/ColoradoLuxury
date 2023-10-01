@@ -25,6 +25,8 @@
         public int? AirlineId { get; set; }
         public string? FlightNumber { get; set; }
 
+        public bool AirlineAutoCheck { get; set; }
+
 
     }
 }
