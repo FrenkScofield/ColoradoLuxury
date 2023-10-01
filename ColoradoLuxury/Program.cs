@@ -20,7 +20,6 @@ using ColoradoLuxury.Middleware;
 using ColoradoLuxury.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Program>());
 
@@ -49,10 +48,10 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IViewRenderService, ViewRenderToString>();
 
-builder.WebHost
-                            .UseUrls("https://*:5000")
-                            .UseContentRoot(Directory.GetCurrentDirectory())
-                            .UseIISIntegration();
+//builder.WebHost
+//                            .UseUrls("https://*:5000")
+//                            .UseContentRoot(Directory.GetCurrentDirectory())
+//                            .UseIISIntegration();
 
 
 
@@ -80,6 +79,9 @@ using (var scope = app.Services.CreateScope())
     SeedData.AddCustomTravelType(dbContext);
     SeedData.AddAirlines(dbContext);
     SeedData.AddCountries(dbContext);
+    SeedData.AddValueOfTipBtn(dbContext);
+
+
 }
 #endif
 

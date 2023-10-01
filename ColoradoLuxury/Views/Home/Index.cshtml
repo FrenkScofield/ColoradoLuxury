@@ -32,6 +32,11 @@
         color: #ffffff;
     }
 
+    .btn-outline-warning:hover {
+        color: #fff;
+        background-color: #b9a32c;
+        border-color: #b9a32c;
+    }
 </style>
 <section class="mainImg">
     <div><img src="~/assets/image/slide_3_v4.jpg" width="100%" alt=""></div>
@@ -84,7 +89,7 @@
                                                     <div class="form-group">
                                                         <label for="dateTime"> Pickup time </label>
                                                         <input type="time" name="time" class="form-control"
-                                                               placeholder="00:00" id="time" value="14:00">
+                                                               placeholder="00:00" id="time" value="15:00">
                                                         <span class="error" id="timeError">Cannot be left blank </span>
                                                         <span class="good" id="timeGood">Good look </span>
                                                     </div>
@@ -334,13 +339,18 @@
                                                         <span class="money">$0.00</span>
                                                         <p>Baby car seat for children aged 0-36 months</p>
                                                         <div class="extraMessageluggage" id="extraMessageChildwillSit">
-                                                            <label class="d-block mt-1"> Additional Message</label>
-                                                            <textarea name="" id="childAdditionalMessage" cols="40" rows="3"></textarea>
+                                                            <div style="display:flex">
+                                                                <input id="childSeatMessegShowCekbox" style="    margin-right: 10px;
+    margin-top: -27px;
+    width: 25px" type="checkbox" />
+                                                                <label class="d-block mt-1">If you want write additional message for Child Seat, here you can write.</label>
+                                                            </div>
+                                                            <textarea style="display:none" name="" id="childAdditionalMessage" cols="40" rows="3"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 childCount border-bottom ">
                                                         <label>Number</label>
-                                                        <input type="number" id="childNumber">
+                                                        <input style="text-align: center;" type="number" value="1" id="childNumber" disabled>
                                                     </div>
                                                     <div class="col-lg-3 border-bottom">
                                                         <button id="childSeat" type="button"
@@ -353,13 +363,18 @@
                                                         <span class="childSet">Rooftop Cargo Box</span>
                                                         <span class="money">$0.00</span>
                                                         <div class="extraMessageluggage" id="extraMessageluggage">
-                                                            <label class="d-block mt-1"> Additional Message</label>
-                                                            <textarea name="" cols="40" rows="3" id="roofCargoBoxAdditionalMessage"></textarea>
+                                                            <div style="display:flex">
+                                                                <input id="cargoBoxMessegShowCekbox" style="margin-right: 10px;
+    margin-top: -27px;
+    width: 25px" type="checkbox" />
+                                                            <label class="d-block mt-1">If you want write additional message for Rooftop Cargo Box, here you can write.</label>
+                                                            </div>
+                                                            <textarea style="display:none" name="" cols="40" rows="3" id="roofCargoBoxAdditionalMessage"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 childCount border-top">
                                                         <label>Number</label>
-                                                        <input type="number" value="1" id="roofCargoBoxNumber" disabled>
+                                                        <input style="text-align: center;" type="number" value="1" id="roofCargoBoxNumber" disabled>
                                                     </div>
                                                     <div class="col-lg-3 border-top">
                                                         <button id="cargoBox" type="button"
@@ -445,8 +460,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="textarea">Example textarea</label>
-                                            <textarea class="form-control" name="textarea" rows="3" cols="2" id="additional-contact-details-note"></textarea>
+                                            <label for="textarea">Additional Message</label>
+                                            <textarea class="form-control" placeholder="If you want write additional message for we, here you can write." name="textarea" rows="3" cols="2" id="additional-contact-details-note"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 backroundAndBorderTema  ">
@@ -645,19 +660,20 @@
                                         <h4 id="bettingTitleH4">For Driver Betting</h4>
                                         <div class="mainBetDriver" id="betting">
                                             <div id="bettButtons">
-                                                <input type="button" id="btn0" :class="[{'active1': selected === 'f'},'bettingMonyBtn']" @@click="selected = 'f'"
-                                                       value="0" />
-                                                <input type="button" id="btn10" :class="[{'active1': selected === 'a'},'bettingMonyBtn']" @@click="selected = 'a'"
-                                                       value="10" />
-                                                <input type="button" id="btn20" :class="[{'active1': selected === 'b'},'bettingMonyBtn']" @@click="selected = 'b'"
+                                                <input type="button" id="btn1" :class="[{'active1': selected === 'f'},'bettingMonyBtn']" @@click="selected = 'f'"
+                                                       value="15" />
+                                                <input type="button" id="btn2" :class="[{'active1': selected === 'a'},'bettingMonyBtn']" @@click="selected = 'a'"
                                                        value="20" />
-                                                <input type="button" id="btn30" :class="[{'active1': selected === 'c'},'bettingMonyBtn']" @@click="selected = 'c'"
+                                                <input type="button" id="btn3" :class="[{'active1': selected === 'b'},'bettingMonyBtn']" @@click="selected = 'b'"
+                                                       value="25" />
+                                             @*   <input type="button" id="btn30" :class="[{'active1': selected === 'c'},'bettingMonyBtn']" @@click="selected = 'c'"
                                                        value="30" />
                                                 <input type="button" id="btn40" :class="[{'active1': selected === 'd'},'bettingMonyBtn']" @@click="selected = 'd'"
                                                        value="40" />
                                                 <input type="button" id="btn50" :class="[{'active1': selected === 'e'},'bettingMonyBtn']" @@click="selected = 'e'"
-                                                       value="50" />
+                                                       value="50" />*@
                                             </div>
+                                            <div id="customBettink">
                                             <div>
                                                 <p style="font-size: 15px; margin-bottom: 0px;  margin-top: 16px;">If you want to write a special price, please tick here.</p>
                                                 <input type="checkbox" id="customPriceActive" style="width:23px; height:23px;
@@ -676,7 +692,9 @@
                                                 <span id="customBettSuccessfullAlert" style="font-size: 14px;color: #03cb03; margin-bottom: 0px;  margin-top: 16px; display:none;">The bet you want has been successfully added</span>
                                                 <span id="customBettErrorAlert" style="font-size: 14px;color: red; margin-bottom: 0px;  margin-top: 16px; display:none;">You can't leave it blank </span>
                                             </div>
-                                            <div style="margin-top:42px;">
+                                            </div>
+                                         
+                                            <div style="margin-top:42px;" id="cupponSection">
                                                 <label class="form-label">Discount Cuppon</label>
                                                 <p style="    font-size: 14px;
     color: white;
@@ -789,12 +807,45 @@
 
     }
 
-    if (localStorage.getItem('btnBettingValueKey') == 'activ') {
+    if (localStorage.getItem('btnAllBettingValueKey') == 'activ') {
         $('#betting ').css("display", "block")
         $('#bettingTitleH4 ').css("display", "block")
-    } else if (localStorage.getItem('btnBettingValueKey') == 'deactiv') {
+    } else if (localStorage.getItem('btnAllBettingValueKey') == 'deactiv') {
         $('#betting').css("display", "none")
         $('#bettingTitleH4').css("display", "none")
 
     }
+
+    if (localStorage.getItem('buttonBettingValueKey') == 'activ') {
+        $('#bettButtons ').css("display", "block")
+    } else if (localStorage.getItem('buttonBettingValueKey') == 'deactiv') {
+        $('#bettButtons').css("display", "none")
+
+    }
+
+    if (localStorage.getItem('customBettinkValueKey') == 'activ') {
+        $('#customBettink').css("display", "block")
+    } else if (localStorage.getItem('customBettinkValueKey') == 'deactiv') {
+        $('#customBettink').css("display", "none")
+
+    }
+    if (localStorage.getItem('cupponSectionValueKey') == 'activ') {
+        $('#cupponSection').css("display", "block")
+    } else if (localStorage.getItem('cupponSectionValueKey') == 'deactiv') {
+        $('#cupponSection').css("display", "none")
+
+    }
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#pickupDate').attr('min', maxDate);
+    });
 </script>

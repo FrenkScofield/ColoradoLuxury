@@ -174,5 +174,27 @@ namespace ColoradoLuxury.Services
                 }
             }
         }
+
+        public static void AddValueOfTipBtn(ColoradoContext context)
+        {
+            if (!context.ValueOfTipButtons.Any())
+            {
+                List<ValueOfTipButton> valueOfTipButtons = new List<ValueOfTipButton>() {
+                    new ValueOfTipButton()
+                    {
+                        lowInterest = 15,
+                        MiddleInterest = 20,
+                        HighInterest = 30,
+                    },
+                    
+                };
+
+                foreach (var valueOfTipButton in valueOfTipButtons)
+                {
+                    context.ValueOfTipButtons.Add(valueOfTipButton);
+                    context.SaveChanges();
+                }
+            }
+        }
     }
 }
