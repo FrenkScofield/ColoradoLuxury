@@ -26,9 +26,13 @@ builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterVa
 builder.Services.AddDbContext<ColoradoContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 builder.Services.AddScoped<ColoradoContext>();
-builder.Services.AddTransient<HttpContextAccessor>();
+builder.Services.AddSingleton<HttpContextAccessor>();
 
 
 
@@ -48,10 +52,10 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IViewRenderService, ViewRenderToString>();
 
-//builder.WebHost
-//                            .UseUrls("https://*:5000")
-//                            .UseContentRoot(Directory.GetCurrentDirectory())
-//                            .UseIISIntegration();
+builder.WebHost
+                            .UseUrls("https://*:5000")
+                            .UseContentRoot(Directory.GetCurrentDirectory())
+                            .UseIISIntegration();
 
 
 
@@ -80,8 +84,6 @@ using (var scope = app.Services.CreateScope())
     SeedData.AddAirlines(dbContext);
     SeedData.AddCountries(dbContext);
     SeedData.AddValueOfTipBtn(dbContext);
-
-
 }
 #endif
 

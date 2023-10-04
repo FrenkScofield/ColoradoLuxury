@@ -1,5 +1,4 @@
 
-
 var hor = true;
 $('#distance').attr("selected", true)
 var bill;
@@ -26,7 +25,7 @@ Vue.component("step-navigation", {
     props: ["steps", "currentstep"]
 });
 
-Vue.component("step", {
+let mainComponent = Vue.component("step", {
     template: "#step-template",
 
     props: ["step", "stepcount", "currentstep"],
@@ -140,9 +139,23 @@ Vue.component("step", {
             }
             else {
                 if (this.currentstep == 1) {
-                    CalculateAmount(hor);
-                    SaveRideDetailsInfo(this.currentstep);
-                    this.$emit("step-change", this.currentstep + 1);
+                    let currentStep = this.currentstep;
+                    let IncreaseCurrentStepFunc = this.IncreaseCurrentStep;
+
+                    let calcStatus = false;
+                    async function calculateAndLog() {
+                        try {
+                            calcStatus = await CalculateAmount(hor);
+                            console.log(calcStatus);
+                            if (calcStatus)
+                                SaveRideDetailsInfo(currentStep, IncreaseCurrentStepFunc);
+
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    }
+
+                    calculateAndLog();
                     $('.error').css("display", "none")
                 }
             }
@@ -168,17 +181,16 @@ Vue.component("step", {
 
                 }
                 else if ($('#passengersSelect').val() >= 5) {
-
+                    let currentStep = this.currentstep;
+                    let IncreaseCurrentStepFunc = this.IncreaseCurrentStep;
                     type.disabled = true;
-                    SaveRideDetailsInfo(this.currentstep);
-                    this.$emit("step-change", this.currentstep + 1);
+                    SaveRideDetailsInfo(currentStep, IncreaseCurrentStepFunc);
                 }
                 else {
                     $('#passengersError').css("display", "none")
-
-                    SaveRideDetailsInfo(this.currentstep);
-                    this.$emit("step-change", this.currentstep + 1);
-
+                    let currentStep = this.currentstep;
+                    let IncreaseCurrentStepFunc = this.IncreaseCurrentStep;
+                    SaveRideDetailsInfo(currentStep, IncreaseCurrentStepFunc);
                 }
             }
             //END
@@ -326,14 +338,16 @@ Vue.component("step", {
                                 }
                                 else {
 
-                                    SaveRideDetailsInfo(this.currentstep);
-                                    this.$emit("step-change", this.currentstep + 1);
+                                    let currentStep = this.currentstep;
+                                    let IncreaseCurrentStepFunc = this.IncreaseCurrentStep;
+                                    SaveRideDetailsInfo(currentStep, IncreaseCurrentStepFunc);
                                 }
 
                             }
                         } else {
-                            SaveRideDetailsInfo(this.currentstep);
-                            this.$emit("step-change", this.currentstep + 1);
+                            let currentStep = this.currentstep;
+                            let IncreaseCurrentStepFunc = this.IncreaseCurrentStep;
+                            SaveRideDetailsInfo(currentStep, IncreaseCurrentStepFunc);
                         }
 
 
@@ -345,8 +359,9 @@ Vue.component("step", {
                     $('#emailAddressError').css("display", "none")
                     $('#phoneNumberError').css("display", "none")
 
-                    this.$emit("step-change", this.currentstep + 1);
-                    SaveRideDetailsInfo(this.currentstep);
+                    let currentStep = this.currentstep;
+                    let IncreaseCurrentStepFunc = this.IncreaseCurrentStep;
+                    SaveRideDetailsInfo(currentStep, IncreaseCurrentStepFunc);
                 }
             }
             //END
@@ -354,6 +369,10 @@ Vue.component("step", {
 
         lastStep() {
             this.$emit("step-change", this.currentstep - 1);
+        },
+
+        IncreaseCurrentStep(step) {
+            this.$emit("step-change", step);
         }
     }
 });
@@ -502,6 +521,7 @@ let bonusPrices = document.getElementsByClassName("bettingMonyBtn")
 console.log(bonusPrices);
 
 let bonusPriceArray = [];
+////////////////////////////////////////////////////////////////////////////////////////////
 
 for (var price of bonusPrices) {
     //When the bet button is clicked, the total price will be calculated
@@ -510,73 +530,82 @@ for (var price of bonusPrices) {
 
         let addedBonusPrice = event.target.defaultValue;
 
-        if (bonusPriceArray.length != 0) {
-            var totalPrice = document.getElementById("totalPrice");
+        AjaxPost("/Home/CalculateBonusTotalAmount/", { percentage: addedBonusPrice }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+            console.log(response);
 
-            let returnDefaultTotalPrice = parseInt(totalPrice.innerText) - parseInt(bonusPriceArray[0]);
+            $(".totalAmount span").text(response.calculatedVehicleAmounts.totalAmount);
+            $(".gratuity span").text(response.calculateTotalAmountForPercentage);
 
-            bonusPriceArray.pop(bonusPriceArray[0]);
 
-            console.log("pop bonus array ");
-            console.log(bonusPriceArray);
+        });
 
-            Append(returnDefaultTotalPrice + parseInt(addedBonusPrice));
-            bonusPriceArray.push(addedBonusPrice);
-        }
-        else {
-            var totalPrice = document.getElementById("totalPrice");
+        //if (bonusPriceArray.length != 0) {
+        //    var totalPrice = document.getElementById("totalPrice");
 
-            Append(parseInt(totalPrice.innerText) + parseInt(addedBonusPrice));
-            bonusPriceArray.push(addedBonusPrice);
+        //    let returnDefaultTotalPrice = parseInt(totalPrice.innerText) - parseInt(bonusPriceArray[0]);
 
-            console.log("push bonus array ");
-            console.log(bonusPriceArray);
+        //    bonusPriceArray.pop(bonusPriceArray[0]);
 
-        }
-        function Append(text) {
-            totalPrice.innerText = text
+        //    console.log("pop bonus array ");
+        //    console.log(bonusPriceArray);
 
-        }
+        //    Append(returnDefaultTotalPrice + parseInt(addedBonusPrice));
+        //    bonusPriceArray.push(addedBonusPrice);
+        //}
+        //else {
+        //    var totalPrice = document.getElementById("totalPrice");
+
+        //    Append(parseInt(totalPrice.innerText) + parseInt(addedBonusPrice));
+        //    bonusPriceArray.push(addedBonusPrice);
+
+        //    console.log("push bonus array ");
+        //    console.log(bonusPriceArray);
+
+        //}
+        //function Append(text) {
+        //    totalPrice.innerText = text
+
+        //}
     }, false);
 }
 
 
- function CalculateAmount(hourly) {
-    console.log(hourly);
-    if (hourly) {
-        AjaxPost("/Home/CalculatedAmount/", { hourly: hourly }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
-            console.log(response);
-
-            CalculatedAmountResponse(response);
-        });
-    }
-    else {
-        let durationValue = $("#durationInHoursSelected").val();
-        if (durationValue == '' || durationValue == undefined) {
-            return;
+function CalculateAmount(hourly) {
+    return new Promise((resolve, reject) => {
+        if (hourly) {
+            AjaxPost("/Home/CalculatedAmount/", { hourly: hourly }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+                const status = CalculatedAmountResponse(response);
+                console.log(status);
+                resolve(status);
+            });
+        } else {
+            let durationValue = $("#durationInHoursSelected").val();
+            if (durationValue == '' || durationValue == undefined) {
+                reject('Invalid durationValue');
+            }
+            AjaxPost("/Home/CalculatedAmount/", { hourly: hourly, durationValue: durationValue }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+                console.log(response);
+                const status = CalculatedAmountResponse(response);
+                console.log(status);
+                resolve(status);
+            });
         }
-        AjaxPost("/Home/CalculatedAmount/", { hourly: hourly, durationValue: durationValue }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
-            console.log(response);
-
-            CalculatedAmountResponse(response);
-        });
-
-    }
+    });
 }
 
 function CalculatedAmountResponse(response) {
     if (response.hasOwnProperty('vehicleTypeNotFound')) {
         alert("Something went wrong!");
-        location.href = "/";
-        return;
+        //location.href = "/";
+        return false;
     }
 
     if (response.hasOwnProperty('notFoundMileValue')) {
         alert("Mile is not given this context!");
-        location.href = "/";
-        return;
+        //location.href = "/";
+        return false;
     }
-    
+
 
     let dataTypes = $(".toggle-button-vehicle");
     if (response.hasOwnProperty('getVehicleDistanceAmounts') && response.hasOwnProperty('getVehiclesIsActive')) {
@@ -585,8 +614,8 @@ function CalculatedAmountResponse(response) {
         console.log(response.getVehiclesIsActive);
         if (response.getVehiclesIsActive === null) {
             alert("Map is not selected");
-            location.href = "/";
-            return;
+            //location.href = "/";
+            return false;
         }
 
         dataTypes.each(function () {
@@ -609,13 +638,15 @@ function CalculatedAmountResponse(response) {
         $(".distanceAmount span").text(response.getVehiclesIsActive.distanceAmount);
         $(".gratuity span").text(response.getVehiclesIsActive.graduity);
         $(".totalAmount span").text(response.getVehiclesIsActive.totalAmount);
+
+        return true;
     } else {
     }
 }
 
- function SaveRideDetailsInfo(step) {
-     let data = null;
-     let airlineAutoCheck = false;
+function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
+    let data = null;
+    let airlineAutoCheck = false;
 
     switch (step) {
         case 1:
@@ -632,7 +663,7 @@ function CalculatedAmountResponse(response) {
 
             console.log(dropOffLocation)
 
-            
+
             let transferTypeId = $("#transferType").val();
             let durationInHours = $("#durationInHoursSelected").val();
 
@@ -655,6 +686,10 @@ function CalculatedAmountResponse(response) {
             console.log(data);
             AjaxPost("/RideDetails/AddDetails/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
                 console.log(response);
+
+                if (response.status.statusCode === 200)
+                    IncreaseCurrentStep(step + 1);
+
             });
             break;
 
@@ -702,6 +737,9 @@ function CalculatedAmountResponse(response) {
                     $("#airlineInfo").prop("checked", true)
 
                 }
+
+                if (response.status.statusCode === 200)
+                    IncreaseCurrentStep(step + 1);
             });
             break;
 
@@ -766,7 +804,7 @@ function CalculatedAmountResponse(response) {
 
                 if (response.hasOwnProperty("wrongStatus")) {
                     alert("If PickupLocation or DropOfLocation choosen 'Denver International Airport (DEN), Peña Boulevard, Denver, CO, USA' international airport , must be selected 'ARRIVAL AIRLINE INFO' tab!");
-                    return;
+                    return false;
                 }
 
                 ShowAllDatasFilledFromInput("firstname", response.contactDetails.firstname);
@@ -788,6 +826,9 @@ function CalculatedAmountResponse(response) {
 
                 ShowAllDatasFilledFromInput("vehicle-type", response.getTextForIdVM.vehicleType);
                 ShowAllDatasFilledFromInput("childSeatCount", response.vehicleDetails.childNumber);
+
+                if (response.status.statusCode === 200)
+                    IncreaseCurrentStep(step + 1);
             });
             break;
 
@@ -796,6 +837,8 @@ function CalculatedAmountResponse(response) {
             break;
         default:
     }
+
+
 }
 
 function ShowAllDatasFilledFromInput(id, text) {
@@ -836,3 +879,49 @@ $("#cargoBoxMessegShowCekbox").on('change', function () {
         $('#roofCargoBoxAdditionalMessage').css("display", "none");
     }
 });
+
+function AddGraduityManually(element) {
+    let gradiuty = $(element).parent().children("input").val();
+
+    if (gradiuty == 0 || gradiuty == "") {
+        alert("Please fill right informations!");
+        return;
+    }
+
+    AjaxPost("/Home/CalculateBonusGradiutyTotalAmount/", { gradiuty: gradiuty }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+        console.log(response);
+        $(".distanceAmount span").text(response.calculatedVehicleAmounts.distanceAmount);
+        $(".gratuity span").text(response.calculatedVehicleAmounts.graduity);
+        $(".totalAmount span").text(response.calculatedVehicleAmounts.totalAmount);
+
+    });
+}
+
+function AddCupon(element) {
+    let cuponKey = $(element).parent().children("input").val();
+
+    if (cuponKey == "" || cuponKey == null) {
+        alert("Please fill cupon code!");
+        return;
+    }
+
+    AjaxPost("/Home/CalculateTotalAmountForCuponCode/", { cuponKey: cuponKey }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+        console.log(response);
+
+        if (response.hasOwnProperty("notFound")) {
+            alert(`This Cupon code does not exist.Please, ensure that the accuracy of the cupon code!`);
+            return;
+        }
+
+        if (response.status.statusCode === 200) {
+            alert(`You got ${response.discountType} of Total Amount!`);
+
+            $(".distanceAmount span").text(response.calculatedVehicleAmounts.distanceAmount);
+            $(".gratuity span").text(response.calculatedVehicleAmounts.graduity);
+            $(".totalAmount span").text(response.calculatedVehicleAmounts.totalAmount);
+        }
+        
+
+    });
+    /*btnAddCupon*/
+}

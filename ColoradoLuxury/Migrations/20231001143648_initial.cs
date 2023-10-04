@@ -26,6 +26,40 @@ namespace ColoradoLuxury.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ApiSettingsDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Secretkey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Publickey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApiSettingsDetails", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ComputerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Browser = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Countries",
                 columns: table => new
                 {
@@ -76,6 +110,25 @@ namespace ColoradoLuxury.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomerTravelTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DefineMinimumAmountAndDistanceSizes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MinimumMile = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MinimumDuration = table.Column<int>(type: "int", nullable: true),
+                    MinimumBookingvalueForDistance = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MinimumBookingvalueForHourly = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DefineMinimumAmountAndDistanceSizes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -325,6 +378,7 @@ namespace ColoradoLuxury.Migrations
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Engine = table.Column<int>(type: "int", nullable: false),
                     Fuel = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VehicleTypeId = table.Column<int>(type: "int", nullable: false),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -455,7 +509,16 @@ namespace ColoradoLuxury.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ApiSettingsDetails");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUsers");
+
+            migrationBuilder.DropTable(
                 name: "Cupons");
+
+            migrationBuilder.DropTable(
+                name: "DefineMinimumAmountAndDistanceSizes");
 
             migrationBuilder.DropTable(
                 name: "ExceptionLogs");

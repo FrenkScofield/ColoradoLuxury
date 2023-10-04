@@ -5,16 +5,19 @@ using ColoradoLuxury.Models.VM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ColoradoLuxury.Controllers
 {
     public class RideDetailsController : Controller
     {
         private readonly ColoradoContext _context;
+        private readonly IMemoryCache _cache;
 
-        public RideDetailsController(ColoradoContext context)
+        public RideDetailsController(ColoradoContext context, IMemoryCache cache)
         {
             _context = context ?? throw new ArgumentNullException("Context did not find");
+            _cache = cache;
         }
         public IActionResult Index()
         {
@@ -24,9 +27,12 @@ namespace ColoradoLuxury.Controllers
         [HttpPost]
         public IActionResult AddDetails([FromBody] RideDetailsVM model)
         {
-            HttpContext.SetObjectsession("FirstrideDetails", model);
+            HttpContext.SetObjectsession("firstridedetails", model);
 
-            return Json(new { });
+            //_cache.Set<RideDetailsVM>("firstridedetailscache", model);
+            var t = HttpContext.Session.Keys;
+
+            return Json(new { status = Ok() });
 
         }
 
@@ -35,7 +41,8 @@ namespace ColoradoLuxury.Controllers
         {
             HttpContext.SetObjectsession("vehicleDetails", model);
             var keys = HttpContext.Session.Keys;
-            var rideDetails = HttpContext.GetObjectsession<RideDetailsVM>("FirstrideDetails");
+            var rideDetails = HttpContext.GetObjectsession<RideDetailsVM>("firstridedetails");
+            //var rideDetails = _cache.Get<RideDetailsVM>("firstridedetailscache");
             string text = "Denver International Airport (DEN), Peña Boulevard, Denver, CO, USA";
             bool airlineAutoCheck = false;
             if (rideDetails != null)
@@ -44,7 +51,7 @@ namespace ColoradoLuxury.Controllers
                     airlineAutoCheck = true;
             }
 
-            return Json(new { airlineAutoCheck });
+            return Json(new { airlineAutoCheck, status = Ok() });
 
         }
 
@@ -63,7 +70,8 @@ namespace ColoradoLuxury.Controllers
             HttpContext.SetObjectsession("contactDetails", model);
 
             //Get All Informations
-            var rideDetails = HttpContext.GetObjectsession<RideDetailsVM>("FirstrideDetails");
+            var rideDetails = HttpContext.GetObjectsession<RideDetailsVM>("firstridedetails");
+            //var rideDetails = _cache.Get<RideDetailsVM>("firstridedetailscache");
             var vehicleDetails = HttpContext.GetObjectsession<ChooseVehicleVM>("vehicleDetails");
             var contactDetails = HttpContext.GetObjectsession<ContactDetailsVM>("contactDetails");
 
@@ -97,7 +105,8 @@ namespace ColoradoLuxury.Controllers
                 rideDetails,
                 vehicleDetails,
                 contactDetails,
-                getTextForIdVM
+                getTextForIdVM,
+                status = Ok() 
             });
 
         }
