@@ -4,7 +4,6 @@ using ColoradoLuxury.Models.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,10 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    [Migration("20230927210209_initial")]
-    partial class initial
+    partial class ColoradoContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +45,64 @@ namespace ColoradoLuxury.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AirLines");
+                });
+
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.ApiSettingsDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClientIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Publickey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Secretkey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApiSettingsDetails");
+                });
+
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.ApplicationUsers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Browser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClientIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ComputerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationUsers");
                 });
 
             modelBuilder.Entity("ColoradoLuxury.Models.BLL.ArrivalAirlineInfo", b =>
@@ -222,6 +278,40 @@ namespace ColoradoLuxury.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomerTravelTypes");
+                });
+
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.DefineMinimumAmountAndDistanceSize", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClientIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("MinimumBookingvalueForDistance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("MinimumBookingvalueForHourly")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("MinimumDuration")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("MinimumMile")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DefineMinimumAmountAndDistanceSizes");
                 });
 
             modelBuilder.Entity("ColoradoLuxury.Models.BLL.Duration", b =>
@@ -514,6 +604,9 @@ namespace ColoradoLuxury.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClientIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EditDate")

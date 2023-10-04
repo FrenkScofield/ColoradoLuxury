@@ -35,6 +35,7 @@ namespace ColoradoLuxury.Controllers
             return View(viewModel);
         }
 
+
         [HttpPost]
         public JsonResult CalculatedAmount(bool hourly, short durationValue)
         {
@@ -45,7 +46,7 @@ namespace ColoradoLuxury.Controllers
                 PerMile = x.PerMile,
                 Hourly = x.Hourly,
                 IsActive = x.IsActive,
-                Id= x.Id
+                Id = x.Id
             }).ToList();
 
             if (hourly && durationValue == 0)
@@ -177,7 +178,7 @@ namespace ColoradoLuxury.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChangeVehicleType(int id, short passengersCount,  short suitcasesCount)
+        public IActionResult ChangeVehicleType(int id, short passengersCount, short suitcasesCount)
         {
             dynamic? getVehicleTypes = null;
             List<DistanceAmountListVM>? distanceAmountListVMs = new List<DistanceAmountListVM>();
@@ -188,20 +189,164 @@ namespace ColoradoLuxury.Controllers
                 foreach (var getVehicleType in getVehicleTypes)
                 {
                     vehicleAmountsDetails = HttpContext.GetObjectsession<VehicleAmounts>($"{getVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
-                    distanceAmountListVMs.Add(new DistanceAmountListVM() { DistanceAmount = vehicleAmountsDetails?.DistanceAmount, VehicleTypeId = getVehicleType.Id, TypeName = getVehicleType.TypeName,
-                                                                           IsActive = vehicleAmountsDetails.IsActive, PassengersCount = passengersCount, SuitCasesCount = suitcasesCount });
+                    distanceAmountListVMs.Add(new DistanceAmountListVM()
+                    {
+                        DistanceAmount = vehicleAmountsDetails?.DistanceAmount,
+                        VehicleTypeId = getVehicleType.Id,
+                        TypeName = getVehicleType.TypeName,
+                        IsActive = vehicleAmountsDetails.IsActive,
+                        PassengersCount = passengersCount,
+                        SuitCasesCount = suitcasesCount
+                    });
                 }
             }
             else
             {
                 getVehicleTypes = _context.VehicleTypes.Where(x => x.Id == id).FirstOrDefault();
                 vehicleAmountsDetails = HttpContext.GetObjectsession<VehicleAmounts>($"{getVehicleTypes?.TypeName.Replace(" ", "").ToLower()}-result");
-                distanceAmountListVMs.Add(new DistanceAmountListVM() { DistanceAmount = vehicleAmountsDetails?.DistanceAmount, VehicleTypeId = getVehicleTypes?.Id, TypeName=getVehicleTypes?.TypeName,
-                                                                       IsActive = vehicleAmountsDetails.IsActive, PassengersCount = passengersCount, SuitCasesCount = suitcasesCount
+                distanceAmountListVMs.Add(new DistanceAmountListVM()
+                {
+                    DistanceAmount = vehicleAmountsDetails?.DistanceAmount,
+                    VehicleTypeId = getVehicleTypes?.Id,
+                    TypeName = getVehicleTypes?.TypeName,
+                    IsActive = vehicleAmountsDetails.IsActive,
+                    PassengersCount = passengersCount,
+                    SuitCasesCount = suitcasesCount
                 });
             }
 
             return Json(new { distanceAmountListVMs });
+        }
+
+        [HttpPost]
+        public IActionResult CalculateBonusTotalAmount(decimal percentage)
+        {
+            if (percentage <= 0)
+            {
+                return Json(new { wrongPercentage = true });
+            }
+
+
+
+            VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
+
+
+            string calculateTotalAmountForPercentage = (Convert.ToDecimal(vehicleAmounts?.DistanceAmount) * (percentage / 100)).ToString("F2");
+
+            decimal calculatedTotalAmount = Convert.ToDecimal(calculateTotalAmountForPercentage) + Convert.ToDecimal(vehicleAmounts?.DistanceAmount);
+
+            var calculatedVehicleAmounts = new VehicleAmounts
+            {
+                DistanceAmount = vehicleAmounts?.DistanceAmount,
+                Graduity = calculateTotalAmountForPercentage,
+                TotalAmount = calculatedTotalAmount.ToString(),
+                IsActive = vehicleAmounts.IsActive,
+                VehicleTypeId = vehicleAmounts.VehicleTypeId
+            };
+
+
+            HttpContext?.Session?.Remove("activeVehicleAmountSession");
+
+            HttpContext?.SetObjectsession("activeVehicleAmountSession", calculatedVehicleAmounts);
+
+
+            return Json(new { calculatedVehicleAmounts, calculateTotalAmountForPercentage });
+
+        }
+
+        [HttpPost]
+        public IActionResult CalculateBonusGradiutyTotalAmount(int gradiuty)
+        {
+            if (gradiuty <= 0)
+            {
+                return Json(new { wrongPercentage = true });
+            }
+
+
+
+            VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
+
+
+            string calculateTotalAmountForGradiuty = (Convert.ToDecimal(vehicleAmounts?.DistanceAmount) + gradiuty).ToString("F2");
+
+            decimal calculatedTotalAmount = Convert.ToDecimal(calculateTotalAmountForGradiuty) + Convert.ToDecimal(vehicleAmounts?.DistanceAmount);
+
+            var calculatedVehicleAmounts = new VehicleAmounts
+            {
+                DistanceAmount = vehicleAmounts?.DistanceAmount,
+                Graduity = gradiuty.ToString(),
+                TotalAmount = calculateTotalAmountForGradiuty,
+                IsActive = vehicleAmounts.IsActive,
+                VehicleTypeId = vehicleAmounts.VehicleTypeId
+            };
+
+
+            HttpContext?.Session?.Remove("activeVehicleAmountSession");
+
+            HttpContext?.SetObjectsession("activeVehicleAmountSession", calculatedVehicleAmounts);
+
+
+            return Json(new { calculatedVehicleAmounts, calculateTotalAmountForGradiuty });
+
+        }
+
+        [HttpPost]
+        public IActionResult CalculateTotalAmountForCuponCode(string cuponkey)
+        {
+            if (String.IsNullOrWhiteSpace(cuponkey))
+            {
+                return Json(new { wrongCuponKey = true });
+            }
+
+            var cuponDetails = _context.Cupons.Where(c => c.NewCupon == cuponkey)
+                                              .Select(x => new Cupon
+                                              {
+                                                  NewCupon = x.NewCupon,
+                                                  Percentage = x.Percentage,
+                                                  Amount = x.Amount
+                                              }).FirstOrDefault();
+
+            if (cuponDetails == null)
+            {
+                return Json(new { notFound = true });
+            }
+
+            VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
+
+            decimal discountAmount = 0;
+            string? DiscountTotalAmount = null;
+            string? discountType = null;
+            if (cuponDetails?.Percentage != 0)
+            {
+                discountAmount = (Convert.ToDecimal(vehicleAmounts?.TotalAmount) * cuponDetails.Percentage / 100);
+                DiscountTotalAmount = (Convert.ToDecimal(vehicleAmounts?.TotalAmount) - discountAmount).ToString("F2");
+
+                discountType = $"{cuponDetails.Percentage}%";
+            }
+
+            if (cuponDetails?.Amount != 0)
+            {
+                DiscountTotalAmount = (Convert.ToDecimal(vehicleAmounts?.TotalAmount) - cuponDetails.Amount).ToString("F2");
+                discountType = $"${cuponDetails.Amount}";
+            }
+
+            var calculatedVehicleAmounts = new VehicleAmounts
+            {
+                DistanceAmount = vehicleAmounts?.DistanceAmount,
+                Graduity = vehicleAmounts?.Graduity,
+                TotalAmount = DiscountTotalAmount,
+                IsActive = vehicleAmounts.IsActive,
+                VehicleTypeId = vehicleAmounts.VehicleTypeId
+            };
+
+
+            HttpContext?.Session?.Remove("activeVehicleAmountSession");
+
+            HttpContext?.SetObjectsession("activeVehicleAmountSession", calculatedVehicleAmounts);
+
+
+            return Json(new { calculatedVehicleAmounts, status = Ok(), discountType });
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
