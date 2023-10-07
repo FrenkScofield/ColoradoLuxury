@@ -1,4 +1,5 @@
-﻿
+﻿@using ColoradoLuxury.Models.VM;
+@model UserRecordsVM
 @{
     ViewData["Title"] = "OrderRecord";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
@@ -39,22 +40,22 @@
                         <div class="row">
                         <div class="col-md-3">
                                 <p class="col-sm-12 ">FIRST NAME </p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.UserInfo?.Firstname</span>
 
                         </div>
                         <div class="col-md-3">
                                 <p class="col-sm-12 " >LAST NAME</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.UserInfo?.Surname</span>
 
                         </div>
                         <div class="col-md-3">
                                 <p class="col-sm-12 " >EMAIL</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 ">@Model.UserInfo?.Email </span>
 
                         </div>
                         <div class="col-md-3">
                                 <p class="col-sm-12 " >PHONE NUMBER</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.UserInfo?.Phone</span>
 
                         </div>
                         </div>
@@ -64,23 +65,23 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >PICKUP LOCATION</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.RideDetail?.PickupLocation</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >DROP-OFF LOCATION</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.RideDetail?.DropOffLocation</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >PICKUP DATE</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.RideDetail?.PickupDate</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >PICKUP TIME</p>
 
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.RideDetail?.PickupTime</span>
                             </div>
                         </div>
                     </div>
@@ -91,12 +92,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p class="col-sm-12 " >TRANSFER TYPE</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.RideDetail?.TransferType?.Name</span>
 
                             </div>
                             <div class="col-md-6">
                             <p class="col-sm-12 " >DURATION (IN HOURS)</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 ">@Model.RideDetail?.Duration?.Time </span>
 
                             </div>
                         </div>  
@@ -106,22 +107,22 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >PASSENGERS</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.VehicleInfoDetails?.PassengersCount</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >SUITCASES</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.VehicleInfoDetails?.SuitCasesCount</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >CHILD SEAT</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.VehicleInfoDetails?.ChildSeatCount</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >ROOFTOP CARGO BOX</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.VehicleInfoDetails?.RoofTopCargoBoxCount</span>
 
                             </div>
                         </div>
@@ -133,12 +134,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p class="col-sm-12 " >AIRLINE</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.ArrivalAirlineInfo?.AirLine?.Name</span>
 
                             </div>
                             <div class="col-md-6">
                                 <p class="col-sm-12 " >FLIGHT NUMBER</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.ArrivalAirlineInfo?.Flight</span>
 
                             </div>
                         </div> 
@@ -149,38 +150,38 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >COMPANY REGISTERED NAME</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.BillingAddress?.Company</span>
 
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >STREET</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.BillingAddress?.Street</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >STREET NUMBER</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.BillingAddress?.StreetNUmber</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >CITY</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.BillingAddress?.City</span>
 
                             </div>
                         <div class="col-md-3">
                                 <p class="col-sm-12 " >STATE</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.BillingAddress?.State</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 " >POSTAL CODE</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.BillingAddress?.Postal</span>
 
                             </div>
                                <div class="col-md-3">
                                 <p class="col-sm-12 " >COUNTRY</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.BillingAddress?.Country.Name</span>
 
                             </div>
                             <div class="col-md-3">
@@ -194,17 +195,17 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <p class="col-sm-12 ">VEHICLE PRICE</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.PaymentDetails?.DistanceAmount</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 ">GRATUITY</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.PaymentDetails?.GradiutyAmount</span>
 
                             </div>
                             <div class="col-md-3">
                                 <p class="col-sm-12 ">TOTAL PRICE</p>
-                                <span class="col-sm-12 "> </span>
+                                <span class="col-sm-12 "> @Model.PaymentDetails?.TotalAmount</span>
 
                             </div>
                             <div class="col-md-3"></div>
@@ -217,7 +218,7 @@
                     </div>
                     <div class="col-md-6 ">
                         <p class="col-sm-12 ">COUPON USED</p>
-                        <span class="col-sm-12 "> </span>
+                        <span class="col-sm-12 "> @Model.PaymentDetails?.UsedCupon</span>
                     </div>
 
                     </div><!-- /.col-lg-12 -->

@@ -25,7 +25,7 @@ Vue.component("step-navigation", {
     props: ["steps", "currentstep"]
 });
 
-let mainComponent = Vue.component("step", {
+Vue.component("step", {
     template: "#step-template",
 
     props: ["step", "stepcount", "currentstep"],

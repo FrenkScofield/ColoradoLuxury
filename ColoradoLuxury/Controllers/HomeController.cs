@@ -27,7 +27,7 @@ namespace ColoradoLuxury.Controllers
         {
             HomeInfoDetailsVM viewModel = new HomeInfoDetailsVM()
             {
-                VehicleTypes = _context.VehicleTypes.ToList(),
+                VehicleTypes = _context.VehicleTypes.Where(x => x.Status).ToList(),
                 TransferTypes = _context.TransferTypes.ToList(),
                 Countries = _context.Countries.ToList(),
                 AirLines = _context.AirLines.ToList()
@@ -49,6 +49,13 @@ namespace ColoradoLuxury.Controllers
                 Id = x.Id
             }).ToList();
 
+            var gradiuty = _context.ValueOfTipButtons.Select(x => new ValueOfTipButton
+            {
+                lowInterest = x.lowInterest,
+                MiddleInterest= x.MiddleInterest,
+                HighInterest= x.HighInterest
+            }).FirstOrDefault();
+
             if (hourly && durationValue == 0)
             {
                 if (vehicleTypes.Count == 0)
@@ -61,12 +68,12 @@ namespace ColoradoLuxury.Controllers
                 var minutes = SessionExtension.GetSessionInt32(_httpContextAccessor.HttpContext, "minutes");
 
                 if (mile != null)
-                    getVehiclesAmountDetails = CalculateForDistanceOrHourly(hourly, mile, 80, vehicleTypes, 30.5);
+                    getVehiclesAmountDetails = CalculateForDistanceOrHourly((decimal)gradiuty.lowInterest / 100, hourly, mile, 80, vehicleTypes, 30.5);
                 else
                     return Json(new { NotFoundMileValue = true });
             }
             else
-                getVehiclesAmountDetails = CalculateForDistanceOrHourly(hourly, durationValue, 100, vehicleTypes, 4);
+                getVehiclesAmountDetails = CalculateForDistanceOrHourly((decimal)gradiuty.lowInterest / 100, hourly, durationValue, 100, vehicleTypes, 4);
 
 
             return Json(new
@@ -76,7 +83,7 @@ namespace ColoradoLuxury.Controllers
             });
         }
 
-        public GetVehiclesAmountDetailsVM CalculateForDistanceOrHourly(bool distanceType, dynamic minimumTravelValueType, dynamic distanceTypeValue, List<VehicleType>? vehicleTypes, object checkingMinimumTravelValueTypeFromDbValue)
+        public GetVehiclesAmountDetailsVM CalculateForDistanceOrHourly(decimal gradiuty, bool distanceType, dynamic minimumTravelValueType, dynamic distanceTypeValue, List<VehicleType>? vehicleTypes, object checkingMinimumTravelValueTypeFromDbValue)
         {
             List<GetVehicleDistanceAmounts> getVehicleDistanceAmounts = new List<GetVehicleDistanceAmounts>();
             List<VehicleAmounts> vehicleAmountsList = new List<VehicleAmounts>();
@@ -114,7 +121,7 @@ namespace ColoradoLuxury.Controllers
                 if (Convert.ToDecimal(distanceAmount) <= distanceTypeValue)
                     distanceAmount = GeneralExtension<decimal>.ToString(distanceTypeValue);
 
-                string? gratuity = (Convert.ToDecimal(distanceAmount) * 0.15m).ToString("F2");
+                string? gratuity = (Convert.ToDecimal(distanceAmount) * gradiuty).ToString("F2");
                 string? totalAmount = (Convert.ToDecimal(distanceAmount) + Convert.ToDecimal(gratuity)).ToString("F2");
 
                 getVehicleDistanceAmounts.Add(new GetVehicleDistanceAmounts() { Key = getVehiclesPermileValue.Key, DistanceAmount = distanceAmount, IsActive = getVehiclesPermileValue.IsActive, VehicleTypeId = getVehiclesPermileValue.VehicleTypeId });

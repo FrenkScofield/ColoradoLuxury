@@ -149,6 +149,12 @@
                     <span>For Api Key Setting</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="WebCms" asp-controller="ResultMessage" asp-action="Index">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Result message</span>
+                </a>
+            </li>
          @*   <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilitiess" aria-expanded="true" aria-controls="collapseUtilitiess">
                     <i class="fas fa-fw fa-folder"></i>
@@ -193,7 +199,7 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" asp-area="WebCms" asp-controller="Account" asp-action="LogOut" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>

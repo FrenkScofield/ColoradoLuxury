@@ -1,4 +1,5 @@
 ﻿using ColoradoLuxury.Areas.WebCms.VM;
+using ColoradoLuxury.Attributes;
 using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 {
     [Area("WebCms")]
     [Route("WebCms/[controller]/[action]")]
-    public class CalculationMethotController : Controller
+    public class CalculationMethotController :  AuthController
     {
         private readonly ColoradoContext _context;
 

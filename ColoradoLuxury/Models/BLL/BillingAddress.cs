@@ -5,6 +5,8 @@
         public string? Company { get; set; }
         public string? Tax { get; set; }
         public string Street { get; set; }
+        public string StreetNUmber { get; set; }
+
         public string City { get; set; }
         public string State { get; set; }
         public string Postal { get; set; }

@@ -44,6 +44,8 @@ namespace ColoradoLuxury.Controllers
             var rideDetails = HttpContext.GetObjectsession<RideDetailsVM>("firstridedetails");
             var vehicleDetails = HttpContext.GetObjectsession<ChooseVehicleVM>("vehicleDetails");
             var contactDetails = HttpContext.GetObjectsession<ContactDetailsVM>("contactDetails");
+            VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
+
             BillingAddress billingAddress = null;
             ArrivalAirlineInfo airlineInfo = null;
             //using (var transaction = _context.Database.BeginTransaction())
@@ -87,6 +89,7 @@ namespace ColoradoLuxury.Controllers
                         Tax = contactDetails.TaxNumber,
                         City = contactDetails.City,
                         Street = contactDetails.Street,
+                        StreetNUmber = contactDetails.StreetNumber,
                         State = contactDetails.State,
                         Postal = contactDetails.PostalCode,
                         CountryId = contactDetails.CountryId,
@@ -121,6 +124,18 @@ namespace ColoradoLuxury.Controllers
                 };
                 await _context.UserInfos.AddAsync(userInfo);
                 await _context.SaveChangesAsync();
+
+                PaymentDetails paymentDetails = new PaymentDetails()
+                {
+                    DistanceAmount = vehicleAmounts.DistanceAmount,
+                    GradiutyAmount = vehicleAmounts.Graduity,
+                    TotalAmount = vehicleAmounts.TotalAmount,
+                    UsersId = userInfo.Id,
+                    TransactionId = HttpContext.GetSessionString("TransactionId")
+                };
+
+                await _context.PaymentDetails.AddAsync(paymentDetails);
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -130,7 +145,6 @@ namespace ColoradoLuxury.Controllers
             }
             //}
 
-            VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
             FilledAllDatas datas = new FilledAllDatas()
             {
                 CustomerTravelType = rideDetails.WayType ? WayTypeEnum.Distance.ToString() : WayTypeEnum.Hourly.ToString(),

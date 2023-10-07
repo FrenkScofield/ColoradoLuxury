@@ -1,15 +1,15 @@
-﻿
+﻿@model IEnumerable<UserInfo>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/WebCms/Views/Shared/_Layout.cshtml";
 }
 
 <style>
-  /*  div.dataTables_wrapper div.dataTables_length label {
-       display:none;
-    }*/
-    thead tr{
-        text-align:center;
+    /*  div.dataTables_wrapper div.dataTables_length label {
+               display:none;
+            }*/
+    thead tr {
+        text-align: center;
     }
 
     tbody tr {
@@ -31,30 +31,26 @@
                                 <th scope="col">SURNAME</th>
                                 <th scope="col">PHONE </th>
                                 <th scope="col">EMAIL</th>
-                                <th scope="col">VEHICLE TYPE</th>
                                 <th scope="col">DETAILS SHOW</th>
                             </tr>
                         </thead>
                         <tbody>
-                         
-                               @* @foreach (var item in Model.OgrenciVeliBilgis)
-                                {*@
-                                    <tr>
-                                        <td>AD</td>
-                                        <td>SOYAD</td>
-                                        <td>693169316931</td>
-                                        <td>TOFIQ_EMIN@GMAIL.COM</td>
-                                        <td>PIKAP</td>
-                                        <td>
-                                            <div>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>@user.Firstname</td>
+                                    <td>@user.Surname</td>
+                                    <td>@user.Phone</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <div>
 
-                                        <a asp-controller="UsersRecords" asp-action="OrderRecord" class="fas fa-regular fa-eye updateBtn btnForm" asp-route-id="ID"></a>
+                                            <a asp-controller="UsersRecords" asp-action="OrderRecord" class="fas fa-regular fa-eye updateBtn btnForm" asp-route-id="@user.Id"></a>
 
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @*}*@
-                          
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using ColoradoLuxury.Middleware;
 using ColoradoLuxury.Interface;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -57,7 +58,13 @@ builder.WebHost
                             .UseContentRoot(Directory.GetCurrentDirectory())
                             .UseIISIntegration();
 
-
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -93,13 +100,13 @@ using (var scope = app.Services.CreateScope())
 
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseStaticFiles();
 
+app.UseAuthentication();
 app.UseSession();
 app.UseRouting();
 
-
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {

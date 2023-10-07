@@ -20,6 +20,11 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<DefineMinimumAmountAndDistanceSize> DefineMinimumAmountAndDistanceSizes { get; set; }
         public DbSet<ApiSettingsDetail> ApiSettingsDetails { get; set; }
         public DbSet<ApplicationUsers> ApplicationUsers { get; set; }
+        public DbSet<ResultMessage> ResultMessages { get; set; }
+        public DbSet<PaymentDetails> PaymentDetails { get; set; }
+        public DbSet<SessionLogAdminUser> SessionLogAdminUsers { get; set; }
+
+
 
 
 

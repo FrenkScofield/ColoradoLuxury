@@ -180,6 +180,10 @@ namespace ColoradoLuxury.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StreetNUmber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Tax")
                         .HasColumnType("nvarchar(max)");
 
@@ -390,6 +394,85 @@ namespace ColoradoLuxury.Migrations
                     b.ToTable("ForDriverBettings");
                 });
 
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.PaymentDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClientIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscountCuponAmount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DistanceAmount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GradiutyAmount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TotalAmount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UsedCupon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserInfoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserInfoId");
+
+                    b.ToTable("PaymentDetails");
+                });
+
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.ResultMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClientIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FailMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SuccessMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ResultMessages");
+                });
+
             modelBuilder.Entity("ColoradoLuxury.Models.BLL.RideDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -467,6 +550,39 @@ namespace ColoradoLuxury.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RoofTopCargoBoxs");
+                });
+
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.SessionLogAdminUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClientIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("LoggedIn")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SessionLogAdminUsers");
                 });
 
             modelBuilder.Entity("ColoradoLuxury.Models.BLL.TransferType", b =>
@@ -737,6 +853,17 @@ namespace ColoradoLuxury.Migrations
                         .HasForeignKey("CountryId");
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.PaymentDetails", b =>
+                {
+                    b.HasOne("ColoradoLuxury.Models.BLL.UserInfo", "UserInfo")
+                        .WithMany()
+                        .HasForeignKey("UserInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserInfo");
                 });
 
             modelBuilder.Entity("ColoradoLuxury.Models.BLL.RideDetail", b =>
