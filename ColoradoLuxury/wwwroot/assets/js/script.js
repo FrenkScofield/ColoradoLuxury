@@ -202,7 +202,7 @@ let mainComponent = Vue.component("step", {
                 airlineInfo = document.getElementById('airlineInfo')
                 debugger
 
-                if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '' || bill.checked == true || airlineInfo.checked == true) {
+                if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '' || airlineInfo.checked == true || bill.checked == true ) {
 
                     //FirstName
                     if ($('#firstName').val() != '') {
@@ -214,6 +214,8 @@ let mainComponent = Vue.component("step", {
                     } else {
                         $('#firstNameGood').css("display", "none")
                         $('#firstNameError').css("display", "block")
+                        return
+
                     }
 
                     //LastName
@@ -226,6 +228,7 @@ let mainComponent = Vue.component("step", {
                     } else {
                         $('#lastNameGood').css("display", "none")
                         $('#lastNameError').css("display", "block")
+                        return
                     }
 
                     //Email
@@ -238,6 +241,8 @@ let mainComponent = Vue.component("step", {
                     } else {
                         $('#emailAddressGood').css("display", "none")
                         $('#emailAddressError').css("display", "block")
+                        return
+
                     }
 
                     //Phone
@@ -250,11 +255,15 @@ let mainComponent = Vue.component("step", {
                     } else {
                         $('#phoneNumberGood').css("display", "none")
                         $('#phoneNumberError').css("display", "block")
+                        return
+                          
                     }
 
+
                     //BILLING ADDRESS Check section
-                    if (bill.checked == true || airlineInfo.checked == true) {
-                        if ($('#street').val() === '' || $('#city').val() === '' || ($('#state').val() === '' || $('#postalCode').val() === '' || $('#country').val() === '') || airlineInfo.checked == true) {
+                    if (bill.checked == true) {
+                        if ($('#street').val() === '' || $('#city').val() === '' || $('#state').val() === '' || $('#postalCode').val() === '' || $('#district').val() === '') {
+                            //Street
                             if ($('#street').val() != '') {
                                 $('#streetGood').css("display", "block")
                                 setTimeout(function () {
@@ -264,8 +273,10 @@ let mainComponent = Vue.component("step", {
                             } else {
                                 $('#streetGood').css("display", "none")
                                 $('#streetError').css("display", "block")
-                            }
+                                return
 
+                            }
+                            //City
                             if ($('#city').val() != '') {
                                 $('#cityGood').css("display", "block")
                                 setTimeout(function () {
@@ -275,8 +286,10 @@ let mainComponent = Vue.component("step", {
                             } else {
                                 $('#cityGood').css("display", "none")
                                 $('#cityError').css("display", "block")
-                            }
+                                return
 
+                            }
+                            //State
                             if ($('#state').val() != '') {
                                 $('#stateGood').css("display", "block")
                                 setTimeout(function () {
@@ -286,8 +299,10 @@ let mainComponent = Vue.component("step", {
                             } else {
                                 $('#stateGood').css("display", "none")
                                 $('#stateError').css("display", "block")
-                            }
+                                return
 
+                            }
+                            //Postal code
                             if ($('#postalCode').val() != '') {
                                 $('#postalCodeGood').css("display", "block")
                                 setTimeout(function () {
@@ -297,9 +312,11 @@ let mainComponent = Vue.component("step", {
                             } else {
                                 $('#postalCodeGood').css("display", "none")
                                 $('#postalCodeError').css("display", "block")
-                            }
+                                return
 
-                            if ($('#country').val() != '') {
+                            }
+                            //Country
+                            if ($('#district').val() != '') {
                                 $('#countryGood').css("display", "block")
                                 setTimeout(function () {
                                     $('#countryGood').css("display", "none")
@@ -308,50 +325,49 @@ let mainComponent = Vue.component("step", {
                             } else {
                                 $('#countryGood').css("display", "none")
                                 $('#countryError').css("display", "block")
+                                return
                             }
 
-
-                            //ARRIVAL AIRLINE INFO Check section
-                            if (airlineInfo.checked == true) {
-                                if ($('#airline').val() === '' || $('#filingNumber').val() === '') {
-                                    if ($('#airline').val() != '') {
-                                        $('#airlineGood').css("display", "block")
-                                        setTimeout(function () {
-                                            $('#airlineGood').css("display", "none")
-                                        }, 1000);
-                                        $('#airlineError').css("display", "none")
-                                    } else {
-                                        $('#airlineGood').css("display", "none")
-                                        $('#airlineError').css("display", "block")
-                                    }
-
-                                    if ($('#filingNumber').val() != '') {
-                                        $('#filingNumberGood').css("display", "block")
-                                        setTimeout(function () {
-                                            $('#filingNumberGood').css("display", "none")
-                                        }, 1000);
-                                        $('#filingNumberError').css("display", "none")
-                                    } else {
-                                        $('#filingNumberGood').css("display", "none")
-                                        $('#filingNumberError').css("display", "block")
-                                    }
-                                }
-                                else {
-
-                                    let currentStep = this.currentstep;
-                                    let IncreaseCurrentStepFunc = this.IncreaseCurrentStep;
-                                    SaveRideDetailsInfo(currentStep, IncreaseCurrentStepFunc);
-                                }
+                        }
+                    } 
+                   
+                    //ARRIVAL AIRLINE INFO Check section
+                    if (airlineInfo.checked == true) {
+                        if ($('#airline').val() === '' || $('#filingNumber').val() === '') {
+                            if ($('#airline').val() != '') {
+                                $('#airlineGood').css("display", "block")
+                                setTimeout(function () {
+                                    $('#airlineGood').css("display", "none")
+                                }, 1000);
+                                $('#airlineError').css("display", "none")
+                            } else {
+                                $('#airlineGood').css("display", "none")
+                                $('#airlineError').css("display", "block")
+                                return
 
                             }
-                        } else {
+
+                            if ($('#filingNumber').val() != '') {
+                                $('#filingNumberGood').css("display", "block")
+                                setTimeout(function () {
+                                    $('#filingNumberGood').css("display", "none")
+                                }, 1000);
+                                $('#filingNumberError').css("display", "none")
+                            } else {
+                                $('#filingNumberGood').css("display", "none")
+                                $('#filingNumberError').css("display", "block")
+                                return
+
+                            }
+                        }
+                        else {
+
                             let currentStep = this.currentstep;
                             let IncreaseCurrentStepFunc = this.IncreaseCurrentStep;
                             SaveRideDetailsInfo(currentStep, IncreaseCurrentStepFunc);
                         }
-
-
                     }
+
                 }
                 else {
                     $('#firstNameError').css("display", "none")
@@ -363,8 +379,10 @@ let mainComponent = Vue.component("step", {
                     let IncreaseCurrentStepFunc = this.IncreaseCurrentStep;
                     SaveRideDetailsInfo(currentStep, IncreaseCurrentStepFunc);
                 }
+
             }
             //END
+
         },
 
         lastStep() {
@@ -531,7 +549,7 @@ for (var price of bonusPrices) {
         let addedBonusPrice = event.target.defaultValue;
 
         AjaxPost("/Home/CalculateBonusTotalAmount/", { percentage: addedBonusPrice }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
-            console.log(response);
+           // console.log(response);
 
             $(".totalAmount span").text(response.calculatedVehicleAmounts.totalAmount);
             $(".gratuity span").text(response.calculateTotalAmountForPercentage);
@@ -630,9 +648,9 @@ function CalculatedAmountResponse(response) {
             }
         });
 
-        console.log(response.getVehiclesIsActive.distanceAmount)
-        console.log(response.getVehiclesIsActive.graduity)
-        console.log(response.getVehiclesIsActive.totalAmount)
+        //console.log(response.getVehiclesIsActive.distanceAmount)
+        //console.log(response.getVehiclesIsActive.graduity)
+        //console.log(response.getVehiclesIsActive.totalAmount)
 
 
         $(".distanceAmount span").text(response.getVehiclesIsActive.distanceAmount);
@@ -756,7 +774,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
             let city = null;
             let state = null;
             let postalCode = null;
-            let country = null;
+            let district = null;
             let airline = null;
             let filingNumber = null;
 
@@ -770,7 +788,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 city = $("#city").val();
                 state = $("#state").val();
                 postalCode = $("#postalCode").val();
-                country = $("#country").val();
+                district = $("#district").val();
 
             }
             if (airlineInfo.checked) {
@@ -791,41 +809,186 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 City: city,
                 State: state,
                 PostalCode: postalCode,
-                CountryId: country,
+                District: district,
                 BillingAddressStatus: bill.checked,
                 AirLineStatus: airlineInfo.checked,
                 AirlineId: airline,
                 FlightNumber: filingNumber,
                 AirlineAutoCheck: Boolean(sessionStorage.getItem("airlineAutoCheck"))
             }
-            console.log(data);
-            AjaxPost("/RideDetails/AddContactDetailsInfo/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
-                console.log(response);
+          
+           // var mes = data.State.concat(",", data.City, data.Street, data.StreetNumber, data.District)
 
+         //   console.log(mes);
+            AjaxPost("/RideDetails/AddContactDetailsInfo/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
+               
                 if (response.hasOwnProperty("wrongStatus")) {
                     alert("If PickupLocation or DropOfLocation choosen 'Denver International Airport (DEN), Peña Boulevard, Denver, CO, USA' international airport , must be selected 'ARRIVAL AIRLINE INFO' tab!");
                     return false;
                 }
+               //Additional message
+                if (response.contactDetails.additionalContactDetailNote == "") {
+                    $('#additionalMessage').css("display", "none");
+                } else {
+                    $('#additionalMessage').css("display", "block");
 
-                ShowAllDatasFilledFromInput("firstname", response.contactDetails.firstname);
+                    ShowAllDatasFilledFromInput("additionalContactDetailsNote", response.contactDetails.additionalContactDetailNote);
+                }
+                //Drop of location
+                if (response.rideDetails.dropOffLocation == "") {
+                    $('#dropOfLocation').css("display", "none");
+                } else {
+                    ShowAllDatasFilledFromInput("dropOffLocation", response.rideDetails.dropOffLocation);
+                }
+                // first name
+                if (response.contactDetails.firstname == "") {
+                    $('#SummaryFirstName').css("display", "none");
+
+                } else {
+                    ShowAllDatasFilledFromInput("firstname", response.contactDetails.firstname);
+                }
+                //Last Name
+                if (response.contactDetails.lastname == "") {
+                    $('#SummaryLastName').css("display", "none");
+
+                } else {
+
                 ShowAllDatasFilledFromInput("lastname", response.contactDetails.lastname);
+                }
+                //Email
+                if (response.contactDetails.email == "") {
+                    $('#SummaryEmail').css("display", "none");
+                } else {
                 ShowAllDatasFilledFromInput("email", response.contactDetails.email);
+                }
+                //Phone number
+                if (response.contactDetails.phoneNumber == "") {
+                    $('#SummaryPhoneNum').css("display", "none");
+                } else {
                 ShowAllDatasFilledFromInput("phoneNumber", response.contactDetails.phoneNumber);
+                }
+                
+                var forSummryFullBillAddress = street + " / " + streetNumber + " / " + district + " /  Postal code " + postalCode + " / " + city + " / " + state;
+
+                //Full bill addrees
+                if (state == null) {
+
+                    $('#SummaryBillingAddress').css("display", "none");
+                } else {
+                    $('#SummaryBillingAddress').css("display", "block");
+
+                    ShowAllDatasFilledFromInput("fullBillingAddress", forSummryFullBillAddress)
+                }
+
+                //Companiy Name
+                if (response.contactDetails.companyRegisteredname == null || response.contactDetails.companyRegisteredname == "") {
+                    $('#SummaryCompaniyName').css("display", "none");
+                } else {
+                    $('#SummaryCompaniyName').css("display", "block");
+
                 ShowAllDatasFilledFromInput("companyName", response.contactDetails.companyRegisteredname);
+                }
+                console.log(response.contactDetails.companyRegisteredname)
+
+                //Tax Number
+                if (response.contactDetails.taxNumber == null || response.contactDetails.taxNumber == "") {
+                    $('#SummaryTaxNumber').css("display", "none");
+
+                } else {
+                    $('#SummaryTaxNumber').css("display", "block");
+
                 ShowAllDatasFilledFromInput("taxNumber", response.contactDetails.taxNumber);
+                }
+
+                //Airline Type
+                if (response.getTextForIdVM.airLine == "") {
+                    $('#SummaryAirLine').css("display", "none");
+
+                } else {
+                    $('#SummaryAirLine').css("display", "block");
 
                 ShowAllDatasFilledFromInput("airLineType", response.getTextForIdVM.airLine);
-                ShowAllDatasFilledFromInput("flightNumber", response.contactDetails.flightNumber);
-                ShowAllDatasFilledFromInput("additionalContactDetailsNote", response.contactDetails.additionalContactDetailNote);
-                ShowAllDatasFilledFromInput("service-type", response.getTextForIdVM.wayType);
-                ShowAllDatasFilledFromInput("pickupLocation", response.rideDetails.pickupLocation);
-                ShowAllDatasFilledFromInput("dropOffLocation", response.rideDetails.dropOffLocation);
-                ShowAllDatasFilledFromInput("pickupDateAndTime", response.getTextForIdVM.pickupDateAndTime);
-                ShowAllDatasFilledFromInput("total-distance", response.getTextForIdVM.totalDistance);
-                ShowAllDatasFilledFromInput("total-time", response.getTextForIdVM.distanceTime);
+                }
 
-                ShowAllDatasFilledFromInput("vehicle-type", response.getTextForIdVM.vehicleType);
+                //Flight Number
+                if (response.contactDetails.flightNumber == "") {
+                    $('#SummaryFlightNumber').css("display", "none");
+
+                } else {
+                    $('#SummaryFlightNumber').css("display", "block");
+
+                ShowAllDatasFilledFromInput("flightNumber", response.contactDetails.flightNumber);
+                }
+
+                //Service Type
+                if (response.getTextForIdVM.wayType == "") {
+                    $('#SummaryServiceType').css("display", "none");
+
+                } else {
+                    $('#SummaryServiceType').css("display", "block");
+
+                ShowAllDatasFilledFromInput("service-type", response.getTextForIdVM.wayType);
+                }
+
+                //Pickup Location
+                if (response.rideDetails.pickupLocation == "") {
+                    $('#SummaryPickupLocation').css("display", "none");
+
+                } else {
+                    $('#SummaryPickupLocation').css("display", "block");
+
+                    ShowAllDatasFilledFromInput("pickupLocation", response.rideDetails.pickupLocation);
+                }
+
+                //Pickup Date and Time
+                if (response.getTextForIdVM.pickupDateAndTime == "") { 
+                    $('#SummaryPickupDateAndTime').css("display", "none");
+
+                } else {
+                    $('#SummaryPickupDateAndTime').css("display", "block");
+
+                    ShowAllDatasFilledFromInput("pickupDateAndTime", response.getTextForIdVM.pickupDateAndTime);
+                }
+
+                //Total Distance
+                if (response.getTextForIdVM.totalDistance == "") {
+                    $('#SummaryTotalDistance').css("display", "none");
+
+                } else {
+                    $('#SummaryTotalDistance').css("display", "block");
+
+                    ShowAllDatasFilledFromInput("total-distance", response.getTextForIdVM.totalDistance);
+                }
+
+                //Total Time
+                if (response.getTextForIdVM.distanceTime == "") {
+                    $('#SummaryDistanceTime').css("display", "none");
+
+                } else {
+                    $('#SummaryDistanceTime').css("display", "block");
+
+                ShowAllDatasFilledFromInput("total-time", response.getTextForIdVM.distanceTime);
+                }
+
+                //Vehicle Type
+                if (response.getTextForIdVM.vehicleType == "") {
+                    $('#SummaryVehicleType').css("display", "none");
+
+                } else {
+                    $('#SummaryVehicleType').css("display", "block");
+
+                    ShowAllDatasFilledFromInput("vehicle-type", response.getTextForIdVM.vehicleType);
+                }
+
+                //Child Seat Count
+                if (response.vehicleDetails.childNumber == "") {
+                    $('#SummaryChildNumber').css("display", "none");
+
+                } else {
+                    $('#SummaryChildNumber').css("display", "block");
+
                 ShowAllDatasFilledFromInput("childSeatCount", response.vehicleDetails.childNumber);
+                }
 
                 if (response.status.statusCode === 200)
                     IncreaseCurrentStep(step + 1);
