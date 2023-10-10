@@ -1,23 +1,10 @@
-using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Stripe;
 using ColoradoLuxury.Models.VM;
-using System.Configuration;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ColoradoLuxury.Services;
-using Stripe.BillingPortal;
-using System;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using ColoradoLuxury.Middleware;
-using ColoradoLuxury.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);

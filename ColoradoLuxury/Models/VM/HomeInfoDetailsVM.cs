@@ -11,6 +11,6 @@ namespace ColoradoLuxury.Models.VM
         public List<AirLine> AirLines { get; set; }
         public List<ValueOfTipButton> ValueOfTipButtons { get; set; }
 
-
+        public List<string> TimesRange { get; set; }
     }
 }

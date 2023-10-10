@@ -23,6 +23,8 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<ResultMessage> ResultMessages { get; set; }
         public DbSet<PaymentDetails> PaymentDetails { get; set; }
         public DbSet<SessionLogAdminUser> SessionLogAdminUsers { get; set; }
+        public DbSet<UserUsedCupon> UserUsedCupons { get; set; }
+
 
 
 

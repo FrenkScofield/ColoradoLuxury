@@ -25,13 +25,57 @@ namespace ColoradoLuxury.Controllers
         }
         public IActionResult Index()
         {
+            List<string> choosenTimeRange = new List<string>();
+
+            var rideDetails = _context.RideDetails.Select(x => new RideDetail
+            {
+                PickupTime = x.PickupTime,
+                EndPickupTime = x.EndPickupTime,
+                DurationId = x.DurationId,
+                Duration = x.Duration,
+                PickupDate = x.PickupDate
+
+            }).ToList();
+
+
+
+            if (rideDetails != null)
+
+            {
+                foreach (var rideDetail in rideDetails)
+                {
+                    if (rideDetail.DurationId != null)
+                    {
+                        var getTimeRange = TimeRangeGenerator.GenerateTimeRange(rideDetail.PickupDate, rideDetail.PickupTime, rideDetail.EndPickupTime);
+                        if (getTimeRange != null)
+                        {
+                            if (DateTime.Now <= getTimeRange[getTimeRange.Count - 1])
+                            {
+                                foreach (var timeRange in getTimeRange)
+                                {
+                                    choosenTimeRange.Add(timeRange.TimeOfDay.ToString());
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+
             HomeInfoDetailsVM viewModel = new HomeInfoDetailsVM()
             {
                 VehicleTypes = _context.VehicleTypes.Where(x => x.Status).ToList(),
                 TransferTypes = _context.TransferTypes.ToList(),
                 Countries = _context.Countries.ToList(),
-                AirLines = _context.AirLines.ToList()
+                AirLines = _context.AirLines.ToList(),
+                TimesRange = choosenTimeRange
             };
+
+          
+
+          
+
             return View(viewModel);
         }
 
@@ -52,8 +96,8 @@ namespace ColoradoLuxury.Controllers
             var gradiuty = _context.ValueOfTipButtons.Select(x => new ValueOfTipButton
             {
                 lowInterest = x.lowInterest,
-                MiddleInterest= x.MiddleInterest,
-                HighInterest= x.HighInterest
+                MiddleInterest = x.MiddleInterest,
+                HighInterest = x.HighInterest
             }).FirstOrDefault();
 
             if (hourly && durationValue == 0)
@@ -192,7 +236,7 @@ namespace ColoradoLuxury.Controllers
             VehicleAmounts? vehicleAmountsDetails = null;
             if (id == 0)
             {
-                getVehicleTypes = _context.VehicleTypes.ToList();
+                getVehicleTypes = _context.VehicleTypes.Where(x => x.Status).ToList();
                 foreach (var getVehicleType in getVehicleTypes)
                 {
                     vehicleAmountsDetails = HttpContext.GetObjectsession<VehicleAmounts>($"{getVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
@@ -318,8 +362,38 @@ namespace ColoradoLuxury.Controllers
                 return Json(new { notFound = true });
             }
 
+            var contactDetails = HttpContext.GetObjectsession<ContactDetailsVM>("contactDetails");
+
             VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
 
+
+            var getUserUsedCupons = _context.UserUsedCupons.Where(x => x.CuponKey == cuponkey && x.Email == contactDetails.Email)
+                                                          .Select(x => new UserUsedCupon { CuponKey = x.CuponKey, Email = x.Email }).ToList();
+
+            UserCuponVM userCuponVM = null;
+
+            if (getUserUsedCupons != null)
+            {
+                if (getUserUsedCupons.Count < 3)
+                {
+                    userCuponVM = UseCupon(cuponDetails, vehicleAmounts);
+                }
+            }
+            else
+            {
+                userCuponVM = UseCupon(cuponDetails, vehicleAmounts);
+            }
+
+
+
+
+
+            return Json(new { userCuponVM, status = Ok() });
+
+        }
+
+        public UserCuponVM UseCupon(Cupon? cuponDetails, VehicleAmounts? vehicleAmounts)
+        {
             decimal discountAmount = 0;
             string? DiscountTotalAmount = null;
             string? discountType = null;
@@ -347,13 +421,18 @@ namespace ColoradoLuxury.Controllers
             };
 
 
+
             HttpContext?.Session?.Remove("activeVehicleAmountSession");
 
             HttpContext?.SetObjectsession("activeVehicleAmountSession", calculatedVehicleAmounts);
 
+            UserCuponVM userCuponVM = new UserCuponVM()
+            {
+                DiscountType = discountType,
+                VehicleAmounts = calculatedVehicleAmounts
+            };
 
-            return Json(new { calculatedVehicleAmounts, status = Ok(), discountType });
-
+            return userCuponVM;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

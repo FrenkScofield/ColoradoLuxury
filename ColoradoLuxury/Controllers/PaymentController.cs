@@ -59,6 +59,7 @@ namespace ColoradoLuxury.Controllers
                     PickupTime = rideDetails.PickupTime,
                     PickupLocation = rideDetails.PickupLocation,
                     DropOffLocation = rideDetails.DropOffLocation,
+                    EndPickupTime= rideDetails.EndPickupTime,
                     CustomerTravelTypeId = rideDetails.WayType ? (int)WayTypeEnum.Distance : (int)WayTypeEnum.Hourly,
                     DurationId = rideDetails.DurationInHours != null ? rideDetails.DurationInHours : null,
                     TransferTypeId = rideDetails.TransferTypeId != 0 ? rideDetails.TransferTypeId : null
@@ -130,7 +131,7 @@ namespace ColoradoLuxury.Controllers
                     DistanceAmount = vehicleAmounts.DistanceAmount,
                     GradiutyAmount = vehicleAmounts.Graduity,
                     TotalAmount = vehicleAmounts.TotalAmount,
-                    UsersId = userInfo.Id,
+                    UserInfoId = userInfo.Id,
                     TransactionId = HttpContext.GetSessionString("TransactionId")
                 };
 

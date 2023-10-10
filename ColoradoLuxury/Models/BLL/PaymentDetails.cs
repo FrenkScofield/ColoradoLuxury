@@ -13,7 +13,7 @@
 
         public string TransactionId { get; set; }
 
-        public int UsersId { get; set; }
+        public int UserInfoId { get; set; }
 
         public UserInfo UserInfo { get; set; }
 

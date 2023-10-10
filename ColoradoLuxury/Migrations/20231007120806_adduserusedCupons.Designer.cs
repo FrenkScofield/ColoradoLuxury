@@ -4,6 +4,7 @@ using ColoradoLuxury.Models.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    partial class ColoradoContextModelSnapshot : ModelSnapshot
+    [Migration("20231007120806_adduserusedCupons")]
+    partial class adduserusedCupons
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -493,9 +495,6 @@ namespace ColoradoLuxury.Migrations
                     b.Property<DateTime?>("EditDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EndPickupTime")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("PickupDate")
                         .HasColumnType("datetime2");
 
@@ -706,7 +705,12 @@ namespace ColoradoLuxury.Migrations
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserInfoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserInfoId");
 
                     b.ToTable("UserUsedCupons");
                 });
@@ -951,6 +955,17 @@ namespace ColoradoLuxury.Migrations
                     b.Navigation("RideDetail");
 
                     b.Navigation("VehicleInfoDetails");
+                });
+
+            modelBuilder.Entity("ColoradoLuxury.Models.BLL.UserUsedCupon", b =>
+                {
+                    b.HasOne("ColoradoLuxury.Models.BLL.UserInfo", "UserInfo")
+                        .WithMany()
+                        .HasForeignKey("UserInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserInfo");
                 });
 
             modelBuilder.Entity("ColoradoLuxury.Models.BLL.Vehicle", b =>

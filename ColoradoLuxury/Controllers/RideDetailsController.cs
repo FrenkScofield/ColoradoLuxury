@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Caching.Memory;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace ColoradoLuxury.Controllers
 {
@@ -27,10 +28,14 @@ namespace ColoradoLuxury.Controllers
         [HttpPost]
         public IActionResult AddDetails([FromBody] RideDetailsVM model)
         {
-            HttpContext.SetObjectsession("firstridedetails", model);
+            DateTime endDate = DateTime.MinValue;
+            if (model.DurationInHours != null)
+            {
+                 endDate = TimeRangeGenerator.GetEndDateTime(model.PickupTime, model.DurationInHours);
+                 model.EndPickupTime = endDate.ToString("HH:mm");
+            }
 
-            //_cache.Set<RideDetailsVM>("firstridedetailscache", model);
-            var t = HttpContext.Session.Keys;
+            HttpContext.SetObjectsession("firstridedetails", model);
 
             return Json(new { status = Ok() });
 
@@ -122,8 +127,6 @@ namespace ColoradoLuxury.Controllers
                 if (HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result").IsActive == true)
                 {
 
-                    //HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result").IsActive = false;
-                    //await HttpContext.Session.LoadAsync();
                     var previusAmountResultSession = HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
                     HttpContext.Session.Remove($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
 

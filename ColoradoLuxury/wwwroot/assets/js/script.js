@@ -145,6 +145,7 @@ Vue.component("step", {
                     let calcStatus = false;
                     async function calculateAndLog() {
                         try {
+                            SetDisableChosenHour(hor);
                             calcStatus = await CalculateAmount(hor);
                             console.log(calcStatus);
                             if (calcStatus)
@@ -653,6 +654,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
             let dropOffLocation = null;
             let pickupDate = $("#pickupDate").val();
             let time = $("#time").val();
+            console.log(time)
             let pickuplocation = $("#pickuplocation").val();
             console.log(hor)
             if (hor)
@@ -680,6 +682,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 PickupTime: time,
                 PickupLocation: pickuplocation,
                 DropOffLocation: dropOffLocation,
+                EndPickupTime: null,
                 TransferTypeId: transferTypeId,
                 DurationInHours: durationInHours
             }
@@ -923,5 +926,62 @@ function AddCupon(element) {
         
 
     });
-    /*btnAddCupon*/
+}
+
+
+function SetDisableChosenHour(hourly) {
+    if (!hourly) {
+        let durationValue = $("#durationInHoursSelected").val();
+        let format = "HH:mm";
+        let time = $("#time").val();
+        let getTimeOnlyHoursAndMinutes = time.substring(0, 5);
+        let getTimeOnlyHours = time.substring(0, 2);
+        let getTimeOnlyMinutes = time.substring(3, 5);
+
+
+        let DuringWayTime = (+getTimeOnlyHours) + (+durationValue);
+
+        if (DuringWayTime <= 9) {
+            DuringWayTime = `0${DuringWayTime}`;
+        }
+
+        let destionationTime = `${DuringWayTime}:${getTimeOnlyMinutes}`;
+
+        let hourOptions = $(".timepicker_hour option");
+
+        //console.log(Range(+getTimeOnlyHours, +DuringWayTime));
+
+        ////for (var i = 0; i < hourOptions.length; i++) {
+        ////    if (hourOptions[i].attributes[0].value == ) {
+
+        ////    }
+        ////}
+
+        //console.log(hourOptions);
+
+        //console.log(time);
+        //console.log(destionationTime);
+
+
+
+        //console.log(getTimeOnlyHoursAndMinutes);
+
+        //console.log(getTimeOnlyHours);
+
+        //console.log(DuringWayTime);
+        ////let time = $("#time").val().toLocaleString(format);
+
+
+        //console.log(time);
+
+    }
+}
+
+function Range(start, end) {
+    let betweenTimes = [];
+    for (var i = start; i <= end; i++) {
+        betweenTimes.push(i)
+    }
+
+    return betweenTimes;
 }

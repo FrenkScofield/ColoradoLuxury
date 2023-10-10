@@ -4,6 +4,7 @@ using ColoradoLuxury.Models.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    partial class ColoradoContextModelSnapshot : ModelSnapshot
+    [Migration("20231007121214_removeUsrid")]
+    partial class removeUsrid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -492,9 +494,6 @@ namespace ColoradoLuxury.Migrations
 
                     b.Property<DateTime?>("EditDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("EndPickupTime")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PickupDate")
                         .HasColumnType("datetime2");
