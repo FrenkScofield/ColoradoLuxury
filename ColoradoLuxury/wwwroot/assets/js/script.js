@@ -914,6 +914,16 @@ function AddCupon(element) {
 
     AjaxPost("/Home/CalculateTotalAmountForCuponCode/", { cuponKey: cuponKey }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
         console.log(response);
+        
+
+        if (response.hasOwnProperty("expiredCupon")) {
+            alert(`You have already used all chance for this cupon code!`);
+            return;
+        }
+        if (response.hasOwnProperty("usedCupon")) {
+            alert(`You have already used this cupon code! Please try next order!`);
+            return;
+        }
 
         if (response.hasOwnProperty("notFound")) {
             alert(`This Cupon code does not exist.Please, ensure that the accuracy of the cupon code!`);

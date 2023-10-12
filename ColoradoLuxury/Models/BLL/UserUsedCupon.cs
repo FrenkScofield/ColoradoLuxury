@@ -6,6 +6,8 @@
 
         public string? Email { get; set; }
 
+        public string? UniqueKey { get; set; }
+
         public bool IsUsed { get; set; }
         
     }

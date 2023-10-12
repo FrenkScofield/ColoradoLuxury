@@ -12,8 +12,12 @@
 
             public DateTime? CouponDeatline { get; set; }
 
+        public byte? UseCount { get; set; }
+        public byte? UsedCount { get; set; }
 
-            private bool status;
+
+
+        private bool status;
 
             public bool Status
             {

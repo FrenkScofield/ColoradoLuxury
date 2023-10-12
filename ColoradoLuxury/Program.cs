@@ -6,6 +6,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ColoradoLuxury.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ColoradoLuxury.Middleware.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -94,6 +95,8 @@ app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.CreateUniqueKey();
 
 app.UseEndpoints(endpoints =>
 {

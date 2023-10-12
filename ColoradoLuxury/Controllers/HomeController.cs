@@ -58,7 +58,7 @@ namespace ColoradoLuxury.Controllers
                             }
                         }
                     }
-                    
+
                 }
             }
 
@@ -72,9 +72,9 @@ namespace ColoradoLuxury.Controllers
                 TimesRange = choosenTimeRange
             };
 
-          
 
-          
+
+
 
             return View(viewModel);
         }
@@ -354,7 +354,8 @@ namespace ColoradoLuxury.Controllers
                                               {
                                                   NewCupon = x.NewCupon,
                                                   Percentage = x.Percentage,
-                                                  Amount = x.Amount
+                                                  Amount = x.Amount,
+                                                  UseCount = x.UseCount,
                                               }).FirstOrDefault();
 
             if (cuponDetails == null)
@@ -367,32 +368,46 @@ namespace ColoradoLuxury.Controllers
             VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
 
 
-            var getUserUsedCupons = _context.UserUsedCupons.Where(x => x.CuponKey == cuponkey && x.Email == contactDetails.Email)
-                                                          .Select(x => new UserUsedCupon { CuponKey = x.CuponKey, Email = x.Email }).ToList();
+
+            var getUserUsedCupons = _context.UserUsedCupons.Where(x => x.Email == contactDetails.Email)
+                                                          .Select(x => new UserUsedCupon { CuponKey = x.CuponKey, Email = x.Email, UniqueKey = x.UniqueKey }).ToList();
+
+            string activeUniquekey = HttpContext.GetSessionString("activeUniqueKey");
+
 
             UserCuponVM userCuponVM = null;
 
-            if (getUserUsedCupons != null)
+
+            if (getUserUsedCupons.Count == 0)
             {
-                if (getUserUsedCupons.Count < 3)
-                {
-                    userCuponVM = UseCupon(cuponDetails, vehicleAmounts);
-                }
+                userCuponVM = UseCupon(cuponDetails, vehicleAmounts, contactDetails, activeUniquekey);
             }
             else
             {
-                userCuponVM = UseCupon(cuponDetails, vehicleAmounts);
+                if (getUserUsedCupons.Count < cuponDetails.UseCount)
+                {
+                    foreach (var getUserUsedCupon in getUserUsedCupons)
+                    {
+                        if (getUserUsedCupon.CuponKey.Equals(cuponDetails.NewCupon) && activeUniquekey.Equals(getUserUsedCupon.UniqueKey))
+                        {
+
+                            return Json(new { usedCupon = true });
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { expiredCupon = true });
+                }
+
+                userCuponVM = UseCupon(cuponDetails, vehicleAmounts, contactDetails, activeUniquekey);
             }
-
-
-
-
 
             return Json(new { userCuponVM, status = Ok() });
 
         }
 
-        public UserCuponVM UseCupon(Cupon? cuponDetails, VehicleAmounts? vehicleAmounts)
+        public UserCuponVM UseCupon(Cupon? cuponDetails, VehicleAmounts? vehicleAmounts, ContactDetailsVM contactDetails, string uniqueKey)
         {
             decimal discountAmount = 0;
             string? DiscountTotalAmount = null;
@@ -431,6 +446,16 @@ namespace ColoradoLuxury.Controllers
                 DiscountType = discountType,
                 VehicleAmounts = calculatedVehicleAmounts
             };
+
+            UserUsedCupon userUsedCupon = new UserUsedCupon {
+                CuponKey = cuponDetails.NewCupon,
+                Email = contactDetails.Email,
+                IsUsed = true,
+                UniqueKey = uniqueKey                
+            };
+            _context.UserUsedCupons.Add(userUsedCupon);
+            _context.SaveChanges();
+
 
             return userCuponVM;
         }
