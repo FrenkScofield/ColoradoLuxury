@@ -49,7 +49,7 @@ namespace ColoradoLuxury.Controllers
                         var getTimeRange = TimeRangeGenerator.GenerateTimeRange(rideDetail.PickupDate, rideDetail.PickupTime, rideDetail.EndPickupTime);
                         if (getTimeRange != null)
                         {
-                            if (DateTime.Now <= getTimeRange[getTimeRange.Count - 1])
+                            if (DateTime.Now.Date == getTimeRange[getTimeRange.Count - 1].Date)
                             {
                                 foreach (var timeRange in getTimeRange)
                                 {

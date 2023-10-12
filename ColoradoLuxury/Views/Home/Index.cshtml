@@ -130,7 +130,7 @@
         margin: 5px 0px;
     }
 
-    .disabled-option-time-picker{
+    .disabled-option-time-picker {
         background-color: #dddddd;
     }
 
@@ -207,7 +207,7 @@
                                                                         </select>
                                                                     </div>
                                                                     <div class="timepicker_control">
-                                                                        <button onclick="timepicker(this,'x')">Close</button><button onclick="timepicker(this,'c')">Clear</button><button type="button" onclick="timepicker(this,'s')">Set</button>
+                                                                        <button type="button" onclick="timepicker(this,'x')">Close</button><button onclick="timepicker(this,'c')">Clear</button><button type="button" onclick="timepicker(this,'s')">Set</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -921,7 +921,7 @@
         if (S == 'a') {
             html = "";
             let timeCount = 0;
-            for (i = 0; i <= 23; i++) {
+            for (i = 0; i <= 12; i++) {
                 if (choosenTimesRange != null) {
                     for (j = 0; j < choosenTimesRange.length; j++) {
 
@@ -931,7 +931,7 @@
                         }
                     }
 
-                    if(timeCount == 0){
+                    if (timeCount == 0) {
                         html += '<option value="' + pad(i) + '">' + pad(i) + '</option>';
                     }
                     timeCount = 0;
@@ -962,7 +962,7 @@
             c_t.value = "";
         }
         if (S == 'x') {
-            div.style.display = "block";
+            div.style.display = "none";
         }
         if (S == 's') {
             var hr = document.querySelector('.timepicker_hour').value;

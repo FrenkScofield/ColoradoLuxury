@@ -662,10 +662,6 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
             else
                 dropOffLocation = $("#forHourlydropOffLocation").val();
 
-
-            console.log(dropOffLocation)
-
-
             let transferTypeId = $("#transferType").val();
             let durationInHours = $("#durationInHoursSelected").val();
 
@@ -686,13 +682,21 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 TransferTypeId: transferTypeId,
                 DurationInHours: durationInHours
             }
-            console.log(data);
             AjaxPost("/RideDetails/AddDetails/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
                 console.log(response);
 
+                if (response.choosenBetweenDates) {
+                    alert("The Time slot you selected is already full!");
+                    return;
+                }
+
+                if (response.status.statusCode === 400) {
+                    alert("Please choose the correct option for Pickup time field!");
+                    return;
+                }
+
                 if (response.status.statusCode === 200)
                     IncreaseCurrentStep(step + 1);
-
             });
             break;
 
@@ -923,7 +927,7 @@ function AddCupon(element) {
             $(".gratuity span").text(response.calculatedVehicleAmounts.graduity);
             $(".totalAmount span").text(response.calculatedVehicleAmounts.totalAmount);
         }
-        
+
 
     });
 }

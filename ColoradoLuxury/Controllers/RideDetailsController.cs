@@ -28,11 +28,41 @@ namespace ColoradoLuxury.Controllers
         [HttpPost]
         public IActionResult AddDetails([FromBody] RideDetailsVM model)
         {
+            bool isValid = TimeRangeGenerator.Isvalid(model.PickupTime);
+            if (!isValid)
+            {
+                return Json(new { status = BadRequest() });
+            }
             DateTime endDate = DateTime.MinValue;
+
+            var rideDetailsStartAndEndTimes = _context.RideDetails.Where(x => x.EndPickupTime != null).Select(x => new RidePickupTimeDetails
+            {
+                PickupDate = x.PickupDate,
+                StartDate = x.PickupTime,
+                EndDate = x.EndPickupTime
+            });
+
+            if (rideDetailsStartAndEndTimes != null)
+            {
+                bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, rideDetailsStartAndEndTimes);
+
+                if (checkDisabledForPickupTime)
+                {
+                    return Json(new { choosenBetweenDates = true });
+                }
+            }
+
+            
+
             if (model.DurationInHours != null)
             {
-                 endDate = TimeRangeGenerator.GetEndDateTime(model.PickupTime, model.DurationInHours);
-                 model.EndPickupTime = endDate.ToString("HH:mm");
+                endDate = TimeRangeGenerator.GetEndDateTime(model.PickupTime, model.DurationInHours);
+
+                if (endDate.Equals(DateTime.MinValue))
+                {
+                    return Json(new { status = BadRequest() });
+                }
+                model.EndPickupTime = endDate.ToString("HH:mm");
             }
 
             HttpContext.SetObjectsession("firstridedetails", model);
@@ -111,7 +141,7 @@ namespace ColoradoLuxury.Controllers
                 vehicleDetails,
                 contactDetails,
                 getTextForIdVM,
-                status = Ok() 
+                status = Ok()
             });
 
         }
