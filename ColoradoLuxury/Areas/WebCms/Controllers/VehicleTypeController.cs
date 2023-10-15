@@ -1,3 +1,4 @@
+using ColoradoLuxury.Attributes;
 using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
@@ -8,7 +9,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 {
     [Area("WebCms")]
     [Route("WebCms/[controller]/[action]")]
-    public class VehicleTypeController : Controller
+    public class VehicleTypeController : AuthController
     {
         private readonly ColoradoContext _context;
         public VehicleTypeController(ColoradoContext context)
@@ -18,7 +19,28 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.VehicleTypes.ToListAsync());
+            var vehicleType = await _context.VehicleTypes.Where(x => x.Status == true).ToListAsync();
+            if (vehicleType.Count == 1 && !vehicleType[0].IsActive)
+            {
+                var defaultVehicleType = await _context.VehicleTypes.ToListAsync();
+
+                if (defaultVehicleType != null)
+                {
+                    foreach (var defVehicleType in defaultVehicleType)
+                    {
+                        defVehicleType.IsActive = false;
+                        _context.VehicleTypes.Update(defVehicleType);
+                        await _context.SaveChangesAsync();
+                    }
+
+                }
+
+                vehicleType[0].IsActive = true;
+                _context.VehicleTypes.Update(vehicleType[0]);
+                _context.SaveChanges();
+            }
+
+            return View(vehicleType);
         }
 
         public IActionResult AddVehicleType()
@@ -50,7 +72,8 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                     {
                         TypeName = TypeName,
                         PerMile = PerMileResult,
-                        Hourly = HourlyResult
+                        Hourly = HourlyResult,
+                        Status = true
                     };
 
                     if (_context.VehicleTypes.Count() == 0)
@@ -78,7 +101,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
 
 
-            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() {Id = vehicleType.Id,  Hourly = vehicleType.Hourly.ToString("F3"), TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2"),  IsActive = vehicleType.IsActive };
+            VehicleTypeDetailsVM model = new VehicleTypeDetailsVM() { Id = vehicleType.Id, Hourly = vehicleType.Hourly.ToString("F3"), TypeName = vehicleType.TypeName, PerMile = vehicleType.PerMile.ToString("F2"), IsActive = vehicleType.IsActive };
 
             return View(model);
         }
@@ -130,12 +153,17 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
             if (vehicleType == null) return NotFound();
 
-            var defaultVehicleType = _context.VehicleTypes.Where(x => x.IsActive == true).FirstOrDefault();
+            var defaultVehicleType = _context.VehicleTypes.Where(x => x.IsActive == true).ToList();
 
             if (defaultVehicleType != null)
             {
-                defaultVehicleType.IsActive = false;
-                _context.VehicleTypes.Update(defaultVehicleType);
+                foreach (var defVehicleType in defaultVehicleType)
+                {
+                    defVehicleType.IsActive = false;
+                    _context.VehicleTypes.Update(defVehicleType);
+                    _context.SaveChanges();
+                }
+
             }
 
 
@@ -153,25 +181,24 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
 
         }
-            [HttpGet]
-            public async Task<IActionResult> DeleteVehicleType(int Id)
-            {
-                if (Id == 0) return NotFound();
+        [HttpGet]
+        public async Task<IActionResult> DeleteVehicleType(int Id)
+        {
+            if (Id == 0) return NotFound();
 
-        
+            VehicleType vehicleType = await _context.VehicleTypes.FindAsync(Id);
 
+            if (vehicleType == null) return NotFound();
 
-                VehicleType vehicleType = await _context.VehicleTypes.FindAsync(Id);
+            vehicleType.Status = false;
+            vehicleType.IsActive = false;
 
-                if (vehicleType == null) return NotFound();
+            _context.VehicleTypes.Update(vehicleType);
+            await _context.SaveChangesAsync();
 
-                _context.VehicleTypes.Remove(vehicleType);
+            return RedirectToAction(nameof(Index));
 
-                await _context.SaveChangesAsync();
+        }
 
-                return RedirectToAction(nameof(Index));
-
-            }
-        
     }
 }

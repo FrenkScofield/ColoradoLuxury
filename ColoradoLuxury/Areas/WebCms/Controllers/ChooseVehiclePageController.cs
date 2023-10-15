@@ -1,4 +1,5 @@
-﻿using ColoradoLuxury.Models.BLL;
+﻿using ColoradoLuxury.Attributes;
+using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 {
     [Area("WebCms")]
     [Route("WebCms/[controller]/[action]")]
-    public class ChooseVehiclePageController : Controller
+    public class ChooseVehiclePageController : AuthController
     {
         private readonly ColoradoContext _context;
         public ChooseVehiclePageController(ColoradoContext context)

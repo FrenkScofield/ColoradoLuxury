@@ -8,6 +8,8 @@
         public string? PickupTime { get; set; }
         public string? PickupLocation { get; set; }
         public string? DropOffLocation { get; set; }
+
+        public string?  EndPickupTime { get; set; }
         public int? TransferTypeId { get; set; }
 
         public int? DurationInHours { get; set; }

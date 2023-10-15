@@ -1,11 +1,12 @@
-﻿using ColoradoLuxury.Models.DAL;
+﻿using ColoradoLuxury.Attributes;
+using ColoradoLuxury.Models.DAL;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ColoradoLuxury.Areas.WebCms.Controllers
 {
     [Area("WebCms")]
     [Route("WebCms/[controller]/[action]")]
-    public class BookingSystemController : Controller
+    public class BookingSystemController : AuthController
     {
         private readonly ColoradoContext _context;
         public BookingSystemController(ColoradoContext context)

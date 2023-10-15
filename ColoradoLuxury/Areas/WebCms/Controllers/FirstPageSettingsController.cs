@@ -1,4 +1,5 @@
-﻿using ColoradoLuxury.Extensions;
+﻿using ColoradoLuxury.Attributes;
+using ColoradoLuxury.Extensions;
 using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
@@ -12,7 +13,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 {
     [Area("WebCms")]
     [Route("WebCms/[controller]/[action]")]
-    public class FirstPageSettingsController : Controller
+    public class FirstPageSettingsController : AuthController
     {
         const decimal validationErrorCode = -1;
         private readonly ColoradoContext _context;

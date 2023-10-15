@@ -53,7 +53,7 @@
                                 <td>$@Model.ToArray()[i].PerMile</td>
                                 <td>@Model.ToArray()[i].Hourly</td>
                                 @*<td><input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" /></td>*@
-                                <td><input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" @(Model.ToArray()[i].IsActive ? "checked='checked'" : "") /></td>
+                                <td><input type="checkbox" id="check@(i)" value="Value1" @(Model.Where(x => x.Status == true).Count() == 1 ? "disabled": "") onclick="selectOnlyThis(this.id)" @((Model.Where(x => x.Status == true).Count() == 1) || (Model.ToArray()[i].IsActive) ? "checked='checked'" : "") /></td>
 
                                 <td>
                                     <div >

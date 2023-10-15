@@ -25,7 +25,7 @@ Vue.component("step-navigation", {
     props: ["steps", "currentstep"]
 });
 
-let mainComponent = Vue.component("step", {
+Vue.component("step", {
     template: "#step-template",
 
     props: ["step", "stepcount", "currentstep"],
@@ -145,6 +145,7 @@ let mainComponent = Vue.component("step", {
                     let calcStatus = false;
                     async function calculateAndLog() {
                         try {
+                            SetDisableChosenHour(hor);
                             calcStatus = await CalculateAmount(hor);
                             console.log(calcStatus);
                             if (calcStatus)
@@ -614,15 +615,19 @@ function CalculateAmount(hourly) {
 function CalculatedAmountResponse(response) {
     if (response.hasOwnProperty('vehicleTypeNotFound')) {
         alert("Something went wrong!");
-        //location.href = "/";
         return false;
     }
 
     if (response.hasOwnProperty('notFoundMileValue')) {
         alert("Mile is not given this context!");
-        //location.href = "/";
         return false;
     }
+
+    if (response.hasOwnProperty('notFoundDurationValue')) {
+        alert("Hourly is already not active!");
+        return false;
+    }
+    
 
 
     let dataTypes = $(".toggle-button-vehicle");
@@ -671,16 +676,13 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
             let dropOffLocation = null;
             let pickupDate = $("#pickupDate").val();
             let time = $("#time").val();
+            console.log(time)
             let pickuplocation = $("#pickuplocation").val();
             console.log(hor)
             if (hor)
                 dropOffLocation = $("#dropOffLocation").val();
             else
                 dropOffLocation = $("#forHourlydropOffLocation").val();
-
-
-            console.log(dropOffLocation)
-
 
             let transferTypeId = $("#transferType").val();
             let durationInHours = $("#durationInHoursSelected").val();
@@ -698,30 +700,52 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 PickupTime: time,
                 PickupLocation: pickuplocation,
                 DropOffLocation: dropOffLocation,
+                EndPickupTime: null,
                 TransferTypeId: transferTypeId,
                 DurationInHours: durationInHours
             }
-            console.log(data);
             AjaxPost("/RideDetails/AddDetails/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
                 console.log(response);
 
+                if (response.choosenBetweenDates) {
+                    alert("The Time slot you selected is already full!");
+                    return;
+                }
+
+                if (response.status.statusCode === 400) {
+                    alert("Please choose the correct option for Pickup time field!");
+                    return;
+                }
+
                 if (response.status.statusCode === 200)
                     IncreaseCurrentStep(step + 1);
-
             });
             break;
 
         case 2:
+            let childNumber = 0;
+            let roofCargoBoxNumber = 0;
+            let childAdditionalMessage = "";
+            let roofCargoBoxAdditionalMessage = "";
             let selectedVehicleTypeElement = $(".btn.btn-outline-secondary.toggle-button-vehicle.toggle-button-selected");
             let selectedVehicleTypeValue = selectedVehicleTypeElement.parent().parent().parent().parent().data("v-identifier-value");
 
             let passengersSelect = $("#passengersSelect").val();
             let suitcases = $("#suitcases").val();
             let allcarTpes = selectedVehicleTypeValue;
-            let childNumber = $("#childNumber").val();
-            let roofCargoBoxNumber = $("#roofCargoBoxNumber").val();
-            let childAdditionalMessage = $("#childAdditionalMessage").val();
-            let roofCargoBoxAdditionalMessage = $("#roofCargoBoxAdditionalMessage").val();
+
+
+
+
+            if ($("#childSeat").hasClass("toggle-button-selected") && $("#childSeat").attr("aria-pressed", true)) {
+                childNumber = $("#childNumber").val();
+                childAdditionalMessage = $("#childAdditionalMessage").val();
+            }
+
+            if ($("#cargoBox").hasClass("toggle-button-selected") && $("#cargoBox").attr("aria-pressed", true)) {
+                roofCargoBoxNumber = $("#roofCargoBoxNumber").val();
+                roofCargoBoxAdditionalMessage = $("#roofCargoBoxAdditionalMessage").val();
+            }
 
             console.log(allcarTpes)
             if (childNumber == '')
@@ -1071,20 +1095,87 @@ function AddCupon(element) {
     AjaxPost("/Home/CalculateTotalAmountForCuponCode/", { cuponKey: cuponKey }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
         console.log(response);
 
+
+        if (response.hasOwnProperty("expiredCupon")) {
+            alert(`You have already used all chance for this cupon code!`);
+            return;
+        }
+        if (response.hasOwnProperty("usedCupon")) {
+            alert(`You have already used this cupon code! Please try next order!`);
+            return;
+        }
+
         if (response.hasOwnProperty("notFound")) {
             alert(`This Cupon code does not exist.Please, ensure that the accuracy of the cupon code!`);
             return;
         }
 
         if (response.status.statusCode === 200) {
-            alert(`You got ${response.discountType} of Total Amount!`);
+            alert(`You got ${response.userCuponVM.discountType} of Total Amount!`);
 
-            $(".distanceAmount span").text(response.calculatedVehicleAmounts.distanceAmount);
-            $(".gratuity span").text(response.calculatedVehicleAmounts.graduity);
-            $(".totalAmount span").text(response.calculatedVehicleAmounts.totalAmount);
+            $(".distanceAmount span").text(response.userCuponVM.vehicleAmounts.distanceAmount);
+            $(".gratuity span").text(response.userCuponVM.vehicleAmounts.graduity);
+            $(".totalAmount span").text(response.userCuponVM.vehicleAmounts.totalAmount);
         }
-        
+
 
     });
-    /*btnAddCupon*/
+}
+
+
+function SetDisableChosenHour(hourly) {
+    if (!hourly) {
+        let durationValue = $("#durationInHoursSelected").val();
+        let format = "HH:mm";
+        let time = $("#time").val();
+        let getTimeOnlyHoursAndMinutes = time.substring(0, 5);
+        let getTimeOnlyHours = time.substring(0, 2);
+        let getTimeOnlyMinutes = time.substring(3, 5);
+
+
+        let DuringWayTime = (+getTimeOnlyHours) + (+durationValue);
+
+        if (DuringWayTime <= 9) {
+            DuringWayTime = `0${DuringWayTime}`;
+        }
+
+        let destionationTime = `${DuringWayTime}:${getTimeOnlyMinutes}`;
+
+        let hourOptions = $(".timepicker_hour option");
+
+        //console.log(Range(+getTimeOnlyHours, +DuringWayTime));
+
+        ////for (var i = 0; i < hourOptions.length; i++) {
+        ////    if (hourOptions[i].attributes[0].value == ) {
+
+        ////    }
+        ////}
+
+        //console.log(hourOptions);
+
+        //console.log(time);
+        //console.log(destionationTime);
+
+
+
+        //console.log(getTimeOnlyHoursAndMinutes);
+
+        //console.log(getTimeOnlyHours);
+
+        //console.log(DuringWayTime);
+        ////let time = $("#time").val().toLocaleString(format);
+
+
+        //console.log(time);
+
+    }
+}
+
+function Range(start, end) {
+    let betweenTimes = [];
+    for (var i = start; i <= end; i++) {
+        betweenTimes.push(i)
+    }
+
+    return betweenTimes;
 }

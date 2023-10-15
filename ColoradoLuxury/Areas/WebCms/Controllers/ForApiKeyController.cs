@@ -1,4 +1,5 @@
-﻿using ColoradoLuxury.Extensions;
+﻿using ColoradoLuxury.Attributes;
+using ColoradoLuxury.Extensions;
 using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 {
     [Area("WebCms")]
     [Route("WebCms/[controller]/[action]")]
-    public class ForApiKeyController : Controller
+    public class ForApiKeyController : AuthController
     {
         private readonly ColoradoContext _context;
         public ForApiKeyController(ColoradoContext context)

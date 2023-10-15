@@ -1,23 +1,12 @@
-using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Stripe;
 using ColoradoLuxury.Models.VM;
-using System.Configuration;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ColoradoLuxury.Services;
-using Stripe.BillingPortal;
-using System;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using ColoradoLuxury.Middleware;
-using ColoradoLuxury.Interface;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using ColoradoLuxury.Middleware.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -57,7 +46,13 @@ builder.Services.AddScoped<IViewRenderService, ViewRenderToString>();
 //                            .UseContentRoot(Directory.GetCurrentDirectory())
 //                            .UseIISIntegration();
 
-
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -93,13 +88,15 @@ using (var scope = app.Services.CreateScope())
 
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseStaticFiles();
 
+app.UseAuthentication();
 app.UseSession();
 app.UseRouting();
 
+app.UseAuthorization();
 
+app.CreateUniqueKey();
 
 app.UseEndpoints(endpoints =>
 {

@@ -20,6 +20,13 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<DefineMinimumAmountAndDistanceSize> DefineMinimumAmountAndDistanceSizes { get; set; }
         public DbSet<ApiSettingsDetail> ApiSettingsDetails { get; set; }
         public DbSet<ApplicationUsers> ApplicationUsers { get; set; }
+        public DbSet<ResultMessage> ResultMessages { get; set; }
+        public DbSet<PaymentDetails> PaymentDetails { get; set; }
+        public DbSet<SessionLogAdminUser> SessionLogAdminUsers { get; set; }
+        public DbSet<UserUsedCupon> UserUsedCupons { get; set; }
+
+
+
 
 
 
@@ -34,7 +41,13 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<Cupon> Cupons { get; set; }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Cupon>().Property(e => e.Status)
+        .HasComputedColumnSql("CASE WHEN CouponDeatline > GETDATE() THEN 1 ELSE 0 END");
+        }
+
+
 
 
     }

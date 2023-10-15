@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Caching.Memory;
+using Org.BouncyCastle.Asn1.X509;
+using System.Globalization;
 
 namespace ColoradoLuxury.Controllers
 {
@@ -27,10 +29,59 @@ namespace ColoradoLuxury.Controllers
         [HttpPost]
         public IActionResult AddDetails([FromBody] RideDetailsVM model)
         {
-            HttpContext.SetObjectsession("firstridedetails", model);
+            
+           
 
-            //_cache.Set<RideDetailsVM>("firstridedetailscache", model);
-            var t = HttpContext.Session.Keys;
+            if (!model.WayType)
+            {
+                bool isValid = TimeRangeGenerator.Isvalid(model.PickupTime);
+                if (!isValid)
+                {
+                    return Json(new { status = BadRequest() });
+                }
+
+                bool isValidExpireTime = TimeRangeGenerator.IsvalidExpireDate(model.PickupDate, model.PickupTime);
+                if (isValidExpireTime)
+                {
+                    return Json(new { status = BadRequest() });
+                }
+                DateTime endDate = DateTime.MinValue;
+
+                var rideDetailsStartAndEndTimes = _context.RideDetails.Where(x => x.EndPickupTime != null && x.PickupDate > DateTime.Now).Select(x => new RidePickupTimeDetails
+                {
+                    PickupDate = x.PickupDate,
+                    StartDate = x.PickupTime,
+                    EndDate = x.EndPickupTime
+                });
+
+                var a = rideDetailsStartAndEndTimes.ToList();
+
+                if (rideDetailsStartAndEndTimes != null)
+                {
+                    bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, rideDetailsStartAndEndTimes);
+
+                    if (checkDisabledForPickupTime)
+                    {
+                        return Json(new { choosenBetweenDates = true });
+                    }
+                }
+
+
+
+                if (model.DurationInHours != null)
+                {
+                    endDate = TimeRangeGenerator.GetEndDateTime(model.PickupTime, model.DurationInHours);
+
+                    if (endDate.Equals(DateTime.MinValue))
+                    {
+                        return Json(new { status = BadRequest() });
+                    }
+                    model.EndPickupTime = endDate.TimeOfDay.Hours < 12 ? $"{endDate.ToString("HH:mm")} AM" : $"{endDate.ToString("HH:mm")} PM";
+                }
+            }
+            
+
+            HttpContext.SetObjectsession("firstridedetails", model);
 
             return Json(new { status = Ok() });
 
@@ -40,9 +91,7 @@ namespace ColoradoLuxury.Controllers
         public IActionResult AddVehiclesInfo([FromBody] ChooseVehicleVM model)
         {
             HttpContext.SetObjectsession("vehicleDetails", model);
-            var keys = HttpContext.Session.Keys;
             var rideDetails = HttpContext.GetObjectsession<RideDetailsVM>("firstridedetails");
-            //var rideDetails = _cache.Get<RideDetailsVM>("firstridedetailscache");
             string text = "Denver International Airport (DEN), Peña Boulevard, Denver, CO, USA";
             bool airlineAutoCheck = false;
             if (rideDetails != null)
@@ -106,7 +155,7 @@ namespace ColoradoLuxury.Controllers
                 vehicleDetails,
                 contactDetails,
                 getTextForIdVM,
-                status = Ok() 
+                status = Ok()
             });
 
         }
@@ -122,8 +171,6 @@ namespace ColoradoLuxury.Controllers
                 if (HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result").IsActive == true)
                 {
 
-                    //HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result").IsActive = false;
-                    //await HttpContext.Session.LoadAsync();
                     var previusAmountResultSession = HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
                     HttpContext.Session.Remove($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
 
