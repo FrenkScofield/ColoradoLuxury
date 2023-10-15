@@ -597,15 +597,19 @@ function CalculateAmount(hourly) {
 function CalculatedAmountResponse(response) {
     if (response.hasOwnProperty('vehicleTypeNotFound')) {
         alert("Something went wrong!");
-        //location.href = "/";
         return false;
     }
 
     if (response.hasOwnProperty('notFoundMileValue')) {
         alert("Mile is not given this context!");
-        //location.href = "/";
         return false;
     }
+
+    if (response.hasOwnProperty('notFoundDurationValue')) {
+        alert("Hourly is already not active!");
+        return false;
+    }
+    
 
 
     let dataTypes = $(".toggle-button-vehicle");
@@ -701,16 +705,29 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
             break;
 
         case 2:
+            let childNumber = 0;
+            let roofCargoBoxNumber = 0;
+            let childAdditionalMessage = "";
+            let roofCargoBoxAdditionalMessage = "";
             let selectedVehicleTypeElement = $(".btn.btn-outline-secondary.toggle-button-vehicle.toggle-button-selected");
             let selectedVehicleTypeValue = selectedVehicleTypeElement.parent().parent().parent().parent().data("v-identifier-value");
 
             let passengersSelect = $("#passengersSelect").val();
             let suitcases = $("#suitcases").val();
             let allcarTpes = selectedVehicleTypeValue;
-            let childNumber = $("#childNumber").val();
-            let roofCargoBoxNumber = $("#roofCargoBoxNumber").val();
-            let childAdditionalMessage = $("#childAdditionalMessage").val();
-            let roofCargoBoxAdditionalMessage = $("#roofCargoBoxAdditionalMessage").val();
+
+
+
+
+            if ($("#childSeat").hasClass("toggle-button-selected") && $("#childSeat").attr("aria-pressed", true)) {
+                childNumber = $("#childNumber").val();
+                childAdditionalMessage = $("#childAdditionalMessage").val();
+            }
+
+            if ($("#cargoBox").hasClass("toggle-button-selected") && $("#cargoBox").attr("aria-pressed", true)) {
+                roofCargoBoxNumber = $("#roofCargoBoxNumber").val();
+                roofCargoBoxAdditionalMessage = $("#roofCargoBoxAdditionalMessage").val();
+            }
 
             console.log(allcarTpes)
             if (childNumber == '')
@@ -914,7 +931,7 @@ function AddCupon(element) {
 
     AjaxPost("/Home/CalculateTotalAmountForCuponCode/", { cuponKey: cuponKey }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
         console.log(response);
-        
+
 
         if (response.hasOwnProperty("expiredCupon")) {
             alert(`You have already used all chance for this cupon code!`);
@@ -931,11 +948,11 @@ function AddCupon(element) {
         }
 
         if (response.status.statusCode === 200) {
-            alert(`You got ${response.discountType} of Total Amount!`);
+            alert(`You got ${response.userCuponVM.discountType} of Total Amount!`);
 
-            $(".distanceAmount span").text(response.calculatedVehicleAmounts.distanceAmount);
-            $(".gratuity span").text(response.calculatedVehicleAmounts.graduity);
-            $(".totalAmount span").text(response.calculatedVehicleAmounts.totalAmount);
+            $(".distanceAmount span").text(response.userCuponVM.vehicleAmounts.distanceAmount);
+            $(".gratuity span").text(response.userCuponVM.vehicleAmounts.graduity);
+            $(".totalAmount span").text(response.userCuponVM.vehicleAmounts.totalAmount);
         }
 
 

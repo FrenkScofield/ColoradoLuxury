@@ -4,6 +4,7 @@ using ColoradoLuxury.Models.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    partial class ColoradoContextModelSnapshot : ModelSnapshot
+    [Migration("20231015140716_contraint")]
+    partial class contraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,9 +253,9 @@ namespace ColoradoLuxury.Migrations
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
+                    b.Property<bool>("Status")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("int")
+                        .HasColumnType("bit")
                         .HasComputedColumnSql("CASE WHEN CouponDeatline > GETDATE() THEN 1 ELSE 0 END");
 
                     b.Property<byte?>("UseCount")

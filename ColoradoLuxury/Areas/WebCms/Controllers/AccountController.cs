@@ -20,7 +20,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             this.configuration = configuration;
             this._context = context;
         }
-        [Route("/admin")]
+        [Route("/webCms/admin")]
         public IActionResult Login()
         {
             AdminDetailsVM admin = new AdminDetailsVM();
@@ -28,7 +28,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         }
 
         [HttpPost]
-        [Route("/admin")]
+        [Route("/webCms/admin")]
         public IActionResult Login(AdminDetailsVM admin)
         {
 

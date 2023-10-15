@@ -8,7 +8,10 @@
         public decimal Amount { get; set; }
 
         public DateTime? CouponDeatline { get; set; }
-        public bool Status { get; set; }
+
+        public byte? UsableCount { get; set; }
+
+        public int Status { get; set; }
 
     }
 }

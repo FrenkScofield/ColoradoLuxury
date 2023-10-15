@@ -13,32 +13,55 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         private readonly ColoradoContext _context;
         public RandomCouponController(ColoradoContext context)
         {
-            _context= context;
+            _context = context;
         }
         public IActionResult Coupon()
         {
             var cupon = _context.Cupons.Select(c => new CuponVM
             {
-                Id= c.Id,
+                Id = c.Id,
                 NewCupon = c.NewCupon,
-                Percentage= c.Percentage,
-                Amount= c.Amount,
+                Percentage = c.Percentage,
+                Amount = c.Amount,
 
-                Status= c.Status,
+                Status = c.Status,
                 CouponDeatline = c.CouponDeatline
 
             }).ToList();
+
+
+
+
             return View(cupon);
         }
 
         [HttpPost]
-        public IActionResult AddCoupon([FromBody]CuponVM model)
+        public IActionResult AddCoupon([FromBody] CuponVM model)
         {
             if (model == null)
             {
                 return Json(new
                 {
-                    modelIsEmpty= true,
+                    modelIsEmpty = true,
+
+                });
+            }
+
+            if (model.CouponDeatline < DateTime.Now)
+            {
+                return Json(new
+                {
+                    unexpectedCuponDeathline = true,
+
+                });
+            }
+
+
+            if (model.UsableCount <= 0)
+            {
+                return Json(new
+                {
+                    unexpectedUsableCount = true,
 
                 });
             }
@@ -61,11 +84,16 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 });
             }
 
+
+
             Cupon cupon = new Cupon()
             {
                 Amount = model.Amount,
                 Percentage = model.Percentage,
                 NewCupon = model.NewCupon.ToUpper(),
+                UsedCount = model.UsableCount,
+                UseCount = model.UsableCount,
+
 
                 Status = model.Status,
                 CouponDeatline = model.CouponDeatline
@@ -91,6 +119,11 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
             var cupon = await _context.Cupons.FindAsync(Id);
 
+            var usedCuponsUser = _context.UserUsedCupons.Where(x => x.CuponKey == cupon.NewCupon).Select(x => new UserUsedCupon
+            {
+                CuponKey = x.CuponKey
+            });
+            cupon.UsedCount = (byte?)(cupon.UseCount - usedCuponsUser.Count());
             if (cupon == null)
             {
                 return NotFound();

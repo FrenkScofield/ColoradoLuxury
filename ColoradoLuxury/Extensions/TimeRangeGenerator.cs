@@ -45,7 +45,7 @@ namespace ColoradoLuxury.Extensions
                 DateTime endTimeParseDateTime = DateTime.Parse(ridePickupTime.EndDate);
                 DateTime endTimeFromDb = ridePickupTime.PickupDate.Date + endTimeParseDateTime.TimeOfDay;
 
-                if (DateTime.Now.Date == ChosenPickupDate.Date && startTimeFromDb.TimeOfDay <= ChosenPickupDate.TimeOfDay && ChosenPickupDate.TimeOfDay <= endTimeFromDb.TimeOfDay)
+                if (ridePickupTime.PickupDate.Date == ChosenPickupDate.Date && startTimeFromDb.TimeOfDay <= ChosenPickupDate.TimeOfDay && ChosenPickupDate.TimeOfDay <= endTimeFromDb.TimeOfDay)
                 {
                     return true;
                 }
@@ -64,6 +64,17 @@ namespace ColoradoLuxury.Extensions
 
             return false;
 
+        }
+
+        public static bool IsvalidExpireDate(DateTime startDate, string startTime)
+        {
+            DateTime start = DateTime.Parse(startTime);
+            DateTime ChosenPickupDate = startDate.Date + start.TimeOfDay;
+
+            if (ChosenPickupDate < DateTime.Now)
+                return true;
+
+            return false;
         }
     }
 }

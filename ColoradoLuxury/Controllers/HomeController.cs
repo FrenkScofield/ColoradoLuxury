@@ -84,7 +84,7 @@ namespace ColoradoLuxury.Controllers
         public JsonResult CalculatedAmount(bool hourly, short durationValue)
         {
             GetVehiclesAmountDetailsVM? getVehiclesAmountDetails = null;
-            List<VehicleType>? vehicleTypes = _context.VehicleTypes.Select(x => new VehicleType
+            List<VehicleType>? vehicleTypes = _context.VehicleTypes.Where(x => x.Status).Select(x => new VehicleType
             {
                 TypeName = x.TypeName,
                 PerMile = x.PerMile,
@@ -100,6 +100,14 @@ namespace ColoradoLuxury.Controllers
                 HighInterest = x.HighInterest
             }).FirstOrDefault();
 
+            var bookingSystem = _context.DefineMinimumAmountAndDistanceSizes.Select(x => new DefineMinimumAmountAndDistanceSize
+            {
+                MinimumMile = x.MinimumMile,
+                MinimumDuration = x.MinimumDuration,
+                MinimumBookingvalueForDistance = x.MinimumBookingvalueForDistance,
+                MinimumBookingvalueForHourly = x.MinimumBookingvalueForHourly
+            }).FirstOrDefault();
+
             if (hourly && durationValue == 0)
             {
                 if (vehicleTypes.Count == 0)
@@ -112,12 +120,18 @@ namespace ColoradoLuxury.Controllers
                 var minutes = SessionExtension.GetSessionInt32(_httpContextAccessor.HttpContext, "minutes");
 
                 if (mile != null)
-                    getVehiclesAmountDetails = CalculateForDistanceOrHourly((decimal)gradiuty.lowInterest / 100, hourly, mile, 80, vehicleTypes, 30.5);
+                    getVehiclesAmountDetails = CalculateForDistanceOrHourly((decimal)gradiuty.lowInterest / 100, hourly, mile, bookingSystem.MinimumBookingvalueForDistance, vehicleTypes, bookingSystem.MinimumMile);
                 else
                     return Json(new { NotFoundMileValue = true });
             }
             else
-                getVehiclesAmountDetails = CalculateForDistanceOrHourly((decimal)gradiuty.lowInterest / 100, hourly, durationValue, 100, vehicleTypes, 4);
+            {
+                if (bookingSystem.MinimumBookingvalueForHourly == 0 && bookingSystem.MinimumDuration == null)
+                {
+                    return Json(new { NotFoundDurationValue = true });
+                }
+                getVehiclesAmountDetails = CalculateForDistanceOrHourly((decimal)gradiuty.lowInterest / 100, hourly, durationValue, bookingSystem.MinimumBookingvalueForHourly, vehicleTypes, bookingSystem.MinimumDuration);
+            }
 
 
             return Json(new
@@ -161,7 +175,7 @@ namespace ColoradoLuxury.Controllers
 
             foreach (var getVehiclesPermileValue in getVehiclesPermileOrHourValues)
             {
-                string? distanceAmount = (minimumTravelValueType * decimal.Parse(getVehiclesPermileValue.DistanceAmount)).ToString("F2");
+                string? distanceAmount = (decimal.Parse(minimumTravelValueType) * decimal.Parse(getVehiclesPermileValue.DistanceAmount)).ToString("F2");
                 if (Convert.ToDecimal(distanceAmount) <= distanceTypeValue)
                     distanceAmount = GeneralExtension<decimal>.ToString(distanceTypeValue);
 
@@ -369,7 +383,7 @@ namespace ColoradoLuxury.Controllers
 
 
 
-            var getUserUsedCupons = _context.UserUsedCupons.Where(x => x.Email == contactDetails.Email)
+            var getUserUsedCupons = _context.UserUsedCupons.Where(x => x.Email == contactDetails.Email && x.CuponKey == cuponkey)
                                                           .Select(x => new UserUsedCupon { CuponKey = x.CuponKey, Email = x.Email, UniqueKey = x.UniqueKey }).ToList();
 
             string activeUniquekey = HttpContext.GetSessionString("activeUniqueKey");
@@ -447,11 +461,12 @@ namespace ColoradoLuxury.Controllers
                 VehicleAmounts = calculatedVehicleAmounts
             };
 
-            UserUsedCupon userUsedCupon = new UserUsedCupon {
+            UserUsedCupon userUsedCupon = new UserUsedCupon
+            {
                 CuponKey = cuponDetails.NewCupon,
                 Email = contactDetails.Email,
                 IsUsed = true,
-                UniqueKey = uniqueKey                
+                UniqueKey = uniqueKey
             };
             _context.UserUsedCupons.Add(userUsedCupon);
             _context.SaveChanges();

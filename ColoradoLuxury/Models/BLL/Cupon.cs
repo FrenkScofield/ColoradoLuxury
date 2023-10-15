@@ -1,31 +1,31 @@
 ﻿namespace ColoradoLuxury.Models.BLL
 {
-    
 
-        public class Cupon : AbstractEntity
-        {
-            public string? NewCupon { get; set; }
-            public decimal Percentage { get; set; }
-            public decimal Amount { get; set; }
 
-            public string? CuponCode { get; set; }
+    public class Cupon : AbstractEntity
+    {
+        public string? NewCupon { get; set; }
+        public decimal Percentage { get; set; }
+        public decimal Amount { get; set; }
 
-            public DateTime? CouponDeatline { get; set; }
+        public string? CuponCode { get; set; }
+
+        public DateTime? CouponDeatline { get; set; }
 
         public byte? UseCount { get; set; }
         public byte? UsedCount { get; set; }
 
 
 
-        private bool status;
+        private int status;
 
-            public bool Status
-            {
-                get { return status; }
-                set { status = true; }
-            }
-
-
+        public int Status
+        {
+            get { return status; }
+            set { status = 1; }
         }
-    
+
+
+    }
+
 }

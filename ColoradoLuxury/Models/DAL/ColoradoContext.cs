@@ -41,7 +41,13 @@ namespace ColoradoLuxury.Models.DAL
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<Cupon> Cupons { get; set; }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Cupon>().Property(e => e.Status)
+        .HasComputedColumnSql("CASE WHEN CouponDeatline > GETDATE() THEN 1 ELSE 0 END");
+        }
+
+
 
 
     }
