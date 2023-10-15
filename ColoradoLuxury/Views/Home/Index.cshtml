@@ -1,4 +1,4 @@
-﻿@using ColoradoLuxury.Models.VM;
+@using ColoradoLuxury.Models.VM;
 @model HomeInfoDetailsVM
 @{
     ViewData["Title"] = "Home Page";
@@ -435,9 +435,11 @@
                                                 <div class="humanSuitcase">
                                                     <img src="https://img.icons8.com/ios/50/ADADAD/conference-call--v1.png" /><span>0</span>
                                                     <img src="https://img.icons8.com/50/ADADAD/pastel-glyph/64/null/suitcase--v4.png"
+
                                                      style="padding-bottom: 8px;" /><span class="suitcases-count">1</span>
                                                     <button type="button"
                                                         class="btn btn-outline-secondary toggle-button-vehicle @(Model.VehicleTypes[i].IsActive ? "toggle-button-selected" : "")" @(Model.VehicleTypes[i].IsActive ? "aria-pressed=true" : "") onclick="SelectedVehicleType(this)" data-type="@(Model.VehicleTypes[i].TypeName.Replace(" ", "").ToLower())" data-type-total="@(Model.VehicleTypes[i].TypeName.Replace(" ", "").ToLower())-result">
+
                                                         Select
                                                     </button>
                                                 </div>
@@ -649,14 +651,15 @@
                                                             </div>
                                                             <div class="col-lg-4">
                                                                 <div class="form-control billBackgroundColor">
-                                                                    <label for="">COUNTRY*</label>
-                                                                    <select name="" id="country" class="form-control ">
+                                                                    <label for="">DISTRICT*</label>
+                                                                  @*  <select name="" id="country" class="form-control ">
                                                                         <option value="">Select</option>
                                                                         @foreach (var country in Model.Countries)
                                                                         {
                                                                             <option value="@country.Id">@country.Name</option>
                                                                         }
-                                                                    </select>
+                                                                    </select>*@
+                                                                    <input type="text" id="district" class="form-control ">
 
                                                                     <span class="error" id="countryError">Cannot be left blank </span>
                                                                     <span class="good" id="countryGood">Good look </span>
@@ -722,59 +725,54 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <h4>Contact & Billing Info</h4>
-                                        <div class="invoiceContent">FIRST NAME <span class="firstname">Kamran</span></div>
-                                        <div class="invoiceContent">LAST NAME <span class="lastname">Alibayli</span></div>
-                                        <div class="invoiceContent">EMAIL <span class="email">Alibayli</span></div>
-                                        <div class="invoiceContent">PHONE NUMBER <span class="phoneNumber">Alibayli</span></div>
+                                        <div class="invoiceContent"id="SummaryFirstName">FIRST NAME <span class="firstname"></span></div>
+                                        <div class="invoiceContent" id="SummaryLastName">LAST NAME <span class="lastname"></span></div>
+                                        <div class="invoiceContent" id="SummaryEmail">EMAIL <span class="email"></span></div>
+                                        <div class="invoiceContent" id="SummaryPhoneNum">PHONE NUMBER <span class="phoneNumber"></span></div>
                                         <hr>
-                                        <div class="invoiceContent">COMPANY NAME <span class="companyName">Alibayli</span></div>
-                                        <div class="invoiceContent">TAX NUMBER <span class="taxNumber">Alibayli</span></div>
+                          <div class="invoiceContent" id="SummaryCompaniyName" >COMPANY NAME <span class="companyName"></span></div>
+                          <div class="invoiceContent" id="SummaryTaxNumber">TAX NUMBER <span class="taxNumber"></span></div>
                                         <hr>
-                                        <div class="invoiceContent">BILLING ADDRESS <span class="">Alibayli</span></div>
-                                        <hr>
-                                        <h4>Payment Method</h4>
-                                        <div class="invoiceContent">YOUR CHOICE <span class="paymentMethod">Stripe </span></div>
-                                        <hr>
+                                        <div class="invoiceContent" id="SummaryBillingAddress">BILLING ADDRESS <span class="fullBillingAddress"></span> </div>
+                                        
+                                        @*<h4>Payment Method</h4>
+                                        <div class="invoiceContent">YOUR CHOICE <span class="paymentMethod"> </span></div
+                                        <hr>>*@
                                         <h4>Arrival Airline info</h4>
-                                        <div class="invoiceContent">AIRLINE <span class="airLineType">Aeromexico</span></div>
-                                        <div class="invoiceContent">FLIGHT NUMBER <span class="flightNumber">89898</span></div>
+                                        <div class="invoiceContent" id="SummaryAirLine">AIRLINE <span class="airLineType"></span></div>
+                                        <div class="invoiceContent" id="SummaryFlightNumber">FLIGHT NUMBER <span class="flightNumber"></span></div>
                                         <hr>
-                                        <div class="invoiceContent">COMMENTS <span class="additionalContactDetailsNote">fgxhfghfghfghfgh </span></div>
+                                        <div class="invoiceContent" id="additionalMessage">COMMENTS <span class="additionalContactDetailsNote"> </span></div>
                                     </div>
                                     <div class="col-lg-4">
                                         <h4>Ride details</h4>
-                                        <div class="invoiceContent">SERVICE TYPE <span class="service-type">Hourly</span></div>
+                                        <div class="invoiceContent" id="SummaryServiceType">SERVICE TYPE <span class="service-type"></span></div>
                                         <hr>
-                                        <div class="invoiceContent">
-                                            PICKUP LOCATION <span class="pickupLocation">
-                                                Breckenridge, CO,
-                                                USA
-                                            </span>
+                                        <div class="invoiceContent" id="SummaryPickupLocation">
+                                            PICKUP LOCATION <span class="pickupLocation"> </span>
                                         </div>
                                         <hr>
-                                        <div class="invoiceContent">
-                                            DROP OFF LOCATION <span class="dropOffLocation">
-                                                Arrowhead, CO,
-                                                USA
-                                            </span>
+                                        <div class="invoiceContent" id="dropOfLocation">
+                                            DROP OFF LOCATION <span class="dropOffLocation"> </span>
                                         </div>
                                         <hr>
-                                        <div class="invoiceContent">
-                                            PICKUP DATE, TIME <span class="pickupDateAndTime">
-                                                25-03-2023, 1:30
-                                                am
-                                            </span>
+                                        <div class="invoiceContent" id="SummaryPickupDateAndTime">
+                                            PICKUP DATE, TIME <span class="pickupDateAndTime"> </span>
                                         </div>
                                         <hr>
-                                        <div class="invoiceContent">TOTAL DISTANCE <span class="total-distance">0 </span></div>
-                                        <div class="invoiceContent">TOTAL TIME <span class="total-time">2 h 0 m</span></div>
+                                        <div class="invoiceContent" id="SummaryTotalDistance">TOTAL DISTANCE <span class="total-distance"> </span></div>
+                                        <div class="invoiceContent" id="SummaryDistanceTime">TOTAL TIME <span class="total-time"></span></div>
                                     </div>
                                     <div class="col-lg-4">
                                         <h4>Vehicle info</h4>
-                                        <div class="invoiceContent">VEHICLE <span class="vehicle-type">Luxury Sedan</span></div>
+                                        <div class="invoiceContent" id="SummaryVehicleType">VEHICLE <span class="vehicle-type"></span></div>
                                         <hr>
-                                        <div class="invoiceContent">
-                                            EXTRA OPTIONS <span class="childSeatCount"></span> <span class="childSeat"> x Child Seat - $0.00 </span>
+
+                                        <div class="invoiceContent" id="SummaryChildNumber">
+                                            EXTRA OPTIONS <span class="childSeat">
+                                                <span class="childSeatCount"></span>
+                                            </span>
+
                                         </div>
                                         <hr>
                                         <h4 id="bettingTitleH4">For Driver Betting</h4>
