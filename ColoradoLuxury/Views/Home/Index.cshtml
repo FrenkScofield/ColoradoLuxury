@@ -778,12 +778,17 @@
                                         <h4 id="bettingTitleH4">For Driver Betting</h4>
                                         <div class="mainBetDriver" id="betting">
                                             <div id="bettButtons">
-                                                <input type="button" id="btn1" :class="[{'active1': selected === 'f'},'bettingMonyBtn']" @@click="selected = 'f'"
-                                                       value="15" />
-                                                <input type="button" id="btn2" :class="[{'active1': selected === 'a'},'bettingMonyBtn']" @@click="selected = 'a'"
-                                                       value="20" />
+                                                
+                                                    <input type="button" id="btn1" :class="[{'active1': selected === 'f'},'bettingMonyBtn']" @@click="selected = 'f'"
+                                                           value="@Model.ValueOfTipButtons.lowInterest" />
+
+                                                           <input type="button" id="btn2" :class="[{'active1': selected === 'a'},'bettingMonyBtn']" @@click="selected = 'a'"
+                                                       value="@Model.ValueOfTipButtons.MiddleInterest" />
                                                 <input type="button" id="btn3" :class="[{'active1': selected === 'b'},'bettingMonyBtn']" @@click="selected = 'b'"
-                                                       value="25" />
+                                                       value="@Model.ValueOfTipButtons.HighInterest" />
+                                                
+                                               
+                                                
                                                 @*   <input type="button" id="btn30" :class="[{'active1': selected === 'c'},'bettingMonyBtn']" @@click="selected = 'c'"
                                                 value="30" />
                                                 <input type="button" id="btn40" :class="[{'active1': selected === 'd'},'bettingMonyBtn']" @@click="selected = 'd'"

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    [Migration("20231015141526_aa")]
-    partial class aa
+    [Migration("20231015194312_V11")]
+    partial class V11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -69,6 +69,7 @@ namespace ColoradoLuxury.Controllers
                 TransferTypes = _context.TransferTypes.ToList(),
                 Countries = _context.Countries.ToList(),
                 AirLines = _context.AirLines.ToList(),
+                ValueOfTipButtons = _context.ValueOfTipButtons.OrderByDescending(x => x.Id).FirstOrDefault(),
                 TimesRange = choosenTimeRange
             };
 
@@ -118,7 +119,7 @@ namespace ColoradoLuxury.Controllers
                 var hours = SessionExtension.GetSessionInt32(_httpContextAccessor.HttpContext, "hours");
 
                 var minutes = SessionExtension.GetSessionInt32(_httpContextAccessor.HttpContext, "minutes");
-
+           
                 if (mile != null)
                     getVehiclesAmountDetails = CalculateForDistanceOrHourly((decimal)gradiuty.lowInterest / 100, hourly, mile, bookingSystem.MinimumBookingvalueForDistance, vehicleTypes, bookingSystem.MinimumMile);
                 else
@@ -175,7 +176,8 @@ namespace ColoradoLuxury.Controllers
 
             foreach (var getVehiclesPermileValue in getVehiclesPermileOrHourValues)
             {
-                string? distanceAmount = (decimal.Parse(minimumTravelValueType) * decimal.Parse(getVehiclesPermileValue.DistanceAmount)).ToString("F2");
+                string disTypeV = minimumTravelValueType;
+                string? distanceAmount = (decimal.Parse(disTypeV) * decimal.Parse(getVehiclesPermileValue.DistanceAmount)).ToString("F2");
                 if (Convert.ToDecimal(distanceAmount) <= distanceTypeValue)
                     distanceAmount = GeneralExtension<decimal>.ToString(distanceTypeValue);
 

@@ -18,7 +18,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         }
         public IActionResult Index()
         {
-            return View(_context.Vehicles.Include(x => x.VehicleType).ToList());
+            return View(_context.Vehicles.Include(x => x.VehicleType).OrderByDescending(x => x.Id).ToList());
         }
 
         public IActionResult AddVehicle()
@@ -60,7 +60,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             _context.Vehicles.Add(vehicle);
             _context.SaveChanges();
 
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult EditVehicle(int id)

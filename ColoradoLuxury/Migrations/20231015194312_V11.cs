@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ColoradoLuxury.Migrations
 {
-    public partial class initialV9 : Migration
+    public partial class V11 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -86,7 +86,9 @@ namespace ColoradoLuxury.Migrations
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CuponCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CouponDeatline = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    UseCount = table.Column<byte>(type: "tinyint", nullable: true),
+                    UsedCount = table.Column<byte>(type: "tinyint", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false, computedColumnSql: "CASE WHEN CouponDeatline > GETDATE() THEN 1 ELSE 0 END"),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -180,6 +182,23 @@ namespace ColoradoLuxury.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ResultMessages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SuccessMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FailMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResultMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoofTopCargoBoxs",
                 columns: table => new
                 {
@@ -197,6 +216,24 @@ namespace ColoradoLuxury.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SessionLogAdminUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LoggedIn = table.Column<bool>(type: "bit", nullable: false),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SessionLogAdminUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TransferTypes",
                 columns: table => new
                 {
@@ -211,6 +248,25 @@ namespace ColoradoLuxury.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TransferTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserUsedCupons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CuponKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UniqueKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserUsedCupons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,6 +339,7 @@ namespace ColoradoLuxury.Migrations
                     Company = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Tax = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StreetNUmber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Postal = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -312,6 +369,7 @@ namespace ColoradoLuxury.Migrations
                     PickupTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PickupLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DropOffLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EndPickupTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerTravelTypeId = table.Column<int>(type: "int", nullable: false),
                     TransferTypeId = table.Column<int>(type: "int", nullable: true),
                     DurationId = table.Column<int>(type: "int", nullable: true),
@@ -445,6 +503,34 @@ namespace ColoradoLuxury.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PaymentDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DistanceAmount = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GradiutyAmount = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalAmount = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UsedCupon = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DiscountCuponAmount = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserInfoId = table.Column<int>(type: "int", nullable: false),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClientIpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentDetails_UserInfos_UserInfoId",
+                        column: x => x.UserInfoId,
+                        principalTable: "UserInfos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ArrivalAirlineInfos_AirlineId",
                 table: "ArrivalAirlineInfos",
@@ -454,6 +540,11 @@ namespace ColoradoLuxury.Migrations
                 name: "IX_BillingAddress_CountryId",
                 table: "BillingAddress",
                 column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentDetails_UserInfoId",
+                table: "PaymentDetails",
+                column: "UserInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RideDetails_CustomerTravelTypeId",
@@ -524,16 +615,28 @@ namespace ColoradoLuxury.Migrations
                 name: "ExceptionLogs");
 
             migrationBuilder.DropTable(
+                name: "PaymentDetails");
+
+            migrationBuilder.DropTable(
+                name: "ResultMessages");
+
+            migrationBuilder.DropTable(
                 name: "RoofTopCargoBoxs");
 
             migrationBuilder.DropTable(
-                name: "UserInfos");
+                name: "SessionLogAdminUsers");
+
+            migrationBuilder.DropTable(
+                name: "UserUsedCupons");
 
             migrationBuilder.DropTable(
                 name: "ValueOfTipButtons");
 
             migrationBuilder.DropTable(
                 name: "Vehicles");
+
+            migrationBuilder.DropTable(
+                name: "UserInfos");
 
             migrationBuilder.DropTable(
                 name: "ArrivalAirlineInfos");
