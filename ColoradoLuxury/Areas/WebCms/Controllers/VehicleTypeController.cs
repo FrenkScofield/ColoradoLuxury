@@ -19,7 +19,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var vehicleType = await _context.VehicleTypes.Where(x => x.Status == true).ToListAsync();
+            var vehicleType = await _context.VehicleTypes.ToListAsync();
             if (vehicleType.Count == 1 && !vehicleType[0].IsActive)
             {
                 var defaultVehicleType = await _context.VehicleTypes.ToListAsync();

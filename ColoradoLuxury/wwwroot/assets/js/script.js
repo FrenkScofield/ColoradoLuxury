@@ -203,7 +203,7 @@ Vue.component("step", {
                 airlineInfo = document.getElementById('airlineInfo')
                 debugger
 
-                if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '' || airlineInfo.checked == true || bill.checked == true ) {
+                if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '' || airlineInfo.checked == true || bill.checked == true) {
 
                     //FirstName
                     if ($('#firstName').val() != '') {
@@ -257,7 +257,7 @@ Vue.component("step", {
                         $('#phoneNumberGood').css("display", "none")
                         $('#phoneNumberError').css("display", "block")
                         return
-                          
+
                     }
 
 
@@ -330,8 +330,8 @@ Vue.component("step", {
                             }
 
                         }
-                    } 
-                   
+                    }
+
                     //ARRIVAL AIRLINE INFO Check section
                     if (airlineInfo.checked == true) {
                         if ($('#airline').val() === '' || $('#filingNumber').val() === '') {
@@ -550,7 +550,7 @@ for (var price of bonusPrices) {
         let addedBonusPrice = event.target.defaultValue;
 
         AjaxPost("/Home/CalculateBonusTotalAmount/", { percentage: addedBonusPrice }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
-           // console.log(response);
+            // console.log(response);
 
             $(".totalAmount span").text(response.calculatedVehicleAmounts.totalAmount);
             $(".gratuity span").text(response.calculateTotalAmountForPercentage);
@@ -627,7 +627,7 @@ function CalculatedAmountResponse(response) {
         alert("Hourly is already not active!");
         return false;
     }
-    
+
 
 
     let dataTypes = $(".toggle-button-vehicle");
@@ -700,6 +700,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 PickupTime: time,
                 PickupLocation: pickuplocation,
                 DropOffLocation: dropOffLocation,
+                EndDate: "0001-01-01T00:00:00Z",
                 EndPickupTime: null,
                 TransferTypeId: transferTypeId,
                 DurationInHours: durationInHours
@@ -840,17 +841,17 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 FlightNumber: filingNumber,
                 AirlineAutoCheck: Boolean(sessionStorage.getItem("airlineAutoCheck"))
             }
-          
-           // var mes = data.State.concat(",", data.City, data.Street, data.StreetNumber, data.District)
 
-         //   console.log(mes);
+            // var mes = data.State.concat(",", data.City, data.Street, data.StreetNumber, data.District)
+
+            //   console.log(mes);
             AjaxPost("/RideDetails/AddContactDetailsInfo/", JSON.stringify(data), true, true, 'json', 'application/json; charset=utf-8', (response) => {
-               
+
                 if (response.hasOwnProperty("wrongStatus")) {
                     alert("If PickupLocation or DropOfLocation choosen 'Denver International Airport (DEN), Peña Boulevard, Denver, CO, USA' international airport , must be selected 'ARRIVAL AIRLINE INFO' tab!");
                     return false;
                 }
-               //Additional message
+                //Additional message
                 if (response.contactDetails.additionalContactDetailNote == "") {
                     $('#additionalMessage').css("display", "none");
                 } else {
@@ -877,21 +878,21 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
 
                 } else {
 
-                ShowAllDatasFilledFromInput("lastname", response.contactDetails.lastname);
+                    ShowAllDatasFilledFromInput("lastname", response.contactDetails.lastname);
                 }
                 //Email
                 if (response.contactDetails.email == "") {
                     $('#SummaryEmail').css("display", "none");
                 } else {
-                ShowAllDatasFilledFromInput("email", response.contactDetails.email);
+                    ShowAllDatasFilledFromInput("email", response.contactDetails.email);
                 }
                 //Phone number
                 if (response.contactDetails.phoneNumber == "") {
                     $('#SummaryPhoneNum').css("display", "none");
                 } else {
-                ShowAllDatasFilledFromInput("phoneNumber", response.contactDetails.phoneNumber);
+                    ShowAllDatasFilledFromInput("phoneNumber", response.contactDetails.phoneNumber);
                 }
-                
+
                 var forSummryFullBillAddress = street + " / " + streetNumber + " / " + district + " /  Postal code " + postalCode + " / " + city + " / " + state;
 
                 //Full bill addrees
@@ -910,7 +911,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 } else {
                     $('#SummaryCompaniyName').css("display", "block");
 
-                ShowAllDatasFilledFromInput("companyName", response.contactDetails.companyRegisteredname);
+                    ShowAllDatasFilledFromInput("companyName", response.contactDetails.companyRegisteredname);
                 }
                 console.log(response.contactDetails.companyRegisteredname)
 
@@ -921,7 +922,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 } else {
                     $('#SummaryTaxNumber').css("display", "block");
 
-                ShowAllDatasFilledFromInput("taxNumber", response.contactDetails.taxNumber);
+                    ShowAllDatasFilledFromInput("taxNumber", response.contactDetails.taxNumber);
                 }
 
                 //Airline Type
@@ -931,7 +932,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 } else {
                     $('#SummaryAirLine').css("display", "block");
 
-                ShowAllDatasFilledFromInput("airLineType", response.getTextForIdVM.airLine);
+                    ShowAllDatasFilledFromInput("airLineType", response.getTextForIdVM.airLine);
                 }
 
                 //Flight Number
@@ -941,7 +942,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 } else {
                     $('#SummaryFlightNumber').css("display", "block");
 
-                ShowAllDatasFilledFromInput("flightNumber", response.contactDetails.flightNumber);
+                    ShowAllDatasFilledFromInput("flightNumber", response.contactDetails.flightNumber);
                 }
 
                 //Service Type
@@ -951,7 +952,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 } else {
                     $('#SummaryServiceType').css("display", "block");
 
-                ShowAllDatasFilledFromInput("service-type", response.getTextForIdVM.wayType);
+                    ShowAllDatasFilledFromInput("service-type", response.getTextForIdVM.wayType);
                 }
 
                 //Pickup Location
@@ -965,7 +966,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 }
 
                 //Pickup Date and Time
-                if (response.getTextForIdVM.pickupDateAndTime == "") { 
+                if (response.getTextForIdVM.pickupDateAndTime == "") {
                     $('#SummaryPickupDateAndTime').css("display", "none");
 
                 } else {
@@ -991,7 +992,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 } else {
                     $('#SummaryDistanceTime').css("display", "block");
 
-                ShowAllDatasFilledFromInput("total-time", response.getTextForIdVM.distanceTime);
+                    ShowAllDatasFilledFromInput("total-time", response.getTextForIdVM.distanceTime);
                 }
 
                 //Vehicle Type
@@ -1011,7 +1012,7 @@ function SaveRideDetailsInfo(step, IncreaseCurrentStep) {
                 } else {
                     $('#SummaryChildNumber').css("display", "block");
 
-                ShowAllDatasFilledFromInput("childSeatCount", response.vehicleDetails.childNumber);
+                    ShowAllDatasFilledFromInput("childSeatCount", response.vehicleDetails.childNumber);
                 }
 
                 if (response.status.statusCode === 200)
@@ -1178,4 +1179,113 @@ function Range(start, end) {
     }
 
     return betweenTimes;
+}
+
+
+function CheckDateToBron(type) {
+
+    console.log(type)
+    console.log("CheckDateToBron");
+    let date = $("#pickupDate").val();
+
+    if (type === undefined)
+        type = "AM"
+    else
+        type = "PM"
+
+    console.log(date);
+
+
+    AjaxPost("/Home/CheckDateToBron/", { pickUpDate: date, type: type }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
+        console.log(response);
+
+        //<select onchange="changeTimepickerheader(this,'3')" size="5" class="timepicker_ampm">
+        //                                                                    <option value="AM" selected="selected" class="selected-time-type" onclick="SelectTimeType(this)">AM</option>
+        //                                                                    <option value="PM" onclick="SelectTimeType(this)">PM</option>
+        //                                                                </select>
+        //                                                                <select onchange="changeTimepickerheader(this,'1')" size="5" class="timepicker_hour"></select>
+        //                                                                <select onchange="changeTimepickerheader(this,'2')" size="5" class="timepicker_minute"></select>
+
+
+        if (response.bronedHoursForCurrentDate.length != 0) {
+            //$(".timepicker_data_select").empty();
+            //let timeType = ``;
+            //if (response.type == "PM") {
+            //    timeType = `
+            //    <select onchange="changeTimepickerheader(this,'3')" size="5" class="timepicker_ampm">
+            //        <option value="AM" onclick="SelectTimeType(this)">AM</option>
+            //        <option value="PM" selected="selected" class="selected-time-type" onclick="SelectTimeType(this)">PM</option>
+            //    </select>`;
+            //}
+            //else {
+            //    timeType = `
+            //    <select onchange="changeTimepickerheader(this,'3')" size="5" class="timepicker_ampm">
+            //        <option value="AM" selected="selected" class="selected-time-type" onclick="SelectTimeType(this)">AM</option>
+            //        <option value="PM"  onclick="SelectTimeType(this)">PM</option>
+            //    </select>`;
+            //}
+            //$(".timepicker_hour").empty();
+            let timepicker_hours = $(".timepicker_hour option");
+
+            console.log(timepicker_hours)
+            console.log(timepicker_hours.length)
+            console.log(response.bronedHoursForCurrentDate.length)
+
+
+
+            for (var i = 0; i < timepicker_hours.length; i++) {
+                timepicker_hours[i].removeAttribute("class");
+                timepicker_hours[i].removeAttribute("disabled");
+            }
+            console.log(timepicker_hours);
+            for (var i = 0; i < timepicker_hours.length; i++) {
+                var option = timepicker_hours[i];
+                console.log(option);
+                if (response.bronedHoursForCurrentDate.includes(option.value)) {
+                    option.setAttribute("disabled", true);
+                    option.setAttribute("class", "disabled-option-time-picker");
+                }
+            }
+
+            //for (var i = 0; i < timepicker_hours.length; i++) {
+            //    for (var i = 0; i < response.bronedHoursForCurrentDate.length; i++) {
+            //        if (timepicker_hours[i].value == response.bronedHoursForCurrentDate[i]) {
+            //            console.log(timepicker_hours[i].value)
+            //            timepicker_hours[i].setAttribute("class", "disabled-option-time-picker");
+            //            timepicker_hours[i].setAttribute("disabled", true);
+
+            //        }
+            //    }
+            //}
+            
+
+            //let hours = `
+            //    <select onchange="changeTimepickerheader(this,'1')" size="5" class="timepicker_hour">
+            //        <option value="12">12</option>
+            //        <option value="01">01</option>
+            //        <option value="02">02</option>
+            //        <option value="03">03</option>
+            //        <option value="04">04</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="05">05</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="05">05</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="05">05</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="05">05</option>
+            //        <option value="06">06</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="07">07</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="07">07</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="07">07</option>
+            //        <option value="08">08</option>
+            //        <option value="09">09</option>
+            //        <option value="10">10</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="11">11</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="11">11</option>
+            //        <option disabled="" class="disabled-option-time-picker" value="11">11</option>
+
+            //    </select>`;
+
+
+
+        }
+
+    });
 }

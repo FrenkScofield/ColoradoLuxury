@@ -27,40 +27,43 @@ namespace ColoradoLuxury.Controllers
         {
             List<string> choosenTimeRange = new List<string>();
 
-            var rideDetails = _context.RideDetails.Select(x => new RideDetail
-            {
-                PickupTime = x.PickupTime,
-                EndPickupTime = x.EndPickupTime,
-                DurationId = x.DurationId,
-                Duration = x.Duration,
-                PickupDate = x.PickupDate
+            //var rideDetails = _context.RideDetails.Select(x => new RideDetail
+            //{
+            //    PickupTime = x.PickupTime,
+            //    EndPickupTime = x.EndPickupTime,
+            //    DurationId = x.DurationId,
+            //    Duration = x.Duration,
+            //    PickupDate = x.PickupDate,
+            //    EndDate = x.EndDate
 
-            }).ToList();
+            //}).ToList();
 
 
 
-            if (rideDetails != null)
+            //if (rideDetails != null)
 
-            {
-                foreach (var rideDetail in rideDetails)
-                {
-                    if (rideDetail.DurationId != null)
-                    {
-                        var getTimeRange = TimeRangeGenerator.GenerateTimeRange(rideDetail.PickupDate, rideDetail.PickupTime, rideDetail.EndPickupTime);
-                        if (getTimeRange != null)
-                        {
-                            if (DateTime.Now.Date == getTimeRange[getTimeRange.Count - 1].Date)
-                            {
-                                foreach (var timeRange in getTimeRange)
-                                {
-                                    choosenTimeRange.Add(timeRange.TimeOfDay.ToString());
-                                }
-                            }
-                        }
-                    }
+            //{
+            //    foreach (var rideDetail in rideDetails)
+            //    {
 
-                }
-            }
+            //        var getTimeRange = TimeRangeGenerator.GenerateTimeRange(rideDetail.PickupDate, rideDetail.EndDate, rideDetail.PickupTime, rideDetail.EndPickupTime);
+            //        if (getTimeRange != null)
+            //        {
+            //            if (DateTime.Now.Date == rideDetail.PickupDate.Date || DateTime.Now.Date == rideDetail.EndDate.Date)
+            //            {
+            //                for (int i = 0; i < getTimeRange.Count; i++)
+            //                {
+            //                    if (getTimeRange[i] == "00")
+            //                        getTimeRange[i] = "12";
+
+            //                    choosenTimeRange.Add(getTimeRange[i]);
+            //                }
+            //            }
+            //        }
+
+
+            //    }
+            //}
 
 
             HomeInfoDetailsVM viewModel = new HomeInfoDetailsVM()
@@ -80,6 +83,27 @@ namespace ColoradoLuxury.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        public JsonResult CheckDateToBron(DateTime pickUpDate, string type)
+        {
+
+            var bronedDates = TimeRangeGenerator.ShowDateAndTimeToDoBron(pickUpDate, type, _context);
+
+            List<string> bronedHoursForCurrentDate = new List<string>();
+
+            foreach (var bronedDate in bronedDates)
+            {
+                string getHours = String.Format("{0:hh:mm tt}", bronedDate).Substring(0, 2);
+                if (getHours == "00")
+                    getHours = "12";
+
+                bronedHoursForCurrentDate.Add(getHours);
+            }
+
+
+
+            return Json(new { bronedHoursForCurrentDate, type });
+        }
 
         [HttpPost]
         public JsonResult CalculatedAmount(bool hourly, short durationValue)
@@ -119,9 +143,15 @@ namespace ColoradoLuxury.Controllers
                 var hours = SessionExtension.GetSessionInt32(_httpContextAccessor.HttpContext, "hours");
 
                 var minutes = SessionExtension.GetSessionInt32(_httpContextAccessor.HttpContext, "minutes");
-           
                 if (mile != null)
-                    getVehiclesAmountDetails = CalculateForDistanceOrHourly((decimal)gradiuty.lowInterest / 100, hourly, mile, bookingSystem.MinimumBookingvalueForDistance, vehicleTypes, bookingSystem.MinimumMile);
+                {
+                    if (decimal.TryParse(mile, out decimal mileResult))
+                    {
+                        mileResult = Convert.ToDecimal(mile);
+                        getVehiclesAmountDetails = CalculateForDistanceOrHourly((decimal)gradiuty.lowInterest / 100, hourly, mileResult, bookingSystem.MinimumBookingvalueForDistance.ToString(), vehicleTypes, bookingSystem.MinimumMile);
+                    }
+
+                }
                 else
                     return Json(new { NotFoundMileValue = true });
             }
@@ -151,7 +181,8 @@ namespace ColoradoLuxury.Controllers
             if (distanceType)
             {
                 distanceTypeValue = Convert.ToDecimal(distanceTypeValue);
-                if (Convert.ToDecimal(minimumTravelValueType) < Convert.ToDecimal(checkingMinimumTravelValueTypeFromDbValue))
+
+                if (minimumTravelValueType < Convert.ToDecimal(checkingMinimumTravelValueTypeFromDbValue))
                 {
                     minimumTravelValueType = Convert.ToDecimal(checkingMinimumTravelValueTypeFromDbValue);
                 }
@@ -176,8 +207,8 @@ namespace ColoradoLuxury.Controllers
 
             foreach (var getVehiclesPermileValue in getVehiclesPermileOrHourValues)
             {
-                string disTypeV = minimumTravelValueType;
-                string? distanceAmount = (decimal.Parse(disTypeV) * decimal.Parse(getVehiclesPermileValue.DistanceAmount)).ToString("F2");
+
+                string? distanceAmount = (minimumTravelValueType * decimal.Parse(getVehiclesPermileValue.DistanceAmount)).ToString("F2");
                 if (Convert.ToDecimal(distanceAmount) <= distanceTypeValue)
                     distanceAmount = GeneralExtension<decimal>.ToString(distanceTypeValue);
 
@@ -239,6 +270,43 @@ namespace ColoradoLuxury.Controllers
             SessionExtension.SetSessionInt32(_httpContextAccessor.HttpContext, "hours", model.Hours);
 
             SessionExtension.SetSessionInt32(_httpContextAccessor.HttpContext, "minutes", model.Minutes);
+
+            int minute = model.Minutes;
+            int hour = model.Hours;
+            int minuteForFifteen = minute + 15;
+
+            if (hour > 0)
+            {
+                if (minuteForFifteen > 60)
+                    minute = 15 - (60 - minute);
+
+                else
+                    minute = minuteForFifteen;
+
+                hour = hour * 2;
+            }
+            else
+            {
+                minuteForFifteen = minuteForFifteen * 2;
+                if (minuteForFifteen > 60)
+                    minute = minuteForFifteen - 60;
+                else
+                    minute = minuteForFifteen;
+
+                hour = hour + 1;
+            }
+
+
+
+
+
+            SessionExtension.SetSessionInt32(_httpContextAccessor.HttpContext, "DistanceEndTimeHours", hour);
+
+            SessionExtension.SetSessionInt32(_httpContextAccessor.HttpContext, "DistanceEndTimeMinute", minute);
+
+
+
+
 
 
             return Json(new { });

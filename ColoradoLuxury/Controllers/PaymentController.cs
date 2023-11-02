@@ -56,6 +56,7 @@ namespace ColoradoLuxury.Controllers
                 RideDetail rideDetail = new RideDetail()
                 {
                     PickupDate = rideDetails.PickupDate,
+                    EndDate = rideDetails.EndDate,
                     PickupTime = rideDetails.PickupTime,
                     PickupLocation = rideDetails.PickupLocation,
                     DropOffLocation = rideDetails.DropOffLocation,
