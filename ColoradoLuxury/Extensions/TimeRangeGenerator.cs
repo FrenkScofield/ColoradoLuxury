@@ -2,31 +2,19 @@
 using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
+using System;
 
 namespace ColoradoLuxury.Extensions
 {
     public static class TimeRangeGenerator
     {
-        public static List<string> GenerateTimeRange(DateTime pickupDate, DateTime endDate, string startTime, string endTime)
+
+        public static DateTime GetDateAsDateTime(DateTime date, string time)
         {
-            DateTime start = DateTime.Parse(startTime);
-            DateTime end = DateTime.Parse(endTime);
-            var b = start.ToString("hh:mm tt");
+            DateTime dateTimeWithoutTime = DateTime.Parse(time);
+            DateTime dateTime = date.Date + dateTimeWithoutTime.TimeOfDay;
 
-            var a = end.ToString("hh:mm tt");
-            int c = b.CompareTo(a);
-
-            start = pickupDate.Date + start.TimeOfDay;
-            end = endDate.Date + end.TimeOfDay;
-            List<string> timeRange = new List<string>();
-
-            while (start <= end)
-            {
-                timeRange.Add(startTime.Substring(0, 2));
-                start = start.AddHours(1);
-            }
-
-            return timeRange;
+            return dateTime;
         }
 
         public static DateTime GetEndDateTime(string startTime, int? durationValue)
@@ -40,27 +28,28 @@ namespace ColoradoLuxury.Extensions
             return endDate;
         }
 
-        public static bool CheckDisabledForPickupTime(DateTime pickupDate, string startTime, IQueryable<RidePickupTimeDetails> ridePickupTimes)
+        public static bool CheckDisabledForPickupTime(DateTime pickupDate, string startTime, DateTime endDate, string endTime, IQueryable<RidePickupTimeDetails> ridePickupTimes)
         {
 
-            DateTime start = DateTime.Parse(startTime);
-            DateTime ChosenPickupDate = pickupDate.Date + start.TimeOfDay;
+            DateTime ChosenPickupDate = GetDateAsDateTime(pickupDate, startTime);
+
+            DateTime ChosenEndDate = GetDateAsDateTime(endDate, endTime);
+
+            List<KeyValuePair<DateTime, DateTime>> ridePickupDateTimeList = new List<KeyValuePair<DateTime, DateTime>>();
 
             foreach (var ridePickupTime in ridePickupTimes)
             {
-                DateTime startTimeParseDateTime = DateTime.Parse(ridePickupTime.StartDate);
-                DateTime startTimeFromDb = ridePickupTime.PickupDate.Date + startTimeParseDateTime.TimeOfDay;
-                DateTime endTimeParseDateTime = DateTime.Parse(ridePickupTime.EndDate);
-                DateTime endTimeFromDb = ridePickupTime.PickupDate.Date + endTimeParseDateTime.TimeOfDay;
+                var startDateTime = GetDateAsDateTime(ridePickupTime.PickupDate, ridePickupTime.StartTime);
+                var endDateTime = GetDateAsDateTime(ridePickupTime.EndDate, ridePickupTime.EndTime);
 
-                if (ridePickupTime.PickupDate.Date == ChosenPickupDate.Date && startTimeFromDb.TimeOfDay <= ChosenPickupDate.TimeOfDay && ChosenPickupDate.TimeOfDay <= endTimeFromDb.TimeOfDay)
-                {
-                    return true;
-                }
+                ridePickupDateTimeList.Add(new KeyValuePair<DateTime, DateTime>(startDateTime, endDateTime));
             }
 
+            bool CheckIsTimeFull = Enumerable.Range(0, 1 + (int)ChosenEndDate.Subtract(ChosenPickupDate).TotalMinutes)
+                                    .Select(offset => ChosenPickupDate.AddMinutes(offset))
+                                    .Any(date => ridePickupDateTimeList.Any(x => x.Key <= date && date <= x.Value));
 
-            return false;
+            return CheckIsTimeFull;
         }
 
         public static bool Isvalid(string startTime)
@@ -85,30 +74,11 @@ namespace ColoradoLuxury.Extensions
             return false;
         }
 
-        public static DateTime ChangeUsaColoradoTimeZone(this DateTime pickupDate, string time)
+
+        public static List<DateTime> GenerateTimeRange(DateTime pickupDate, string startTime, DateTime endDate, string endTime)
         {
-
-
-
-            DateTime start = DateTime.Parse(time);
-            DateTime ChosenPickupDate = pickupDate.Date + start.TimeOfDay;
-            var a = ChosenPickupDate.ToString("dd.MM.yyyy hh:mm tt");
-            DateTime dateTime = DateTime.Parse(ChosenPickupDate.ToString("dd.MM.yyyy hh:mm"));
-
-            return dateTime;
-        }
-
-        public static List<DateTime> GenerateTimeRange2(DateTime pickupDate, string startTime, DateTime endDate, string endTime)
-        {
-            DateTime start = DateTime.Parse(startTime);
-            DateTime end = DateTime.Parse(endTime);
-            var b = start.ToString("hh:mm tt");
-
-            var a = end.ToString("hh:mm tt");
-            int c = b.CompareTo(a);
-
-            start = pickupDate.Date + start.TimeOfDay;
-            end = endDate.Date + end.TimeOfDay;
+            DateTime start = GetDateAsDateTime(pickupDate, startTime);
+            DateTime end = GetDateAsDateTime(endDate, endTime);
             List<DateTime> timeRange = new List<DateTime>();
 
             while (start <= end)
@@ -143,11 +113,11 @@ namespace ColoradoLuxury.Extensions
 
                         if (choosenDate.PickupDate != date.Date)
                         {
-                            dateTimeRange.AddRange(GenerateTimeRange2(date, date.TimeOfDay.ToString(), choosenDate.EndDate, choosenDate.EndPickupTime));
+                            dateTimeRange.AddRange(GenerateTimeRange(date, date.TimeOfDay.ToString(), choosenDate.EndDate, choosenDate.EndPickupTime));
                         }
                         else
                         {
-                            dateTimeRange.AddRange(GenerateTimeRange2(choosenDate.PickupDate, choosenDate.PickupTime, choosenDate.EndDate, choosenDate.EndPickupTime));
+                            dateTimeRange.AddRange(GenerateTimeRange(choosenDate.PickupDate, choosenDate.PickupTime, choosenDate.EndDate, choosenDate.EndPickupTime));
                         }
 
                     }
@@ -159,20 +129,20 @@ namespace ColoradoLuxury.Extensions
 
                         if (choosenDate.EndDate != date.Date)
                         {
-                            dateTimeRange.AddRange(GenerateTimeRange2(choosenDate.PickupDate, choosenDate.PickupTime, choosenDate.PickupDate.Date.AddDays(1), choosenDate.PickupDate.Date.TimeOfDay.ToString()));
+                            dateTimeRange.AddRange(GenerateTimeRange(choosenDate.PickupDate, choosenDate.PickupTime, choosenDate.PickupDate.Date.AddDays(1), choosenDate.PickupDate.Date.TimeOfDay.ToString()));
                         }
                         else
                         {
-                            dateTimeRange.AddRange(GenerateTimeRange2(choosenDate.PickupDate, choosenDate.PickupTime, choosenDate.EndDate, choosenDate.EndPickupTime));
+                            dateTimeRange.AddRange(GenerateTimeRange(choosenDate.PickupDate, choosenDate.PickupTime, choosenDate.EndDate, choosenDate.EndPickupTime));
                         }
 
                     }
                 }
-               
+
             }
 
 
-           
+
 
             return dateTimeRange;
         }

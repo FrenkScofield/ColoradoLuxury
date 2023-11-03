@@ -50,20 +50,19 @@ namespace ColoradoLuxury.Controllers
                 var rideDetailsStartAndEndTimes = _context.RideDetails.Where(x => x.EndPickupTime != null && x.PickupDate >= DateTime.Now).Select(x => new RidePickupTimeDetails
                 {
                     PickupDate = x.PickupDate,
-                    StartDate = x.PickupTime,
-                    EndDate = x.EndPickupTime
+                    StartTime = x.PickupTime,
+                    EndDate = x.EndDate,
+                    EndTime = x.EndPickupTime
                 });
-
-                var a = rideDetailsStartAndEndTimes.ToList();
 
                 if (rideDetailsStartAndEndTimes != null)
                 {
-                    bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, rideDetailsStartAndEndTimes);
+                    //bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, rideDetailsStartAndEndTimes);
 
-                    if (checkDisabledForPickupTime)
-                    {
-                        return Json(new { choosenBetweenDates = true });
-                    }
+                    //if (checkDisabledForPickupTime)
+                    //{
+                    //    return Json(new { choosenBetweenDates = true });
+                    //}
                 }
 
 
@@ -89,15 +88,13 @@ namespace ColoradoLuxury.Controllers
                 var rideDetailsStartAndEndTimes = _context.RideDetails.Where(x => x.EndPickupTime != null && x.PickupDate.Date >= DateTime.Now.Date).Select(x => new RidePickupTimeDetails
                 {
                     PickupDate = x.PickupDate,
-                    StartDate = x.PickupTime,
-                    EndDate = x.EndPickupTime
-                });
-                bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, rideDetailsStartAndEndTimes);
+                    StartTime = x.PickupTime,
+                    EndDate = x.EndDate,
+                    EndTime = x.EndPickupTime
 
-                if (checkDisabledForPickupTime)
-                {
-                    return Json(new { choosenBetweenDates = true });
-                }
+                });
+
+                
                 double endDateHours = (double)SessionExtension.GetSessionInt32(HttpContext, "DistanceEndTimeHours");
                 double endDateMinute = (double)SessionExtension.GetSessionInt32(HttpContext, "DistanceEndTimeMinute");
 
@@ -105,7 +102,7 @@ namespace ColoradoLuxury.Controllers
                 DateTime start = DateTime.Parse(model.PickupTime);
                 DateTime ChosenPickupDate = model.PickupDate + start.TimeOfDay;
 
-                
+
 
                 bool checkExpireDateTime = TimeRangeGenerator.IsvalidExpireDate(model.PickupDate, model.PickupTime);
 
@@ -117,11 +114,19 @@ namespace ColoradoLuxury.Controllers
                 DateTime pickUpEndDate = ChosenPickupDate.AddHours(endDateHours).AddMinutes(endDateMinute);
 
 
-                model.EndPickupTime = String.Format("{0:HH:mm tt}", pickUpEndDate);
+                model.EndPickupTime = String.Format("{0:hh:mm tt}", pickUpEndDate);
 
-                
+                if (rideDetailsStartAndEndTimes != null)
+                {
+                    bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, pickUpEndDate, model.EndPickupTime, rideDetailsStartAndEndTimes);
 
-                model.EndDate=pickUpEndDate.Date;
+                    if (checkDisabledForPickupTime)
+                    {
+                        return Json(new { choosenBetweenDates = true });
+                    }
+                }
+
+                model.EndDate = pickUpEndDate.Date;
 
 
             }

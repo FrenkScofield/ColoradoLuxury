@@ -1184,12 +1184,15 @@ function Range(start, end) {
 
 function CheckDateToBron(type) {
 
-    console.log(type)
-    console.log("CheckDateToBron");
     let date = $("#pickupDate").val();
 
-    if (type === undefined)
-        type = "AM"
+    if (type === undefined) {
+        type = "AM";
+        $("#pm").removeClass("selected-time-type");
+        $("#pm").removeAttr("selected");
+        $("#am").addClass("selected-time-type");
+        $("#am").attr("selected");
+    }
     else
         type = "PM"
 
@@ -1197,41 +1200,8 @@ function CheckDateToBron(type) {
 
 
     AjaxPost("/Home/CheckDateToBron/", { pickUpDate: date, type: type }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
-        console.log(response);
-
-        //<select onchange="changeTimepickerheader(this,'3')" size="5" class="timepicker_ampm">
-        //                                                                    <option value="AM" selected="selected" class="selected-time-type" onclick="SelectTimeType(this)">AM</option>
-        //                                                                    <option value="PM" onclick="SelectTimeType(this)">PM</option>
-        //                                                                </select>
-        //                                                                <select onchange="changeTimepickerheader(this,'1')" size="5" class="timepicker_hour"></select>
-        //                                                                <select onchange="changeTimepickerheader(this,'2')" size="5" class="timepicker_minute"></select>
-
-
         if (response.bronedHoursForCurrentDate.length != 0) {
-            //$(".timepicker_data_select").empty();
-            //let timeType = ``;
-            //if (response.type == "PM") {
-            //    timeType = `
-            //    <select onchange="changeTimepickerheader(this,'3')" size="5" class="timepicker_ampm">
-            //        <option value="AM" onclick="SelectTimeType(this)">AM</option>
-            //        <option value="PM" selected="selected" class="selected-time-type" onclick="SelectTimeType(this)">PM</option>
-            //    </select>`;
-            //}
-            //else {
-            //    timeType = `
-            //    <select onchange="changeTimepickerheader(this,'3')" size="5" class="timepicker_ampm">
-            //        <option value="AM" selected="selected" class="selected-time-type" onclick="SelectTimeType(this)">AM</option>
-            //        <option value="PM"  onclick="SelectTimeType(this)">PM</option>
-            //    </select>`;
-            //}
-            //$(".timepicker_hour").empty();
             let timepicker_hours = $(".timepicker_hour option");
-
-            console.log(timepicker_hours)
-            console.log(timepicker_hours.length)
-            console.log(response.bronedHoursForCurrentDate.length)
-
-
 
             for (var i = 0; i < timepicker_hours.length; i++) {
                 timepicker_hours[i].removeAttribute("class");
@@ -1246,46 +1216,6 @@ function CheckDateToBron(type) {
                     option.setAttribute("class", "disabled-option-time-picker");
                 }
             }
-
-            //for (var i = 0; i < timepicker_hours.length; i++) {
-            //    for (var i = 0; i < response.bronedHoursForCurrentDate.length; i++) {
-            //        if (timepicker_hours[i].value == response.bronedHoursForCurrentDate[i]) {
-            //            console.log(timepicker_hours[i].value)
-            //            timepicker_hours[i].setAttribute("class", "disabled-option-time-picker");
-            //            timepicker_hours[i].setAttribute("disabled", true);
-
-            //        }
-            //    }
-            //}
-            
-
-            //let hours = `
-            //    <select onchange="changeTimepickerheader(this,'1')" size="5" class="timepicker_hour">
-            //        <option value="12">12</option>
-            //        <option value="01">01</option>
-            //        <option value="02">02</option>
-            //        <option value="03">03</option>
-            //        <option value="04">04</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="05">05</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="05">05</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="05">05</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="05">05</option>
-            //        <option value="06">06</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="07">07</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="07">07</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="07">07</option>
-            //        <option value="08">08</option>
-            //        <option value="09">09</option>
-            //        <option value="10">10</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="11">11</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="11">11</option>
-            //        <option disabled="" class="disabled-option-time-picker" value="11">11</option>
-
-            //    </select>`;
-
-
-
         }
-
     });
 }

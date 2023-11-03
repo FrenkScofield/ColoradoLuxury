@@ -206,8 +206,8 @@
                                                                     </p>
                                                                     <div class="timepicker_data_select">
                                                                         <select onchange="changeTimepickerheader(this,'3')" size="5" class="timepicker_ampm">
-                                                                            <option value="AM" selected="selected" class="selected-time-type" onclick="SelectTimeType(this)">AM</option>
-                                                                            <option value="PM" onclick="SelectTimeType(this)">PM</option>
+                                                                            <option value="AM" id="am" selected="selected" class="selected-time-type" onclick="SelectTimeType(this)">AM</option>
+                                                                            <option value="PM" id="pm" onclick="SelectTimeType(this)">PM</option>
                                                                         </select>
                                                                         <select onchange="changeTimepickerheader(this,'1')" size="5" class="timepicker_hour">
                                                                             
@@ -918,8 +918,6 @@
 <script>
     function SelectTimeType(element) {
         let timeType = $(element).val();
-        console.log(timeType);
-
 
         $(element).parent().children().removeClass("selected-time-type");
         $(element).parent().children().removeAttr("selected");
