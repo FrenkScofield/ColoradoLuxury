@@ -55,18 +55,6 @@ namespace ColoradoLuxury.Controllers
                     EndTime = x.EndPickupTime
                 });
 
-                if (rideDetailsStartAndEndTimes != null)
-                {
-                    //bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, rideDetailsStartAndEndTimes);
-
-                    //if (checkDisabledForPickupTime)
-                    //{
-                    //    return Json(new { choosenBetweenDates = true });
-                    //}
-                }
-
-
-
                 if (model.DurationInHours != null)
                 {
                     endDate = TimeRangeGenerator.GetEndDateTime(model.PickupTime, model.DurationInHours);
@@ -75,7 +63,20 @@ namespace ColoradoLuxury.Controllers
                     {
                         return Json(new { status = BadRequest() });
                     }
-                    model.EndPickupTime = endDate.TimeOfDay.Hours < 12 ? $"{endDate.ToString("HH:mm")} AM" : $"{endDate.ToString("HH:mm")} PM";
+                    //model.EndPickupTime = endDate.TimeOfDay.Hours < 12 ? $"{endDate.ToString("HH:mm")} AM" : $"{endDate.ToString("HH:mm")} PM";
+                    model.EndPickupTime = String.Format("{0:hh:mm tt}", endDate);
+
+                    if (rideDetailsStartAndEndTimes != null)
+                    {
+                        bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, endDate, model.EndPickupTime, rideDetailsStartAndEndTimes);
+
+                        if (checkDisabledForPickupTime)
+                        {
+                            return Json(new { choosenBetweenDates = true });
+                        }
+                    }
+
+                    model.EndDate = endDate;
                 }
             }
             else

@@ -27,45 +27,6 @@ namespace ColoradoLuxury.Controllers
         {
             List<string> choosenTimeRange = new List<string>();
 
-            //var rideDetails = _context.RideDetails.Select(x => new RideDetail
-            //{
-            //    PickupTime = x.PickupTime,
-            //    EndPickupTime = x.EndPickupTime,
-            //    DurationId = x.DurationId,
-            //    Duration = x.Duration,
-            //    PickupDate = x.PickupDate,
-            //    EndDate = x.EndDate
-
-            //}).ToList();
-
-
-
-            //if (rideDetails != null)
-
-            //{
-            //    foreach (var rideDetail in rideDetails)
-            //    {
-
-            //        var getTimeRange = TimeRangeGenerator.GenerateTimeRange(rideDetail.PickupDate, rideDetail.EndDate, rideDetail.PickupTime, rideDetail.EndPickupTime);
-            //        if (getTimeRange != null)
-            //        {
-            //            if (DateTime.Now.Date == rideDetail.PickupDate.Date || DateTime.Now.Date == rideDetail.EndDate.Date)
-            //            {
-            //                for (int i = 0; i < getTimeRange.Count; i++)
-            //                {
-            //                    if (getTimeRange[i] == "00")
-            //                        getTimeRange[i] = "12";
-
-            //                    choosenTimeRange.Add(getTimeRange[i]);
-            //                }
-            //            }
-            //        }
-
-
-            //    }
-            //}
-
-
             HomeInfoDetailsVM viewModel = new HomeInfoDetailsVM()
             {
                 VehicleTypes = _context.VehicleTypes.Where(x => x.Status).ToList(),
@@ -75,10 +36,6 @@ namespace ColoradoLuxury.Controllers
                 ValueOfTipButtons = _context.ValueOfTipButtons.OrderByDescending(x => x.Id).FirstOrDefault(),
                 TimesRange = choosenTimeRange
             };
-
-
-
-
 
             return View(viewModel);
         }
@@ -99,8 +56,6 @@ namespace ColoradoLuxury.Controllers
 
                 bronedHoursForCurrentDate.Add(getHours);
             }
-
-
 
             return Json(new { bronedHoursForCurrentDate, type });
         }

@@ -21,9 +21,7 @@ namespace ColoradoLuxury.Extensions
         {
             DateTime startDate = DateTime.Parse(startTime);
 
-            DateTime endDate = DateTime.MinValue;
-
-            endDate = startDate.AddHours(Convert.ToInt32(durationValue));
+            DateTime endDate = startDate.AddHours(Convert.ToInt32(durationValue));
 
             return endDate;
         }
