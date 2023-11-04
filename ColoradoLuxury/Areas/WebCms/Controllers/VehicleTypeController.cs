@@ -19,7 +19,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var vehicleType = await _context.VehicleTypes.Where(x => x.Status == true).ToListAsync();
+            var vehicleType = await _context.VehicleTypes.ToListAsync();
             if (vehicleType.Count == 1 && !vehicleType[0].IsActive)
             {
                 var defaultVehicleType = await _context.VehicleTypes.ToListAsync();
@@ -41,6 +41,27 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             }
 
             return View(vehicleType);
+        }
+
+        
+        public async Task<IActionResult> ShowOrNotShowStatus(int id)
+        {
+            var vehicleStatus = await _context.VehicleTypes.FindAsync(id);
+         
+              
+                if (vehicleStatus.Status == true)
+                {
+                    vehicleStatus.Status = false;
+                }
+                else
+                {
+                    vehicleStatus.Status = true;
+                }
+            _context.VehicleTypes.Update(vehicleStatus);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+
         }
 
         public IActionResult AddVehicleType()

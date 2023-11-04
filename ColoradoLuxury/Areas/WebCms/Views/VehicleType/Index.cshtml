@@ -41,7 +41,8 @@
                             <th scope="col">VEHICLE TYPE NAME</th>
                             <th scope="col">PER MILE PRICE</th>
                             <th scope="col">HOURLY PRICE</th>
-                            <th scope="col"> Default Show</th>
+                            <th scope="col"> DEFAULT SHOW</th>
+                            <th scope="col"> STATUS</th>
                             <th scope="col">EDIT - DELETE</th>
                         </tr>
                     </thead>
@@ -54,6 +55,16 @@
                                 <td>@Model.ToArray()[i].Hourly</td>
                                 @*<td><input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" /></td>*@
                                 <td><input type="checkbox" id="check@(i)" value="Value1" @(Model.Where(x => x.Status == true).Count() == 1 ? "disabled": "") onclick="selectOnlyThis(this.id)" @((Model.Where(x => x.Status == true).Count() == 1) || (Model.ToArray()[i].IsActive) ? "checked='checked'" : "") /></td>
+                                <td>
+                                    @if (Model.ToArray()[i].Status == true)
+                                    {
+                                        <a class="btn btn-success" asp-controller="VehicleType" asp-action="ShowOrNotShowStatus" asp-route-Id="@Model.ToArray()[i].Id">Show</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-warning" asp-controller="VehicleType" asp-action="ShowOrNotShowStatus" asp-route-Id="@Model.ToArray()[i].Id">Not Show</a>
+                                    }
+                                </td>
 
                                 <td>
                                     <div >
