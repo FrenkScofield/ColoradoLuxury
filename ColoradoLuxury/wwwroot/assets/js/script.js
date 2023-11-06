@@ -165,7 +165,6 @@ Vue.component("step", {
             //Choose a Vehicle page validation section Start
             if (this.currentstep == 2) {
                 if ($('#passengersSelect').val() === '') {
-                    debugger
                     //Passenger
                     if ($('#passengersSelect').val() != '') {
                         $('#passengersGood').css("display", "block")
@@ -201,7 +200,6 @@ Vue.component("step", {
 
                 bill = document.getElementById('billingAddress');
                 airlineInfo = document.getElementById('airlineInfo')
-                debugger
 
                 if ($('#firstName').val() === '' || $('#lastName').val() === '' || $('#emailAddress').val() === '' || $('#phoneNumber').val() === '' || airlineInfo.checked == true || bill.checked == true) {
 
@@ -479,6 +477,11 @@ $('#customPriceActive').on('click', function () {
     $('#bettButtons').css("opacity", "1");
     $('#customPrice').css("opacity", "0.1");
     $('#customBettAddBtn').css("display", "none")
+
+    $('#btn1').removeClass("active1");
+    $('#btn2').removeClass("active1");
+    $('#btn3').removeClass("active1");
+
 
     if ($('#customPriceActive').is(':checked') == true) {
 
@@ -1095,8 +1098,11 @@ function AddCupon(element) {
 
     AjaxPost("/Home/CalculateTotalAmountForCuponCode/", { cuponKey: cuponKey }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
         console.log(response);
-
-
+        
+        if (response.hasOwnProperty("expiredTimeCuponKey")) {
+            alert(`Cupon key expired!`);
+            return;
+        }
         if (response.hasOwnProperty("expiredCupon")) {
             alert(`You have already used all chance for this cupon code!`);
             return;
@@ -1113,10 +1119,36 @@ function AddCupon(element) {
 
         if (response.status.statusCode === 200) {
             alert(`You got ${response.userCuponVM.discountType} of Total Amount!`);
+            $(".calculated-result .row .col-lg-3").empty();
+
+            $(".calculated-result .row .col-lg-2").empty();
+
+
+            let cuponAndTotalAmountTitle = `<p>Selected vehicle</p>
+                                            <p>Gratuity</p>
+                                            <hr>
+                                            <p>Total</p>
+                                            <p>Cupon</p>
+                                            <p>Total amount</p>`;
+            let cuponAndTotalAmountValue = `<p class="distanceAmount">$ <span></span></p>
+                                            <p class="gratuity">$ <span></span></p>
+                                            <hr>
+                                            <p class="totalAmount">$ <span></span></p>
+                                            <p class="cupon-discount">$ <span></span></p>
+                                            <p class="total-result">$ <span></span></p>`;
+
+            
+            $(".calculated-result .row .col-lg-3").append(cuponAndTotalAmountTitle);
+            $(".calculated-result .row .col-lg-2").append(cuponAndTotalAmountValue);
+
 
             $(".distanceAmount span").text(response.userCuponVM.vehicleAmounts.distanceAmount);
             $(".gratuity span").text(response.userCuponVM.vehicleAmounts.graduity);
             $(".totalAmount span").text(response.userCuponVM.vehicleAmounts.totalAmount);
+
+            $(".cupon-discount span").prepend(response.userCuponVM.vehicleAmounts.cuponValue);
+            $(".total-result span").prepend(response.userCuponVM.vehicleAmounts.resultTotalAmount);
+
         }
 
 

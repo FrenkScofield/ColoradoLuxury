@@ -388,6 +388,23 @@ namespace ColoradoLuxury.Controllers
                 return Json(new { wrongCuponKey = true });
             }
 
+            if (HttpContext?.GetSessionString("currentCuponCode") != null && HttpContext?.GetSessionString("currentCuponCode") != cuponkey)
+            {
+                var overritedCuponKey = _context.UserUsedCupons.Where(x => x.CuponKey == HttpContext.GetSessionString("currentCuponCode")).Select(y => new UserUsedCupon {
+                    Id = y.Id,
+                    CuponKey = y.CuponKey                
+                }).OrderByDescending(x => x.Id).FirstOrDefault();
+
+                _context.UserUsedCupons.Remove(overritedCuponKey);
+                _context.SaveChanges();
+            }
+
+
+            if (HttpContext?.GetSessionString("currentCuponCode") == cuponkey)
+            {
+                return Json(new { usedCupon = true });
+            }
+
             var cuponDetails = _context.Cupons.Where(c => c.NewCupon == cuponkey)
                                               .Select(x => new Cupon
                                               {
@@ -395,11 +412,17 @@ namespace ColoradoLuxury.Controllers
                                                   Percentage = x.Percentage,
                                                   Amount = x.Amount,
                                                   UseCount = x.UseCount,
+                                                  Status = x.Status,
                                               }).FirstOrDefault();
 
             if (cuponDetails == null)
             {
                 return Json(new { notFound = true });
+            }
+
+            if (cuponDetails.Status == 0)
+            {
+                return Json(new { expiredTimeCuponKey = true });
             }
 
             var contactDetails = HttpContext.GetObjectsession<ContactDetailsVM>("contactDetails");
@@ -423,18 +446,7 @@ namespace ColoradoLuxury.Controllers
             }
             else
             {
-                if (getUserUsedCupons.Count < cuponDetails.UseCount)
-                {
-                    foreach (var getUserUsedCupon in getUserUsedCupons)
-                    {
-                        if (getUserUsedCupon.CuponKey.Equals(cuponDetails.NewCupon) && activeUniquekey.Equals(getUserUsedCupon.UniqueKey))
-                        {
-
-                            return Json(new { usedCupon = true });
-                        }
-                    }
-                }
-                else
+                if (getUserUsedCupons.Count >= cuponDetails.UseCount)
                 {
                     return Json(new { expiredCupon = true });
                 }
@@ -469,7 +481,9 @@ namespace ColoradoLuxury.Controllers
             {
                 DistanceAmount = vehicleAmounts?.DistanceAmount,
                 Graduity = vehicleAmounts?.Graduity,
-                TotalAmount = DiscountTotalAmount,
+                TotalAmount= vehicleAmounts?.TotalAmount,
+                CuponValue = discountType,
+                ResultTotalAmount = DiscountTotalAmount,
                 IsActive = vehicleAmounts.IsActive,
                 VehicleTypeId = vehicleAmounts.VehicleTypeId
             };
@@ -495,6 +509,8 @@ namespace ColoradoLuxury.Controllers
             };
             _context.UserUsedCupons.Add(userUsedCupon);
             _context.SaveChanges();
+
+            HttpContext?.SetSessionString("currentCuponCode", cuponDetails.NewCupon);
 
 
             return userCuponVM;

@@ -123,7 +123,9 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             {
                 CuponKey = x.CuponKey
             });
-            cupon.UsedCount = (byte?)(cupon.UseCount - usedCuponsUser.Count());
+            var a = usedCuponsUser.Count();
+
+            cupon.UsedCount = (byte)(cupon.UseCount - usedCuponsUser.Count());
             if (cupon == null)
             {
                 return NotFound();

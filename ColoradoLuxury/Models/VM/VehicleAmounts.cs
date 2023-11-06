@@ -6,6 +6,10 @@
         public string? Graduity { get; set; }
         public string? TotalAmount { get; set; }
 
+        public string CuponValue { get; set; }
+        public string? ResultTotalAmount { get; set; }
+
+
         public bool IsActive { get; set; }
 
         public int VehicleTypeId { get; set; }
