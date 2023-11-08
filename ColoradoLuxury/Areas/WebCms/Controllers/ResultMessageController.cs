@@ -29,7 +29,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(resultMessage);
+                return RedirectToAction(nameof(Index));
             }
 
             if (!_context.ResultMessages.Any())

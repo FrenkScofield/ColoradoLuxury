@@ -9,6 +9,8 @@
         public string? PickupLocation { get; set; }
         public string? DropOffLocation { get; set; }
 
+        public DateTime EndDate { get; set; }
+
         public string?  EndPickupTime { get; set; }
         public int? TransferTypeId { get; set; }
 

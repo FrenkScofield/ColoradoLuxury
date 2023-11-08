@@ -3,8 +3,10 @@
     public class RidePickupTimeDetails
     {
         public DateTime PickupDate { get; set; }
-        public string? StartDate { get; set; }
-        public string? EndDate { get; set; }
+        public string? StartTime { get; set; }
+        public DateTime EndDate { get; set; }
+        public string? EndTime { get; set; }
+
 
     }
 }

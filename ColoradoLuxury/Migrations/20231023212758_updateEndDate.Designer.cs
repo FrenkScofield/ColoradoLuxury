@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ColoradoLuxury.Migrations
 {
     [DbContext(typeof(ColoradoContext))]
-    [Migration("20231015194312_V11")]
-    partial class V11
+    [Migration("20231023212758_updateEndDate")]
+    partial class updateEndDate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -501,6 +501,9 @@ namespace ColoradoLuxury.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EndPickupTime")

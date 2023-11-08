@@ -29,8 +29,8 @@ namespace ColoradoLuxury.Controllers
         [HttpPost]
         public IActionResult AddDetails([FromBody] RideDetailsVM model)
         {
-            
-           
+
+            var a1 = DateTime.MinValue;
 
             if (!model.WayType)
             {
@@ -47,26 +47,13 @@ namespace ColoradoLuxury.Controllers
                 }
                 DateTime endDate = DateTime.MinValue;
 
-                var rideDetailsStartAndEndTimes = _context.RideDetails.Where(x => x.EndPickupTime != null && x.PickupDate > DateTime.Now).Select(x => new RidePickupTimeDetails
+                var rideDetailsStartAndEndTimes = _context.RideDetails.Where(x => x.EndPickupTime != null && x.PickupDate >= DateTime.Now).Select(x => new RidePickupTimeDetails
                 {
                     PickupDate = x.PickupDate,
-                    StartDate = x.PickupTime,
-                    EndDate = x.EndPickupTime
+                    StartTime = x.PickupTime,
+                    EndDate = x.EndDate,
+                    EndTime = x.EndPickupTime
                 });
-
-                var a = rideDetailsStartAndEndTimes.ToList();
-
-                if (rideDetailsStartAndEndTimes != null)
-                {
-                    bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, rideDetailsStartAndEndTimes);
-
-                    if (checkDisabledForPickupTime)
-                    {
-                        return Json(new { choosenBetweenDates = true });
-                    }
-                }
-
-
 
                 if (model.DurationInHours != null)
                 {
@@ -76,10 +63,75 @@ namespace ColoradoLuxury.Controllers
                     {
                         return Json(new { status = BadRequest() });
                     }
-                    model.EndPickupTime = endDate.TimeOfDay.Hours < 12 ? $"{endDate.ToString("HH:mm")} AM" : $"{endDate.ToString("HH:mm")} PM";
+                    //model.EndPickupTime = endDate.TimeOfDay.Hours < 12 ? $"{endDate.ToString("HH:mm")} AM" : $"{endDate.ToString("HH:mm")} PM";
+                    model.EndPickupTime = String.Format("{0:hh:mm tt}", endDate);
+
+                    if (rideDetailsStartAndEndTimes != null)
+                    {
+                        bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, endDate, model.EndPickupTime, rideDetailsStartAndEndTimes);
+
+                        if (checkDisabledForPickupTime)
+                        {
+                            return Json(new { choosenBetweenDates = true });
+                        }
+                    }
+
+                    model.EndDate = endDate;
                 }
             }
-            
+            else
+            {
+                bool isValid = TimeRangeGenerator.Isvalid(model.PickupTime);
+                if (!isValid)
+                {
+                    return Json(new { status = BadRequest() });
+                }
+                var rideDetailsStartAndEndTimes = _context.RideDetails.Where(x => x.EndPickupTime != null && x.PickupDate.Date >= DateTime.Now.Date).Select(x => new RidePickupTimeDetails
+                {
+                    PickupDate = x.PickupDate,
+                    StartTime = x.PickupTime,
+                    EndDate = x.EndDate,
+                    EndTime = x.EndPickupTime
+
+                });
+
+                
+                double endDateHours = (double)SessionExtension.GetSessionInt32(HttpContext, "DistanceEndTimeHours");
+                double endDateMinute = (double)SessionExtension.GetSessionInt32(HttpContext, "DistanceEndTimeMinute");
+
+
+                DateTime start = DateTime.Parse(model.PickupTime);
+                DateTime ChosenPickupDate = model.PickupDate + start.TimeOfDay;
+
+
+
+                bool checkExpireDateTime = TimeRangeGenerator.IsvalidExpireDate(model.PickupDate, model.PickupTime);
+
+                if (checkExpireDateTime)
+                {
+                    return Json(new { status = BadRequest() });
+                }
+
+                DateTime pickUpEndDate = ChosenPickupDate.AddHours(endDateHours).AddMinutes(endDateMinute);
+
+
+                model.EndPickupTime = String.Format("{0:hh:mm tt}", pickUpEndDate);
+
+                if (rideDetailsStartAndEndTimes != null)
+                {
+                    bool checkDisabledForPickupTime = TimeRangeGenerator.CheckDisabledForPickupTime(model.PickupDate, model.PickupTime, pickUpEndDate, model.EndPickupTime, rideDetailsStartAndEndTimes);
+
+                    if (checkDisabledForPickupTime)
+                    {
+                        return Json(new { choosenBetweenDates = true });
+                    }
+                }
+
+                model.EndDate = pickUpEndDate.Date;
+
+
+            }
+
 
             HttpContext.SetObjectsession("firstridedetails", model);
 

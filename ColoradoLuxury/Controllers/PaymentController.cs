@@ -56,6 +56,7 @@ namespace ColoradoLuxury.Controllers
                 RideDetail rideDetail = new RideDetail()
                 {
                     PickupDate = rideDetails.PickupDate,
+                    EndDate = rideDetails.EndDate,
                     PickupTime = rideDetails.PickupTime,
                     PickupLocation = rideDetails.PickupLocation,
                     DropOffLocation = rideDetails.DropOffLocation,
@@ -178,7 +179,7 @@ namespace ColoradoLuxury.Controllers
                 Duration = rideDetails.DurationInHours != null ? _context.Durations.Where(d => d.Id == rideDetails.DurationInHours).FirstOrDefault()?.Time : null,
                 Mile = $"{Convert.ToDecimal(HttpContext.Session.GetString("mile"))} mi",
                 DistanceTime = $"{HttpContext.Session.GetInt32("hours")}h {HttpContext.Session.GetInt32("minutes")}m",
-                TotalPrice = vehicleAmounts?.TotalAmount,
+                TotalPrice = vehicleAmounts?.ResultTotalAmount != null ? vehicleAmounts?.ResultTotalAmount : vehicleAmounts?.TotalAmount,
                 TransactionId = HttpContext?.Session?.GetString("TransactionId"),
                 BillingAddressStatus = contactDetails.BillingAddressStatus,
                 AirlineStatus = contactDetails.AirLineStatus
@@ -213,6 +214,8 @@ namespace ColoradoLuxury.Controllers
 
             VehicleAmounts? vehicleAmounts = HttpContext?.GetObjectsession<VehicleAmounts>("activeVehicleAmountSession");
 
+            string? totalAmount = vehicleAmounts?.ResultTotalAmount != null ? vehicleAmounts?.ResultTotalAmount : vehicleAmounts?.TotalAmount;
+
             StripeConfiguration.ApiKey = _configuration.GetValue<string>("StripeSettings:Secretkey");
             var options = new SessionCreateOptions
             {
@@ -226,7 +229,7 @@ namespace ColoradoLuxury.Controllers
                         PriceData = new SessionLineItemPriceDataOptions
                         {
                             Currency= currency,
-                            UnitAmountDecimal = Convert.ToDecimal(vehicleAmounts?.TotalAmount) * 100,
+                            UnitAmountDecimal = Convert.ToDecimal(totalAmount) * 100,
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
                                 Name = "Travel",

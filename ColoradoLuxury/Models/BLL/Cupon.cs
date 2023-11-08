@@ -16,13 +16,10 @@
         public byte? UsedCount { get; set; }
 
 
-
-        private int status;
-
         public int Status
         {
-            get { return status; }
-            set { status = 1; }
+            get;
+            set;
         }
 
 

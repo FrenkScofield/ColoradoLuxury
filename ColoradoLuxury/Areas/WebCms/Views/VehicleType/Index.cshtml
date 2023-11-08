@@ -44,6 +44,11 @@
                             <th scope="col"> DEFAULT SHOW</th>
                             <th scope="col"> STATUS</th>
                             <th scope="col">EDIT - DELETE</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Deactive</th>
+                            <th scope="col">Active</th>
+
+
                         </tr>
                     </thead>
                     <tbody>
@@ -54,7 +59,10 @@
                                 <td>$@Model.ToArray()[i].PerMile</td>
                                 <td>@Model.ToArray()[i].Hourly</td>
                                 @*<td><input type="checkbox" id="check@(i)" value="Value1" onclick="selectOnlyThis(this.id)" /></td>*@
-                                <td><input type="checkbox" id="check@(i)" value="Value1" @(Model.Where(x => x.Status == true).Count() == 1 ? "disabled": "") onclick="selectOnlyThis(this.id)" @((Model.Where(x => x.Status == true).Count() == 1) || (Model.ToArray()[i].IsActive) ? "checked='checked'" : "") /></td>
+
+                                <td><input type="checkbox" id="check@(i)" @(!Model.ToArray()[i].Status ? "disabled": "") value="Value1" @(Model.Where(x => x.Status).Count() == 1 ? "disabled": "")   onclick="selectOnlyThis(this.id)" @((Model.Where(x => x.Status == true).Count() == 1) || (Model.ToArray()[i].IsActive) ? "checked='checked'" : "") /></td>
+
+                                
                                 <td>
                                     @if (Model.ToArray()[i].Status == true)
                                     {
@@ -66,15 +74,27 @@
                                     }
                                 </td>
 
+
                                 <td>
                                     <div >
                                         <a asp-controller="VehicleType" asp-action="EditVehicleType" class="fas fa-fw fa-pencil-alt updateBtn btnForm" asp-route-Id="@Model.ToArray()[i].Id"></a>
-
-
-                                        <a asp-controller="VehicleType" asp-action="DeleteVehicleType" asp-route-Id="@Model.ToArray()[i].Id" class="btn text-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')" style=" padding: 1px 0.75rem;"><i class="fas fa-fw fa-trash"></i></a>
-                                        
-
                                     </div>
+                                </td>
+                                <td>
+                                    @if (Model.ToArray()[i].Status)
+                                    {
+                                        <p>Active</p>
+                                    }
+                                    else
+                                    {
+                                        <p>Deactive</p>
+                                    }
+                                <td>
+                                    <a asp-controller="VehicleType" asp-action="DeactiveVehicleType" asp-route-Id="@Model.ToArray()[i].Id" class="btn text-danger" onclick="return confirm('Would you like to do Deactive?')" style=" padding: 1px 0.75rem;"><i class="fas fa-ban"></i></a>
+                                </td>
+                                
+                                <td>
+                                    <a asp-controller="VehicleType" asp-action="ActiveVehicleType" asp-route-Id="@Model.ToArray()[i].Id" class="btn text-danger" onclick="return confirm('Would you like to do Active?')" style=" padding: 1px 0.75rem;"><i class="fas fa-check"></i></a>
                                 </td>
                             </tr>
                         }
@@ -106,8 +126,6 @@
         $(`#${id}`).attr("checked", true);
 
         let dataVehicleId = $(`#${id}`).parent().parent().attr("data-v-id");
-
-        console.log()
 
         AjaxPost("/WebCms/VehicleType/SetAsDefaultVehicleType/", { id: dataVehicleId }, true, true, 'json', 'application/x-www-form-urlencoded; charset=UTF-8', (response) => {
         console.log(response);

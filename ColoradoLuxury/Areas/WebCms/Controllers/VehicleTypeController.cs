@@ -203,7 +203,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> DeleteVehicleType(int Id)
+        public async Task<IActionResult> DeactiveVehicleType(int Id)
         {
             if (Id == 0) return NotFound();
 
@@ -212,6 +212,25 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
             if (vehicleType == null) return NotFound();
 
             vehicleType.Status = false;
+            vehicleType.IsActive = false;
+
+            _context.VehicleTypes.Update(vehicleType);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ActiveVehicleType(int Id)
+        {
+            if (Id == 0) return NotFound();
+
+            VehicleType vehicleType = await _context.VehicleTypes.FindAsync(Id);
+
+            if (vehicleType == null) return NotFound();
+
+            vehicleType.Status = true;
             vehicleType.IsActive = false;
 
             _context.VehicleTypes.Update(vehicleType);
