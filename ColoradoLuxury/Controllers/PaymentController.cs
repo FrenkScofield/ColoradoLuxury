@@ -12,6 +12,7 @@ using ColoradoLuxury.Services;
 using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Enums;
 using ColoradoLuxury.Models.DAL;
+using Microsoft.EntityFrameworkCore;
 
 namespace ColoradoLuxury.Controllers
 {
@@ -37,7 +38,7 @@ namespace ColoradoLuxury.Controllers
         }
 
 
-        public async Task<IActionResult> SuccessAsync()
+        public async Task<IActionResult> Success()
         {
             //Insert 
             //Get All Informations
@@ -196,14 +197,24 @@ namespace ColoradoLuxury.Controllers
                 ExceptionExtension.Log(ex, _context);
                 throw new Exception("There is problem on email provider!");
             }
-            return View();
+            var infoMessage = await _context.ResultMessages.FirstOrDefaultAsync();
+
+            ResultMessagesVM resultMessagesVM = new ResultMessagesVM()
+            {
+                SuccessMessage = infoMessage.SuccessMessage,
+
+                FailMessage = infoMessage.FailMessage,
+            };
+
+
+            return View(resultMessagesVM);
         }
 
         public IActionResult Cancel()
         {
             return View();
         }
-
+         
         [Route("payment")]
         public ActionResult Create()
         {
