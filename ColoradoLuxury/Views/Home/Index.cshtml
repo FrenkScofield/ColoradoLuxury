@@ -584,7 +584,7 @@
 
                                                 <div class="form-outline">
                                                     <label class="form-label" for="phoneNumber">Phone Number</label>
-                                                    <input type="tel" id="phoneNumber" class="form-control " />
+                                                    <input type="number" id="phoneNumber" class="form-control " maxlength="10"/>
                                                     <span class="error" id="phoneNumberError">Cannot be left blank </span>
                                                     <span class="good" id="phoneNumberGood">Good look </span>
                                                 </div>
@@ -915,8 +915,6 @@
 
 <!-- Updated JavaScript url -->
 <!-- Time picker -->
-
-
 <script>
     function SelectTimeType(element) {
         let timeType = $(element).val();
@@ -1025,10 +1023,6 @@
             console.log(k[2])
         }
     }
-
-
-
-
 </script>
 <script src="~/lib/jquery/jquery3.6.4/jquery3.6.4.js"></script>
 
@@ -1095,4 +1089,5 @@
         var maxDate = year + '-' + month + '-' + day;
         $('#pickupDate').attr('min', maxDate);
     });
+
 </script>

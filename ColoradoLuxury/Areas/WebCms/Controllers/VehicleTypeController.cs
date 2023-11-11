@@ -47,8 +47,7 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
         public async Task<IActionResult> ShowOrNotShowStatus(int id)
         {
             var vehicleStatus = await _context.VehicleTypes.FindAsync(id);
-         
-              
+ 
                 if (vehicleStatus.Status == true)
                 {
                     vehicleStatus.Status = false;
