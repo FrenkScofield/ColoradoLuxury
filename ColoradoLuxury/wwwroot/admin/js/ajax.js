@@ -5,7 +5,6 @@
         helper: function (e, tr) {
             var $originals = tr.children();
             var $helper = tr.clone();
-            console.log(tr.children());
             $helper.children().each(function (index) {
                 $(this).width($originals.eq(index).width());
             });
