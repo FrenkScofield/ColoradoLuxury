@@ -25,14 +25,16 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 Email = x.Email,
                 Phone = x.Phone,
                 Id = x.Id,
+                VehicleInfoDetails= x.VehicleInfoDetails,
                 VehicleInfoDetailsId = x.VehicleInfoDetailsId,
-            }).ToList();
+                RegDate = x.RegDate,
+            }).OrderByDescending(x => x.Id).ToList();
             return View(userInfos);
         }
 
         public IActionResult OrderRecord(int id)
         {
-            if(id<=0)
+            if (id <= 0)
                 return NotFound();
 
             var userInfos = _context.UserInfos.Where(x => x.Id == id).Select(x => new UserInfo
@@ -42,12 +44,14 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 Email = x.Email,
                 Phone = x.Phone,
                 Id = x.Id,
+                VehicleInfoDetails = x.VehicleInfoDetails,
                 VehicleInfoDetailsId = x.VehicleInfoDetailsId,
                 RideDetailId = x.RideDetailId,
                 ArrivalAirlineInfoId = x.ArrivalAirlineInfoId
             }).AsQueryable();
 
-            if(userInfos == null)
+
+            if (userInfos == null)
                 return NotFound();
 
             var rideDetails = _context.RideDetails.Where(x => x.Id == userInfos.FirstOrDefault().RideDetailId).Select(x => new RideDetail
@@ -94,11 +98,11 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
 
             var paymentDetails = _context.PaymentDetails.Where(x => x.Id == userInfos.FirstOrDefault().Id).Select(x => new PaymentDetails
             {
-                DistanceAmount= x.DistanceAmount,
-                DiscountCuponAmount= x.DiscountCuponAmount,
-                GradiutyAmount= x.GradiutyAmount,
-                TotalAmount= x.TotalAmount,
-                UsedCupon=x.UsedCupon
+                DistanceAmount = x.DistanceAmount,
+                DiscountCuponAmount = x.DiscountCuponAmount,
+                GradiutyAmount = x.GradiutyAmount,
+                TotalAmount = x.TotalAmount,
+                UsedCupon = x.UsedCupon
             }).AsQueryable();
 
             UserRecordsVM userRecordsVM = new UserRecordsVM()
@@ -107,8 +111,8 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 RideDetail = rideDetails.FirstOrDefault(),
                 VehicleInfoDetails = vehicleType.FirstOrDefault(),
                 ArrivalAirlineInfo = airLine.FirstOrDefault(),
-                BillingAddress= billingAddress.FirstOrDefault(),
-                PaymentDetails= paymentDetails.FirstOrDefault(),
+                BillingAddress = billingAddress.FirstOrDefault(),
+                PaymentDetails = paymentDetails.FirstOrDefault(),
             };
 
 
