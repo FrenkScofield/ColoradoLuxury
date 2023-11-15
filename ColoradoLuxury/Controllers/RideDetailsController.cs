@@ -2,6 +2,7 @@
 using ColoradoLuxury.Extensions;
 using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -220,7 +221,7 @@ namespace ColoradoLuxury.Controllers
             var getAllVehicleTypes = _context.VehicleTypes.ToList();
             foreach (var getAllVehicleType in getAllVehicleTypes)
             {
-                if (HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result").IsActive == true)
+                if (HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Camelize().ToLower()}-result")?.IsActive == true)
                 {
 
                     var previusAmountResultSession = HttpContext.GetObjectsession<VehicleAmounts>($"{getAllVehicleType.TypeName.Replace(" ", "").ToLower()}-result");
