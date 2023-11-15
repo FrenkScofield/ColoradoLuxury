@@ -3,7 +3,7 @@ using ColoradoLuxury.Models.BLL;
 using ColoradoLuxury.Models.DAL;
 using ColoradoLuxury.Models.VM;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace ColoradoLuxury.Areas.WebCms.Controllers
 {
@@ -74,7 +74,8 @@ namespace ColoradoLuxury.Areas.WebCms.Controllers
                 ChildSeatCount = x.ChildSeatCount,
                 ChildSeatDescription = x.ChildSeatDescription,
                 RoofTopCargoBoxCount = x.RoofTopCargoBoxCount,
-                RoofTopCargoBoxDescription = x.RoofTopCargoBoxDescription
+                RoofTopCargoBoxDescription = x.RoofTopCargoBoxDescription,
+                VehicleType = x.VehicleType
             }).AsQueryable();
 
             var airLine = _context.ArrivalAirlineInfos.Where(x => x.Id == userInfos.FirstOrDefault().ArrivalAirlineInfoId).Select(x => new ArrivalAirlineInfo
