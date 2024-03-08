@@ -437,11 +437,12 @@ iframe{
     display:none;
 }
 
-div #map {
-    width: 444px;
+.wizardPlagin #map {
+   /* width: 444px;*/
     height: 440px;
     border-radius: 7px;
 }
+
 
 div .map-info {
     width: 100%;
@@ -503,3 +504,4 @@ div.map-info span{
 button.toggle-button-vehicle{
     cursor: pointer;
 }
+
